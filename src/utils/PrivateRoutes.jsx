@@ -14,7 +14,6 @@ useEffect(() => {
     console.log(response.data);
     if(!response.data.status){
        
-       
     }else if(response.data.status){
           
     }

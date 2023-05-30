@@ -8,65 +8,63 @@ import logo3 from "/icons/it-logo.svg";
 import logo4 from "/icons/business-logo.svg";
 import Card from "./Card";
 import CourseCard from "./CourseCard";
-import courseImage1 from "../../assets/course/js.webp";
-import courseImage2 from "../../assets/course/photoshop.webp";
-import courseImage3 from "../../assets/course/react.jpg";
-import homepic from "/kid.png"
+import courseImage1 from "../../../assets/course/js.webp";
+import courseImage2 from "../../../assets/course/photoshop.webp";
+import courseImage3 from "../../../assets/course/react.jpg";
+import homekid from "../../../assets/home-kid.png";
+import homeImg from "../../../assets/home-image.png";
 
 function UserHomePage() {
   return (
     <>
-      <div className="flex h-auto">
-        <div className="w-1/2 bg-gray-200 ">
-          <div>
-            <Typography
-              variant="h3"
-              className="mc-auto pt-14 pl-20 pr-10 font-bold">
+      <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
+        <div className="w-full">
+          <div className="flex justify-center items-center">
+            <h3 className="text-3xl text-center md:text-1xl lg:text-3xl xl:text-5xl xl:py-20 py-8 px-10 font-semibold leading-10">
               Welcome to the World of Lifelong Learning !
-            </Typography>
+            </h3>
           </div>
           <div>
-            <Typography variant="h6" className="pl-20 pr-10 pt-10">
+            <h6 className="leading-8 pl-16  pr-8 text-xl  text-gray-800 font-semibold xl:pl-24 xl:pr-10">
               Learn the skills you need to take the next step and every step
               after. Pick from over 100 online video courses with new additions
               published every month.
-            </Typography>
+            </h6>
           </div>
-          <div className="pl-20 mt-5 ">
+
+          <div className="xl:pl-24 pl-16 pt-5  ">
             <Link to="/course">
-              <Button variant="contained" color="info">
+              <button className="bg-[#232946] hover:bg-[#334364] text-white font-medium py-2 px-4 rounded">
                 Explore courses
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
-        <div className="w-1/2 bg-amber-200">
-          <img
-            className="h-full w-full"
-            src="https://media.istockphoto.com/id/1218524115/vector/student-following-online-courses-on-her-computer-at-home.jpg?s=612x612&w=0&k=20&c=qTqq5Ufq1Lycli_o5K63L73OaV1uJ0C-RJi0c2OgcSo="
-            alt=""
-          />
+        <div className="">
+          <img className="" src={homeImg} alt="home-pic" />
         </div>
       </div>
+
       <div className="">
-        <div className="flex ml-80 mt-12  item-center justify-between w-[60%] text-center ">
-          <Typography
-            variant="h4"
-            className="font-extrabold"
-            fontFamily={"sans-serif"}
-            fontWeight={700}>
-            Choose favourite course from top category
-          </Typography>
-          <Button variant="contained" color="info">
-            See All category
-          </Button>
+        <div className="grid justify-items-center">
+          <div>
+            <h4 className="font-bold text-3xl  p-3 text-center">
+              Choose favourite course from top category
+            </h4>
+          </div>
+          <div className="p-3">
+            <Link to="/course"><button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
+              See All category
+            </button></Link>
+          </div>
         </div>
 
-        <div className="ml-28 mr-28 mt-10 mb-10 gap-10 grid sm:grid-cols-1 xl:grid-cols-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="px-10 mt-6 mb-10 gap-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
           <Card
             icon={logo1}
             title={"Design"}
             color={"#EFEFF6"}
+            hoverColor={"#0d6efd"}
             content={
               "Learn how to design your website. We have a wide range of designing courses from which you can select the best that suits you."
             }
@@ -99,25 +97,17 @@ function UserHomePage() {
       </div>
       <div>
         <div>
-          <Typography
-            variant="h5"
-            className="font-extrabold text-center uppercase"
-            fontFamily={"sans-serif"}
-            fontWeight={700}>
+          <h5 className="font-semibold font-outfit text-center uppercase text-3xl">
             Choose your course
-          </Typography>
+          </h5>
         </div>
         <div className="mt-5">
-          <Typography
-            variant="h5"
-            className="font-extrabold text-center uppercase"
-            fontFamily={"sans-serif"}
-            fontWeight={700}>
-            We Have Tones of Course for You!!
-          </Typography>
+          <h5 className="font-semibold text-center uppercase text-2xl">
+            We Have Tones of Course for You !!
+          </h5>
         </div>
-        <h1 className="mt-5 ml-32 font-semibold text-2xl  ">Top Courses</h1>
-        <div className="ml-28 mt-5 grid gap-10 mr-20 sm:grid-cols-1 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+        <h1 className="mt-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
+        <div className="mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
           <CourseCard
             title={"The complete Js course For web Development"}
             image={courseImage1}
@@ -136,31 +126,34 @@ function UserHomePage() {
             tutor={"Jhon"}
             price={"1999"}
           />
+          <CourseCard
+            title={"The complete Js course For web Development"}
+            image={courseImage2}
+            tutor={"Jhon"}
+            price={"1999"}
+          />
         </div>
-        <div className="mt-6 flex" style={{backgroundColor:'#d8e8de'}}>
-          <div className="w-1/2">
-            <div className="px-20 pt-10">
-              <Typography
-                variant="h3"
-                fontFamily={"sans-serif"}
-                fontWeight={700}>
+        <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 " style={{ backgroundColor: "#F2FFF7" }}>
+          <div className="w-full">
+            <div className="max-sm:px-12 max-sm:pt-10 px-20 pt-10 ">
+              <h3 className="text-5xl font-medium leading-tight">
                 Platform for Connect and build your career
-              </Typography>
+              </h3>
             </div>
-            <div className="px-20 mt-10">
-              <Typography>
+            <div className="max-sm:px-12 px-20 mt-7 font-normal font-outfit">
+              <h1 className="text-lg">
                 We want our users to be able to communicate with Tutors through
                 our platform. Embrace collaboration, connect with others, and
                 code. A simple glance at your showcased projects will connect
                 you directly with startups and top-notch companies.
-              </Typography>
+              </h1>
             </div>
-            <div className="px-20 mt-5">
-              <Button variant="contained">Connect</Button>
+            <div className="max-sm:px-12 px-20 mt-5">
+              <button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">Connect</button>
             </div>
           </div>
-          <div className="w-1/2">
-            <img src={homepic} className="w-full h-96" alt="" />
+          <div className="grid justify-items-center max-sm:hidden">
+            <img src={homekid} className="w-96 " alt="" />
           </div>
         </div>
       </div>

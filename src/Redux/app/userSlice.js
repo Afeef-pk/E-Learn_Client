@@ -9,8 +9,9 @@ const userSlice = createSlice({
   reducers: {
     userAuthorized: (state,action) => {
       state.token = action.payload.token
-      console.log('token'+state.token);
+      //console.log('token'+state.token);
       state.authorized = true;
+      //console.log(state.authorized);
     },
     userUnauthorized: (state) => {
       state.token = null

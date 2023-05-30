@@ -28,7 +28,7 @@ function UserLogin() {
         if (data.token) {
           toast.success(data.message,{duration:5000});
           dispatch(userAuthorized({token:data.token}))
-          localStorage.setItem("token", JSON.stringify(data.token));
+          localStorage.setItem("token", data.token);
           navigate("/");
         } else if (data.message) {
           toast.error(data.message,{
