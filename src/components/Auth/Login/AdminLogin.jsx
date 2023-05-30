@@ -1,110 +1,120 @@
-import React from 'react'
-import {
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Button,
-  useTheme,
-} from "@mui/material";
+import React from "react";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import { postAdminLogin } from "../../../Services/adminApi";
 import { toast, Toaster } from "react-hot-toast";
-import { tokens } from "../../../theme";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function AdminLogin() {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+  
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+  const formik = useFormik({
+    initialValues,
+    onSubmit: async(values) => {
+      const {data} = await postAdminLogin(values)
+      console.log(data);
+      if(data.token){
+        localStorage.setItem('adminToken', data.token)
+        navigate('/dashboard')
+      }else if(data.message){
+        toast.error(data.message)
+      }
+    },
+  });
   return (
-    <Box sx={{ display: "flex", justifyContent:"center", alignItems:"center", height:"100vh" }}>
-    <Toaster/>
-    <Box
-      sx={{
-        p: 5,
-        minWidth: "400px",
-        height: "500px",
-        borderRadius:"10px",
-        background: colors.primary[400],
-        position: "relative",
-      }}
-    >
-      <Box>
-        <img
-          alt="app-logo"
-          width="120px"
-          src={`/assets/logo.svg`}
-          style={{ cursor: "pointer" }}
-        />
-      </Box>
-      <Typography variant="h3" sx={{ fontWeight: "bold", mt: 5 }}>
-        Hello Admin 
-      </Typography>
-      <Typography>Signin to access your account</Typography>
-      <Box
-        //onSubmit={handleSubmit}
-        component="form"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          my: 2,
-        }}
-      >
-        <TextField
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          sx={{ my: 3 }}
-          // value={email}
-          // onChange={(e) => {
-          //   setEmail(e.target.value);
-          // }}
-        />
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            //type={showPassword ? "text" : "password"}
-            // value={password}
-            // onChange={(e) => setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  // onClick={handleClickShowPassword}
-                  // onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
-        <Button
-          type="submit"
-          sx={{
-            color: colors.grey[200],
-            fontWeight: "bold",
-            padding: 2,
-            my: 2,
-            textAlign: "center",
-          }}
-          variant="outlined"
-          size="large"
-        >
-          Sign in
-        </Button>
-      </Box>
-    </Box>
-  </Box>
-);
+    <div className="min-h-screen bg-[#141b2d] flex justify-center items-center h-screen">
+      <Toaster/>
+      <div className="bg-[#1f2a40] h-auto w-96 rounded-xl shadow-2xl">
+        <div>{/* <img src="logo" className="w-40" alt="logo" /> */}</div>
+        <h3 className="text-3xl text-white font-bold mt-12 ml-10">
+          Hello Admin👋
+        </h3>
+        <p className="text-white font-normal font-sans ml-10  text-base">
+          Signin to access your account
+        </p>
+        <form onSubmit={formik.handleSubmit}>
+          <div className="px-10 mt-5">
+            <label
+              htmlFor="input-group-1"
+              className="block mb-2  text-sm font-medium text-gray-900 dark:text-white">
+              Your Email
+            </label>
+            <div className="relative mb-4">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                </svg>
+              </div>
+              <input
+              name="email"
+                type="text"
+                id="input-group-1"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="enter email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          </div>
+          <div className="px-10 ">
+            <label
+              htmlFor="input-group-2"
+              className="block mb-2  text-sm font-medium text-gray-900 dark:text-white">
+              Your Password
+            </label>
+            <div className="relative mb-6">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <rect
+                    x="3"
+                    y="11"
+                    width="18"
+                    height="11"
+                    rx="2"
+                    ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <input
+              name="password"
+                type="text"
+                id="input-group-2"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="enter Password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          </div>
+          <div className="mx-10 my-10">
+            <button className="uppercase text-white font-medium  py-2 px-10 rounded bg-gray-700 hover:bg-slate-950 w-full" type="submit">
+              Sign in
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
-export default AdminLogin
+export default AdminLogin;
