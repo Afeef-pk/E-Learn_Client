@@ -4,10 +4,10 @@ import UsersList from '../../components/Admin/Users/UsersList'
 
 function UserListPage() {
   return (
-    <>
+    <div className='flex'>
     <SideBar/>
     <UsersList/>
-    </>
+    </div>
   )
 }
 
