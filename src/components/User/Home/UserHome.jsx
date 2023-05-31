@@ -7,11 +7,11 @@ import logo3 from "/icons/it-logo.svg";
 import logo4 from "/icons/business-logo.svg";
 import Card from "./Card";
 import CourseCard from "./CourseCard";
-import courseImage1 from "../../../assets/course/js.webp";
-import courseImage2 from "../../../assets/course/photoshop.webp";
-import courseImage3 from "../../../assets/course/react.jpg";
-import homekid from "../../../assets/home-kid.png";
-import homeImg from "../../../assets/home-image.png";
+import courseImage1 from "/assets/course/js.webp";
+import courseImage2 from "/assets/course/photoshop.webp";
+import courseImage3 from "/assets/course/react.jpg";
+import homekid from "/assets/home-kid.png";
+import homeImg from "/assets/home-image.png";
 
 function UserHomePage() {
   return (
@@ -58,7 +58,7 @@ function UserHomePage() {
           </div>
         </div>
 
-        <div className="px-10 mt-6 mb-10 gap-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="px-10 mt-6 mb-10 gap-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 ">
           <Card
             icon={logo1}
             title={"Design"}

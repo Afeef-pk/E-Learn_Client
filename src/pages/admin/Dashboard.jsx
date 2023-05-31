@@ -1,14 +1,14 @@
-import React from 'react'
-import SideBar from '../../components/Admin/SideBar/SideBar'
-import AdminDashboard from '../../components/Admin/Dashboard/AdminDashboard'
+import React from "react";
+import SideBar from "../../components/Admin/SideBar/SideBar";
+import AdminDashboard from "../../components/Admin/Dashboard/AdminDashboard";
 
 function Dashboard() {
   return (
-    < >
-    <SideBar/>
-    <AdminDashboard/>
-    </>
-  )
+    <div className="flex">
+      <SideBar />
+      <AdminDashboard />
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
