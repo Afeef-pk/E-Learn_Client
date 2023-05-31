@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Alert } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
@@ -161,12 +160,11 @@ function UserSignup() {
               </div>
             </div>
 
-            <Button
-              variant="contained"
+            <button
               type="submit"
-              className="w-full text-center py-3 rounded text-white hover:bg-green-300 focus:outline-none my-1">
+              className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
               CREATE ACCOUNT
-            </Button>
+            </button>
           </form>
         </div>
 

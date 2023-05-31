@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Button } from "@mui/material";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
@@ -21,17 +20,17 @@ function UserOtp() {
       otp: "",
     },
     validationSchema: otpSchema,
-    onSubmit: async(values) => {
-      const {data} = await verifySignup(userData,values.otp)
+    onSubmit: async (values) => {
+      const { data } = await verifySignup(userData, values.otp);
       if (data.verified) {
-        toast.success('otp verified')
+        toast.success("otp verified");
         navigate("/signin");
       } else {
         toast.error("invalid Otp");
       }
-    }
+    },
   });
-  
+
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -62,13 +61,11 @@ function UserOtp() {
                 {formik.errors.otpPhone}
               </p>
             ) : null}
-
-            <Button
-              variant="contained"
+            <button
               type="submit"
-              className="w-full text-center py-3 rounded  text-white hover:bg-green-300 focus:outline-none my-1">
+              className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
               VERIFY AND SIGNUP
-            </Button>
+            </button>
           </form>
         </div>
       </div>

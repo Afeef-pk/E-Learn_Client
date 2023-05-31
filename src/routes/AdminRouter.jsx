@@ -1,15 +1,25 @@
-import React from 'react'
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-import AdminLoginPage from '../pages/admin/AdminLoginPage';
-import AdminHomePage from '../pages/admin/AdminHomePage'
+import AdminLoginPage from "../pages/admin/LoginPage";
+import Dashboard from "../pages/admin/Dashboard";
+import UserListPage from "../pages/admin/UserListPage";
+import TutorListPage from "../pages/admin/TutorListPage";
+import CourseListPage from "../pages/admin/CourseListPage";
+import PrivateRoutes from "../utils/PrivateRoutes";
 
-const AdminRouter= ()=> {
+const AdminRouter = () => {
   return (
     <Routes>
-        <Route path='/' element={<AdminLoginPage/>} />
-        <Route path='/dashboard' element={<AdminHomePage/>} />
+      <Route element={<PrivateRoutes role={"admin"} route={"/admin/"} />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users" element={<UserListPage />} />
+        <Route path="/tutors" element={<TutorListPage />} />
+        <Route path="/courses" element={<CourseListPage />} />
+      </Route>
+      <Route path="/" element={<AdminLoginPage />} />
+      <Route path="/*" element={<div>page not found</div>} />
     </Routes>
-  )
-}
+  );
+};
 
-export default AdminRouter
+export default AdminRouter;

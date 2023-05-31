@@ -1,7 +1,6 @@
 import React from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
 import logo1 from "/icons/design.svg";
 import logo2 from "/icons/monitor.svg";
 import logo3 from "/icons/it-logo.svg";

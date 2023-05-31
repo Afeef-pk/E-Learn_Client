@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { auth } from "../../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
-import { Button } from "@mui/material";
+
 import { signupApi } from "../../../Services/tutorApi";
 
 function TutorSignup() {
@@ -237,21 +237,18 @@ function TutorSignup() {
             )}
 
             {showButton && (
-              <Button
-                variant="contained"
-                type="submit"
-                className="w-full text-center py-3 rounded text-white hover:bg-green-300 focus:outline-none my-1">
-                CREATE ACCOUNT
-              </Button>
+               <button
+               type="submit"
+               className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
+               CREATE ACCOUNT 
+             </button>
             )}
             {!showButton && (
-              <Button
-                variant="contained"
-                color="success"
+              <button
                 onClick={verifyOtp}
-                className="w-full text-center py-3 rounded text-white hover:bg-green-300 focus:outline-none my-1">
+                className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
                 Verify & signup
-              </Button>
+              </button>
             )}
           </form>
         </div>

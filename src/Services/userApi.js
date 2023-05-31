@@ -13,7 +13,7 @@ const verifySignup = (userData,code)=>{
 } 
 
 const userAuth = ()=>{
-    return userAxiosInstance.post("/userAuth")
+    return userAxiosInstance.get("/userAuth")
 }
 
 

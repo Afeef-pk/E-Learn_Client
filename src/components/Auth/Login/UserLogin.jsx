@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -79,12 +78,11 @@ function UserLogin() {
               </p>
             ) : null}
 
-            <Button
-              variant="contained"
+            <button
               type="submit"
-              className="w-full text-center py-3 rounded-full  text-white hover:bg-green-300 focus:outline-none my-1">
+              className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
               SIGN IN
-            </Button>
+            </button>
           </form>
         </div>
 
