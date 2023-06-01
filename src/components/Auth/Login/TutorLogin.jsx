@@ -22,7 +22,8 @@ function TutorLogin() {
       const { data } = await tutorSignin(values);
       if (data.token) {
         toast.success(data.message);
-        localStorage.setItem("tutor-token", JSON.stringify(data.token));
+        localStorage.setItem("tutorToken",data.token);
+        console.log('hai');
         navigate("/tutor/dashboard");
       } else if (data.message) {
         toast.error(data.message, {
@@ -31,6 +32,7 @@ function TutorLogin() {
       }
     },
   });
+
   return (
     <div className="bg-gray-800 max-w-screen-2xl mx-auto min-h-screen flex flex-col">
       <Toaster position="top-center" reverseOrder={false}></Toaster>

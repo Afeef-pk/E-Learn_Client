@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard,MdOndemandVideo } from "react-icons/md";
 import {  CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineMessage } from "react-icons/ai";
+import { FaUserGraduate } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
@@ -15,6 +16,13 @@ const SideBar = () => {
     { name: "Logout", link: "/", icon: BiLogOut },
   ];
   const [open, setOpen] = useState(true);
+  const [active,setActive]= useState('')
+  const currentpath = location.pathname
+  console.log(currentpath);
+  useEffect (()=>{
+    const currentMenu = menus.find((item)=>item.link === currentpath)
+    setActive(currentMenu?.name)
+  },[currentpath])
   return (
     <div
       className={`bg-[#1F2A40] min-h-screen ${
@@ -27,8 +35,17 @@ const SideBar = () => {
           onClick={() => setOpen(!open)}
         />
       </div>
+      
+      { open && <div className=" bg-[#2a3a5fed] rounded-md py-7 px-5 my-5">
+          <div className="flex">
+            {React.createElement(FaUserGraduate, { size: "30", color: "#70D8BD"})}
+            <span className="text-xl mx-3">Tutor Name</span>
+          </div>
+          <p className="mt-2">Tutor</p>
+        </div>}
+
       <div
-        className={`mt-28 max-sm:mt-16 ${
+        className={`mt-10 max-sm:mt-16 ${
           open ? "ml-5" : ""
         } max-sm:ml-0 flex flex-col gap-4 relative`}>
         {menus?.map((menu, i) => (
@@ -37,7 +54,7 @@ const SideBar = () => {
             key={i}
             className={` ${
               menu?.margin && "mt-5"
-            } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-950 rounded-md`}>
+            } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-950 rounded-md ${active === menu.name && "bg-gray-950 translate-x-1" }`}>
             <div>{React.createElement(menu?.icon, { size: "20" })}</div>
             <h2
               style={{

@@ -8,8 +8,12 @@ const signupApi = (values) =>{
     return tutorAxiosInstance.post("/signup",values)
 }
 
+const tutorAuth =()=>{
+    return tutorAxiosInstance.get("/tutorauth")
+}
 
 export {
     tutorSignin,
-    signupApi
+    signupApi,
+    tutorAuth
 }
