@@ -54,10 +54,10 @@ function TutorSignup() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { data } = await signupApi(values)
-      if (data.message) {
+      const { data } = await signupApi(values);
+      if (!data.status) {
         toast.error(data.message);
-      } else if (data.sendOtp) {
+      } else {
         sendOtp();
       }
     },
@@ -65,12 +65,10 @@ function TutorSignup() {
 
   const verifyOtp = async () => {
     try {
-      const verify = await user.confirm(formik.values.otp);
-      if (verify) {
-        const { data } = await signupApi(formik.values)
-        if (data.signed) {
-          navigate("/tutor/dashboard");
-        }
+      await user.confirm(formik.values.otp);
+      const { data } = await signupApi(formik.values);
+      if (data.signed) {
+        navigate("/tutor/dashboard");
       }
     } catch (error) {
       toast.error("invalid otp");
@@ -237,14 +235,15 @@ function TutorSignup() {
             )}
 
             {showButton && (
-               <button
-               type="submit"
-               className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
-               CREATE ACCOUNT 
-             </button>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
+                CREATE ACCOUNT
+              </button>
             )}
             {!showButton && (
               <button
+              type="button"
                 onClick={verifyOtp}
                 className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
                 Verify & signup

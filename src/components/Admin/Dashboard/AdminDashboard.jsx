@@ -1,18 +1,12 @@
 import React from "react";
-import SideBar from "../SideBar/SideBar";
-import { AiOutlineUser } from "react-icons/ai";
-import { BiMoon } from "react-icons/bi";
-
 import img from "/assets/admin/dashboard.svg";
 import Card from "./Card";
+import NavBar from "../NavBar/NavBar";
 function AdminDashboard() {
   return (
     <>
       <div className="h-screen w-full bg-[#141B2D] text-white">
-        <div className="flex justify-end m-5 gap-6">
-          {React.createElement(BiMoon, { size: "30", color: "white" })}
-          {React.createElement(AiOutlineUser, { size: "30", color: "white" })}
-        </div>
+        <NavBar/>
         <div className="flex  mx-10 max-sm:w-full my-5 gap-5 ">
           <div className="w-9/12 bg-[#1F2A40] rounded-md flex justify-between ">
             <div>

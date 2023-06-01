@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { MdOutlineDashboard, MdPayment,MdOndemandVideo } from "react-icons/md";
-import { FaUserGraduate, FaUsers } from "react-icons/fa";
+import { MdOutlineDashboard,MdOndemandVideo } from "react-icons/md";
+import {  CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
+import { AiOutlineMessage } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
   const menus = [
-    { name: "Dashboard", link: "/admin/dashboard", icon: MdOutlineDashboard },
-    { name: "Users", link: "/admin/users", icon: FaUsers },
-    { name: "Tutors", link: "/admin/tutors", icon: FaUserGraduate },
-    { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
-    { name: "Transctions", link: "/transction", icon: MdPayment },
+    { name: "Dashboard", link: "/tutor/dashboard", icon: MdOutlineDashboard },
+    { name: "Courses", link: "/tutor/course", icon: MdOndemandVideo },
+    { name: "Messages", link: "/tutor/message", icon: AiOutlineMessage },
+    { name: "Account", link: "/tutor/profile", icon: CgProfile },
     { name: "Logout", link: "/", icon: BiLogOut },
   ];
   const [open, setOpen] = useState(true);

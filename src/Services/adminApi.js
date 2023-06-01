@@ -8,7 +8,18 @@ const adminAuth = ()=>{
     return adminAxiosInstance.get("/auth")
 }
 
+const getUserList = ()=>{
+    return adminAxiosInstance.get("/users")
+}
+
+const getTutorsList = ()=>{
+    return adminAxiosInstance.get("/tutors")
+}
+
+
 export {
     postAdminLogin,
-    adminAuth
+    adminAuth,
+    getUserList,
+    getTutorsList
 }

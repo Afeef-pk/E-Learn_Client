@@ -18,7 +18,7 @@ function UserSignup() {
   };
   const validationSchema = Yup.object({
     name: Yup.string().min(2).max(25).required("Please enter your name"),
-    lastName: Yup.string().min(2).max(25).required("Please enter your last name"),
+    lastName: Yup.string().min(1).max(25).required("Please enter your last name"),
     email: Yup.string().email().required("Please enter your email"),
     phone: Yup.string()
       .matches(/^[0-9]{10}$/, "Phone number is not valid")
