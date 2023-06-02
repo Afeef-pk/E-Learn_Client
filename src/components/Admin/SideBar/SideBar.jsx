@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard, MdPayment,MdOndemandVideo } from "react-icons/md";
 import { FaUserGraduate, FaUsers } from "react-icons/fa";
@@ -15,6 +15,12 @@ const SideBar = () => {
     { name: "Logout", link: "/", icon: BiLogOut },
   ];
   const [open, setOpen] = useState(true);
+  const [active,setActive]= useState('')
+  const currentpath = location.pathname
+  useEffect (()=>{
+    const currentMenu = menus.find((item)=>item.link === currentpath)
+    setActive(currentMenu?.name)
+  },[currentpath])
   return (
     <div
       className={`bg-[#1F2A40] min-h-screen ${
@@ -37,7 +43,7 @@ const SideBar = () => {
             key={i}
             className={` ${
               menu?.margin && "mt-5"
-            } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-950 rounded-md`}>
+            } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-950 rounded-md ${active === menu.name && "bg-gray-950 translate-x-1" }`}>
             <div>{React.createElement(menu?.icon, { size: "20" })}</div>
             <h2
               style={{

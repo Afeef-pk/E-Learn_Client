@@ -6,7 +6,7 @@ function CoursePage() {
   return (
     <div className='flex'>
       <SideBar/>
-     <AddCourse/>
+      <AddCourse/>
     </div>
   )
 }

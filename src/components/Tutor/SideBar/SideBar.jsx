@@ -18,7 +18,6 @@ const SideBar = () => {
   const [open, setOpen] = useState(true);
   const [active,setActive]= useState('')
   const currentpath = location.pathname
-  console.log(currentpath);
   useEffect (()=>{
     const currentMenu = menus.find((item)=>item.link === currentpath)
     setActive(currentMenu?.name)
