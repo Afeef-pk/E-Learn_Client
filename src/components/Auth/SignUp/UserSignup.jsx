@@ -33,10 +33,8 @@ function UserSignup() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      console.log('here');
       toast.loading("Let's verify your email");
       const {data} = await userSignup(values.phone)
-      console.log(data);
       if (data.otpSend) {
         toast.dismiss();
         navigate("/otp",{ state: { ...values } });

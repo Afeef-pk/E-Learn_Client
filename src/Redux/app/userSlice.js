@@ -3,15 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    authorized: false,
-    token:null
+    token:null,
+    authorized: false
   },
   reducers: {
     userAuthorized: (state,action) => {
       state.token = action.payload.token
-      //console.log('token'+state.token);
       state.authorized = true;
-      //console.log(state.authorized);
     },
     userUnauthorized: (state) => {
       state.token = null

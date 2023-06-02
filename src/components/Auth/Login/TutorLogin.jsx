@@ -4,9 +4,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
 import { tutorSignin } from "../../../Services/tutorApi";
+import { useDispatch } from "react-redux";
+import { tutorAuthorized } from "../../../Redux/app/tutorSlice";
 
 function TutorLogin() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const initialValues = {
     email: "",
     password: "",
@@ -22,6 +25,7 @@ function TutorLogin() {
       const { data } = await tutorSignin(values);
       if (data.token) {
         toast.success(data.message);
+        dispatch(tutorAuthorized({token:data.token}))
         localStorage.setItem("tutorToken",data.token);
         console.log('hai');
         navigate("/tutor/dashboard");
