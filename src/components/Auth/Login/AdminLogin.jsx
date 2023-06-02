@@ -2,11 +2,13 @@ import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { postAdminLogin } from "../../../Services/adminApi";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { adminAuthorized } from "../../../Redux/app/adminSlice";
 
 function AdminLogin() {
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch()
   const initialValues = {
     email: "",
     password: "",
@@ -16,7 +18,9 @@ function AdminLogin() {
     onSubmit: async(values) => {
       const {data} = await postAdminLogin(values)
       if(data.token){
+        toast.success(data.message);
         localStorage.setItem('adminToken', data.token)
+        dispatch(adminAuthorized({token:data.token}))
         navigate('/admin/dashboard')
       }else if(data.message){
         toast.error(data.message)
@@ -25,7 +29,6 @@ function AdminLogin() {
   });
   return (
     <div className="min-h-screen bg-[#141b2d] flex justify-center items-center h-screen">
-      <Toaster/>
       <div className="bg-[#1f2a40] h-auto w-96 rounded-xl shadow-2xl">
         <div>{/* <img src="logo" className="w-40" alt="logo" /> */}</div>
         <h3 className="text-3xl text-white font-bold mt-12 ml-10">

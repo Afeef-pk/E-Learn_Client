@@ -1,14 +1,15 @@
 import React,{useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminLoginPage from "../pages/admin/LoginPage";
+import { toast } from "react-hot-toast";
 import Dashboard from "../pages/admin/Dashboard";
 import UserListPage from "../pages/admin/UserListPage";
 import TutorListPage from "../pages/admin/TutorListPage";
 import CourseListPage from "../pages/admin/CourseListPage";
 import PrivateRoutes from "../utils/PrivateRoutes";
+import { adminAuthorized, adminUnauthorized } from "../Redux/app/adminSlice";
 import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
 import { useDispatch } from "react-redux";
-import { adminAuthorized, adminUnauthorized } from "../Redux/app/adminSlice";
 import jwt_decode from "jwt-decode";
 
 const AdminRouter = () => {
@@ -22,7 +23,7 @@ const AdminRouter = () => {
           dispatch(adminAuthorized({token}));
         } else {
           toast.error("Session expired!, Please Signin.");
-          localStorage.removeItem("token");
+          localStorage.removeItem("adminToken");
           dispatch(adminUnauthorized());
         }
       } catch (error) {
@@ -31,10 +32,11 @@ const AdminRouter = () => {
     }
   };
   useEffect(() => {
+    
     authStateListener();
   }, []);
 
-  return (
+  return (    
     <Routes>
       <Route element={<PrivateRoutes role={"admin"} route={"/admin/"} />}>
         <Route path="/dashboard" element={<Dashboard />} />
@@ -42,8 +44,9 @@ const AdminRouter = () => {
         <Route path="/tutors" element={<TutorListPage />} />
         <Route path="/courses" element={<CourseListPage />} />
       </Route>
-      <Route element={<UnAuthenticatedOnlyRoutes role="admin" />}>
-        <Route path="/" element={<AdminLoginPage />} />
+
+      <Route element={<UnAuthenticatedOnlyRoutes role="admin"/>}>
+        <Route path="/" element={<AdminLoginPage/>} />
       </Route>
       <Route path="/*" element={<div>page not found</div>} />
     </Routes>

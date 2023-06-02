@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { tutorSignin } from "../../../Services/tutorApi";
 import { useDispatch } from "react-redux";
 import { tutorAuthorized } from "../../../Redux/app/tutorSlice";
@@ -27,19 +27,15 @@ function TutorLogin() {
         toast.success(data.message);
         dispatch(tutorAuthorized({token:data.token}))
         localStorage.setItem("tutorToken",data.token);
-        console.log('hai');
         navigate("/tutor/dashboard");
       } else if (data.message) {
-        toast.error(data.message, {
-          duration: 10000,
-        });
+        toast.error(data.message);
       }
     },
   });
 
   return (
     <div className="bg-gray-800 max-w-screen-2xl mx-auto min-h-screen flex flex-col">
-      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="text-white mt-10 max-w-sm mx-auto p-3 rounded-2xl">
         {/* <img src="" className="w-20 h-20 mx-auto mb-4" alt="logo" /> */}
         <p className="font-bold text-2xl uppercase">WELCOME TO Learn-Leap</p>

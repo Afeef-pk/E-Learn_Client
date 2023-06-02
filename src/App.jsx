@@ -3,10 +3,11 @@ import UserRouter from "./routes/UserRouter";
 import TutorRouter from "./routes/TutorRouter";
 import AdminRouter from "./routes/AdminRouter";
 import './index.css'
-
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <>
+    <Toaster/>
       <BrowserRouter>
         <Routes>
           <Route path={"/*"} element={<UserRouter />} />

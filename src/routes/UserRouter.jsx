@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import PrivateRoutes from "../utils/PrivateRoutes";
@@ -35,23 +35,20 @@ const UserRouter = () => {
   }, []);
 
   return (
-    <>
-      <Toaster />
-      <Routes>
-        <Route element={<PrivateRoutes role={"user"} route={"/signin"} />}>
-          <Route path="/profile" element={<div>this is profile page</div>} />
-        </Route>
+    <Routes>
+      <Route element={<PrivateRoutes role={"user"} route={"/signin"} />}>
+        <Route path="/profile" element={<div>this is profile page</div>} />
+      </Route>
 
-        <Route element={<UnAuthenticatedOnlyRoutes role="user" /> } >
-          <Route path="/signup" element={<UserSignupPage />} />
-          <Route path="/otp" element={<UserOtp />} />
-          <Route path="/signin" element={<UserLoginPage />} />
-        </Route>
+      <Route element={<UnAuthenticatedOnlyRoutes role="user" />}>
+        <Route path="/signup" element={<UserSignupPage />} />
+        <Route path="/otp" element={<UserOtp />} />
+        <Route path="/signin" element={<UserLoginPage />} />
+      </Route>
 
-        <Route path="/" element={<UserHomePage />} />
-        <Route path="/*" element={<div>page not found</div>} />
-      </Routes>
-    </>
+      <Route path="/" element={<UserHomePage />} />
+      <Route path="/*" element={<div>page not found</div>} />
+    </Routes>
   );
 };
 

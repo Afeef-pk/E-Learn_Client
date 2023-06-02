@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { userAuthorized } from "../../../Redux/app/userSlice";
 import { userLogin } from "../../../Services/userApi";
@@ -30,17 +30,12 @@ function UserLogin() {
           localStorage.setItem("token", data.token);
           navigate("/");
         } else if (data.message) {
-          toast.error(data.message,{
-            duration:5000
-          });
+          toast.error(data.message);
         }
     }
   })
-  
-
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
-      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="text-white mt-10 max-w-sm mx-auto p-3 rounded-2xl">
         {/* <img src="" className="w-20 h-20 mx-auto mb-4" alt="logo" /> */}
         <p className="font-bold text-2xl uppercase">WELCOME TO Learn-Leap</p>
