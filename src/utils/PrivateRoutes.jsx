@@ -14,10 +14,13 @@ function PrivateRoutes({ role, route }) {
     if (role === "user") {
       userAuth()
         .then((response) => {
-          if (!response.data.status) {
-          } else if (response.data.status) {
+          if (response.data.status) {
+            setAuth(response.data.status);
+          } else{
+            setAuth(response.data.status);
+            console.log('res '+response.data.status);
+            localStorage.removeItem('token')
           }
-          setAuth(response.data?.status);
         })
         .catch((response) => {
           console.log(response);
@@ -33,22 +36,22 @@ function PrivateRoutes({ role, route }) {
         .catch((response) => {
           console.log(response);
         });
-    }else if(role === "tutor"){
+    } else if (role === "tutor") {
       tutorAuth()
-      .then((response) => {
-        if (!response.data.status) {
-        } else if (response.data.status) {
-        }
-        setAuth(response.data?.status);
-      })
-      .catch((response) => {
-        console.log(response);
-      });
-      }
-  },[]);
-
+        .then((response) => {
+          if (!response.data.status) {
+          } else if (response.data.status) {
+          }
+          setAuth(response.data?.status);
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    }
+  }, []);
+  console.log('auth'+auth);
   if (auth == null) return;
-  return auth ? <Outlet />  : <Navigate to={route} />;
+  return auth ? <Outlet /> : <Navigate to={route} />;
 }
 
 export default PrivateRoutes;

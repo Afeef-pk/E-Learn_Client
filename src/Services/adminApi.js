@@ -28,8 +28,7 @@ const getTutorsList = ()=>{
 }
 
 const getTutorDetails = (tutorId)=>{
-    console.log(tutorId)
-    return adminAxiosInstance.get(`/tutor/view?${tutorId}`)
+    return adminAxiosInstance.get(`/tutor/view?tutorId=${tutorId}`)
 }
 export {
     postAdminLogin,

@@ -6,14 +6,15 @@ import { getTutorDetails } from "../../../Services/adminApi";
 
 function TutorView() {
   const location = useLocation();
-  const tutorId = location.state;
+  const tutorId = location.state.userId
+ 
   const [tutor,setTutor] = useState(null)
   useEffect(() => {
     getTutorDetails(tutorId).then((res)=>{
-        setTutor(tutor)
+        setTutor(res.data.tutor)
     })
   },[])
-  console.log(tutor);
+
   return (
     <div className="h-auto w-full bg-[#141B2D]">
       <NavBar />
@@ -26,17 +27,16 @@ function TutorView() {
         </div>
         <div className="col-span-7">
           <h1 className="text-2xl px-10 py-5 font-semibold tracking-normal">
-            {" "}
-            Name :{tutor?.name}
+            Name :<span className="px-7">{tutor?.name}</span>
           </h1>
           <h1 className="text-2xl px-10 py-5 font-semibold tracking-normal">
-            E-mail :
+            E-mail :<span className="px-7">{tutor?.email}</span>
           </h1>
           <h1 className="text-2xl px-10 py-5 font-semibold tracking-normal">
-            Phone :
+            Phone :<span className="px-7">{tutor?.phone}</span>
           </h1>
           <h1 className="text-2xl px-10 py-5 font-semibold tracking-normal">
-            About :
+            About :<span className="px-7">{tutor?.about}</span>
           </h1>
         </div>
       </div>

@@ -27,6 +27,7 @@ function UsersList() {
     status === 200
       ? toast.success(data.message)
       : toast.error("Something went wrong!");
+     
     setAction(!action);
   };
   useEffect(() => {
