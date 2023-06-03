@@ -8,16 +8,15 @@ import { userSignup } from "../../../Services/userApi";
 function UserSignup() {
   const navigate = useNavigate();
   const initialValues = {
-    name: "",
+    firstName: "",
     lastName:"",
     email: "",
     phone: "",
-    intersted: "",
     password: "",
     confirmPassword: "",
   };
   const validationSchema = Yup.object({
-    name: Yup.string().min(2).max(25).required("Please enter your name"),
+    firstName: Yup.string().min(2).max(25).required("Please enter your name"),
     lastName: Yup.string().min(1).max(25).required("Please enter your last name"),
     email: Yup.string().email().required("Please enter your email"),
     phone: Yup.string()
@@ -35,7 +34,9 @@ function UserSignup() {
     onSubmit: async (values) => {
       toast.loading("Let's verify your email");
       const {data} = await userSignup(values.phone)
+      console.log(data.otpSend);  
       if (data.otpSend) {
+        console.log('hai');
         toast.dismiss();
         navigate("/otp",{ state: { ...values } });
       } else {
@@ -46,7 +47,6 @@ function UserSignup() {
 
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
-      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="text-white mt-5 max-w-sm mx-auto p-3 rounded-2xl">
         {/* <img src="" className="w-20 h-20 mx-auto mb-4" alt="logo" /> */}
         <p className="font-bold text-2xl">WELCOME TO LEARN-LEAP</p>
@@ -60,14 +60,14 @@ function UserSignup() {
                 <input
                   type="text"
                   className="block border border-grey-light w-full p-3 rounded mb-4"
-                  name="name"
+                  name="firstName"
                   placeholder="First Name"
                   onChange={formik.handleChange}
-                  value={formik.values.name}
+                  value={formik.values.firstName}
                   onBlur={formik.handleBlur}
                 />
-                {formik.errors.name && formik.touched.name ? (
-                  <p className=" text-red-600">{formik.errors.name}</p>
+                {formik.errors.firstName && formik.touched.firstName ? (
+                  <p className=" text-red-600">{formik.errors.firstName}</p>
                 ) : null}
               </div>
               <div className="md:w-1/2 md:pr-2">

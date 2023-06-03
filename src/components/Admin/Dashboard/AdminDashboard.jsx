@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import img from "/assets/admin/dashboard.svg";
 import Card from "./Card";
 import NavBar from "../NavBar/NavBar";
+import { FaUserGraduate, FaUsers } from "react-icons/fa";
+import { MdOutlineDashboard, MdPayment, MdOndemandVideo } from "react-icons/md";
+import { HiUsers } from "react-icons/hi";
+import { dashboardData } from "../../../Services/adminApi";
+
 function AdminDashboard() {
+  const [count,setCount] = useState([])
+  useEffect(() => {
+    dashboardData().then((res)=>{
+      setCount(res.data)
+    })
+  }, []);
   return (
     <>
       <div className="h-screen w-full bg-[#141B2D] text-white">
-        <NavBar/>
+        <NavBar />
         <div className="flex  mx-10 max-sm:w-full my-5 gap-5 ">
           <div className="w-9/12 bg-[#1F2A40] rounded-md flex justify-between ">
             <div>
@@ -25,10 +36,10 @@ function AdminDashboard() {
           </div>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-        <Card/>
-        <Card/>
-        <Card/>
-        <Card/>
+          <Card title="Total Users" icon={HiUsers} count={count.userCount} />
+          <Card title="Total Tutors" icon={FaUserGraduate} count={count.tutorCount} />
+          <Card title="Total Courses" icon={MdOndemandVideo} count={20} />
+          <Card title="Total Users" icon={HiUsers} count={30} />
         </div>
       </div>
     </>

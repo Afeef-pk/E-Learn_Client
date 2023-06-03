@@ -8,8 +8,15 @@ const adminAuth = ()=>{
     return adminAxiosInstance.get("/auth")
 }
 
+const dashboardData = ()=>{
+    return adminAxiosInstance.get("/dashboard")
+}
 const getUserList = ()=>{
     return adminAxiosInstance.get("/users")
+}
+
+const updateUserStatus = (userId)=>{
+    return adminAxiosInstance.patch(`/user/status?userId=${userId}`)
 }
 
 const getTutorsList = ()=>{
@@ -21,5 +28,7 @@ export {
     postAdminLogin,
     adminAuth,
     getUserList,
-    getTutorsList
+    updateUserStatus,
+    getTutorsList,
+    dashboardData
 }

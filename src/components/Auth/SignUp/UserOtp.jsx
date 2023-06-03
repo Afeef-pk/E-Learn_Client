@@ -9,10 +9,9 @@ function UserOtp() {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = location.state;
-  console.log(userData);
   const otpSchema = Yup.object({
     otp: Yup.number().required(
-      "Please enter otp received in the given mobile number"
+      "Please enter the otp"
     ),
   });
   const formik = useFormik({
@@ -33,7 +32,6 @@ function UserOtp() {
 
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
-      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="text-white mt-10 max-w-sm mx-auto p-3 rounded-2xl">
         <img src="" className="w-20 h-20 mx-auto mb-4" alt="logo" />
         <p className="font-bold text-3xl">WELCOME TO Learnify</p>
