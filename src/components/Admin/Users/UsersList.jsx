@@ -11,7 +11,6 @@ function UsersList() {
   const handleSearch = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
-    console.log(searchQuery);
     if (query === '') {
       getUserList().then((res) => {
         setUserData(res.data.users);
@@ -108,7 +107,7 @@ function UsersList() {
                     />
                     <div className="pl-3">
                       <div className="text-base font-semibold">
-                        {user.firstName}{" "}
+                        {user.firstName}
                       </div>
                       <div className="font-normal text-gray-500">
                         {user.email}

@@ -16,7 +16,7 @@ function UserSignup() {
     confirmPassword: "",
   };
   const validationSchema = Yup.object({
-    firstName: Yup.string().min(2).max(25).required("Please enter your name"),
+    firstName: Yup.string().matches(/^[a-zA-Z ]*$/,'Name must be a letter').min(2).max(25).required("Please enter your name"),
     lastName: Yup.string().min(1).max(25).required("Please enter your last name"),
     email: Yup.string().email().required("Please enter your email"),
     phone: Yup.string()
@@ -33,11 +33,9 @@ function UserSignup() {
     validationSchema,
     onSubmit: async (values) => {
       toast.loading("Let's verify your email");
-      const {data} = await userSignup(values.phone)
-      console.log(data.otpSend);  
+      const {data} = await userSignup(values.phone) 
+      toast.dismiss();
       if (data.otpSend) {
-        console.log('hai');
-        toast.dismiss();
         navigate("/otp",{ state: { ...values } });
       } else {
         toast.error('already have an account');

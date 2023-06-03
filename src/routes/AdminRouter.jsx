@@ -11,6 +11,7 @@ import { adminAuthorized, adminUnauthorized } from "../Redux/app/adminSlice";
 import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
+import TutorViewPage from "../pages/admin/TutorViewPage";
 
 const AdminRouter = () => {
   const dispatch = useDispatch()
@@ -42,6 +43,7 @@ const AdminRouter = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<UserListPage />} />
         <Route path="/tutors" element={<TutorListPage />} />
+        <Route path="/tutor/view" element={<TutorViewPage />} />
         <Route path="/courses" element={<CourseListPage />} />
       </Route>
 

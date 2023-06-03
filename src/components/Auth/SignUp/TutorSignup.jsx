@@ -2,36 +2,33 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { auth } from "../../../firebase/config";
+import { auth, storage } from "../../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
-
 import { signupApi } from "../../../Services/tutorApi";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function TutorSignup() {
   const [user, setUser] = useState(null);
   const [showButton, setShowButton] = useState(true);
+  const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
   const initialValues = {
     name: "",
     email: "",
     phone: "",
-    profession: "",
     password: "",
-    confirmPassword: "",
+    about: "",
     otp: "",
   };
   const validationSchema = Yup.object({
-    name: Yup.string().min(2).max(25).required("Please enter your name"),
+    name: Yup.string().matches(/^[a-zA-Z ]*$/, 'Name must be a letter').min(2).max(25).required("Please enter your name"),
     email: Yup.string().email().required("Please enter your email"),
     phone: Yup.string()
       .matches(/^[0-9]{10}$/, "Phone number is not valid")
       .required("Please enter your phone"),
-    profession: Yup.string().required("Please select a topic"),
     password: Yup.string().min(6).required("Please enter your password"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+    about: Yup.string().min(10).max(300).required("Please fill your details"),
   });
   const sendOtp = async () => {
     try {
@@ -54,7 +51,9 @@ function TutorSignup() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { data } = await signupApi(values);
+      toast.loading("Let's verify your email");
+      const { data } = await signupApi({ tutorData: values });
+      toast.dismiss();
       if (!data.status) {
         toast.error(data.message);
       } else {
@@ -65,12 +64,30 @@ function TutorSignup() {
 
   const verifyOtp = async () => {
     try {
+      toast.loading("verifying otp..");
       await user.confirm(formik.values.otp);
-      const { data } = await signupApi(formik.values);
-      if (data.signed) {
-        navigate("/tutor/dashboard");
-      }
+      const storageRef = ref(storage, "/tutor-certificate/" + certificate.name);
+      uploadBytes(storageRef, certificate)
+        .then((snapshot) => {
+          return getDownloadURL(snapshot.ref);
+        })
+        .then(async (url) => {
+          const { data } = await signupApi({
+            tutorData: formik.values,
+            imageUrl: url,
+          });
+          toast.dismiss();
+          if (data.signed) {
+            navigate("/tutor/dashboard");
+          }
+        })
+        .catch((error) => {
+          toast.dismiss();
+          toast.error(error);
+        });
     } catch (error) {
+      console.log(error);
+      toast.dismiss();
       toast.error("invalid otp");
     }
   };
@@ -136,51 +153,6 @@ function TutorSignup() {
                   </p>
                 ) : null}
               </div>
-
-              <div className="md:w-1/2 md:pr-2">
-                <select
-                  name="profession"
-                  onChange={formik.handleChange}
-                  value={formik.values.profession}
-                  onBlur={formik.handleBlur}
-                  className="block border border-grey-light w-full p-3 rounded mb-4">
-                  <option disabled value="">
-                    Select Your Profession
-                  </option>
-                  <option
-                    value="Software Development"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Software Development
-                  </option>
-                  <option
-                    value="Data & Analytics"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Data & Analytics
-                  </option>
-                  <option
-                    value="Design"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Design
-                  </option>
-                  <option
-                    value="Finance & Accounting"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Finance & Accounting
-                  </option>
-                  <option
-                    value="Marketing"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Marketing
-                  </option>
-                </select>
-                {formik.errors.profession && formik.touched.profession ? (
-                  <p className="form-error text-red-600">
-                    {formik.errors.profession}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-            <div className="md:flex md:justify-between md:mb-4">
               <div className="md:w-1/2 md:pr-2">
                 <input
                   type="password"
@@ -197,20 +169,48 @@ function TutorSignup() {
                   </p>
                 ) : null}
               </div>
-              <div className="md:w-1/2 md:pr-2">
-                <input
-                  type="password"
+            </div>
+            <div className="md:flex md:justify-between ">
+              <div className="md:w-full md:pr-2">
+                <textarea
+                  type="about"
                   className="block border border-grey-light w-full p-3 rounded mb-4"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={formik.values.confirmPassword}
+                  name="about"
+                  placeholder="write about your self such as your experience , graduation"
+                  value={formik.values.about}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  rows={3}
                 />
-                {formik.errors.confirmPassword &&
-                formik.touched.confirmPassword ? (
+                {formik.errors.about && formik.touched.about ? (
                   <p className="form-error text-red-600">
-                    {formik.errors.confirmPassword}
+                    {formik.errors.about}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className="md:flex md:justify-between md:mb-">
+              <div className="md:w-full md:pr-2">
+                <label htmlFor="certificate" className="block mb-2 font-medium">
+                  Upload your certificate
+                </label>
+                {certificate && (
+                  <img
+                    alt="certificate"
+                    width="200px"
+                    height="200px"
+                    src={URL.createObjectURL(certificate)}
+                  />
+                )}
+                <input
+                  type="file"
+                  className="block border border-grey-light w-full p-3 rounded mb-4"
+                  name="certificate"
+                  onChange={(e) => setCertificate(e.target.files[0])}
+                />
+                {formik.errors.profession && formik.touched.profession ? (
+                  <p className="form-error text-red-600">
+                    {formik.errors.profession}
                   </p>
                 ) : null}
               </div>
@@ -243,7 +243,7 @@ function TutorSignup() {
             )}
             {!showButton && (
               <button
-              type="button"
+                type="button"
                 onClick={verifyOtp}
                 className="w-full bg-blue-600 text-center py-3 rounded-xl  text-white hover:bg-[#232946] focus:outline-none my-1">
                 Verify & signup

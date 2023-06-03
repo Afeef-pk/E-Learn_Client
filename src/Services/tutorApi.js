@@ -4,8 +4,8 @@ const tutorSignin = (values)=>{
     return tutorAxiosInstance.post("/signin",values)
 }
 
-const signupApi = (values) =>{
-    return tutorAxiosInstance.post("/signup",values)
+const signupApi = ({tutorData,imageUrl}) =>{
+    return tutorAxiosInstance.post("/signup",{tutorData,imageUrl})
 }
 
 const tutorAuth =()=>{

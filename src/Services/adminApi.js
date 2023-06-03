@@ -19,16 +19,25 @@ const updateUserStatus = (userId)=>{
     return adminAxiosInstance.patch(`/user/status?userId=${userId}`)
 }
 
+const updateTutorStatus = (tutorId)=>{
+    return adminAxiosInstance.patch(`/tutor/status?tutorId=${tutorId}`)
+}
+
 const getTutorsList = ()=>{
     return adminAxiosInstance.get("/tutors")
 }
 
-
+const getTutorDetails = (tutorId)=>{
+    console.log(tutorId)
+    return adminAxiosInstance.get(`/tutor/view?${tutorId}`)
+}
 export {
     postAdminLogin,
     adminAuth,
+    dashboardData,
     getUserList,
     updateUserStatus,
     getTutorsList,
-    dashboardData
+    updateTutorStatus,
+    getTutorDetails,
 }

@@ -15,7 +15,7 @@ const SideBar = () => {
     { name: "Tutors", link: "/admin/tutors", icon: FaUserGraduate },
     { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
     { name: "Transctions", link: "/transction", icon: MdPayment },
-    { name: "Logout", link: "/", icon: BiLogOut},
+    { name: "Logout", link: "/", icon: BiLogOut },
   ];
   const [open, setOpen] = useState(true);
   const [active, setActive] = useState("");
@@ -25,9 +25,9 @@ const SideBar = () => {
     setActive(currentMenu?.name);
   }, [currentpath]);
   const handleLogout = () => {
-    log
+    log;
     dispatch(adminUnauthorized());
-    localStorage.removeItem("adminToken")
+    localStorage.removeItem("adminToken");
   };
   return (
     <div
