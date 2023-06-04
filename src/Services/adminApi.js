@@ -1,36 +1,40 @@
 import { adminAxiosInstance } from "../axios/axios";
 
-const postAdminLogin = (values)=>{
-    return adminAxiosInstance.post("/",values)
+const postAdminLogin = (values) => {
+    return adminAxiosInstance.post("/", values)
 }
 
-const adminAuth = ()=>{
+const adminAuth = () => {
     return adminAxiosInstance.get("/auth")
 }
 
-const dashboardData = ()=>{
+const dashboardData = () => {
     return adminAxiosInstance.get("/dashboard")
 }
-const getUserList = ()=>{
+const getUserList = () => {
     return adminAxiosInstance.get("/users")
 }
 
-const updateUserStatus = (userId)=>{
+const updateUserStatus = (userId) => {
     return adminAxiosInstance.patch(`/user/status?userId=${userId}`)
 }
 
-const updateTutorStatus = (tutorId)=>{
+const updateTutorStatus = (tutorId) => {
     return adminAxiosInstance.patch(`/tutor/status?tutorId=${tutorId}`)
 }
 
-const getTutorsList = ()=>{
+const getTutorsList = () => {
     return adminAxiosInstance.get("/tutors")
 }
 
-const getTutorDetails = (tutorId,status)=>{
+const getTutorDetails = (tutorId, status) => {
     console.log(tutorId);
-    return adminAxiosInstance.post('/tutor/view',{tutorId,status})
+    return adminAxiosInstance.post('/tutor/view', { tutorId, status })
 }
+const getCourseData = () => {
+    return adminAxiosInstance.get("/courses")
+}
+
 export {
     postAdminLogin,
     adminAuth,
@@ -40,4 +44,5 @@ export {
     getTutorsList,
     updateTutorStatus,
     getTutorDetails,
+    getCourseData
 }

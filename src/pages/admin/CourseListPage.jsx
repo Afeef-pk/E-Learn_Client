@@ -4,10 +4,10 @@ import CourseList from '../../components/Admin/Courses/CourseList'
 
 function CourseListPage() {
   return (
-    <>
+    <div className='flex'>
     <SideBar/>
     <CourseList/>
-    </>
+    </div>
   )
 }
 

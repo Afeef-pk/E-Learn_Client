@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { uploadCourse } from "../../../Services/tutorApi";
+import { toast } from "react-hot-toast";
+import {storage} from "../../../firebase/config"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function AddCourse() {
   const fileInputRef = useRef();
@@ -19,11 +22,12 @@ function AddCourse() {
     duration: "",
     language: "",
     price: "",
+    category: "",
     description: "",
   };
   const validationSchema = Yup.object({
     name: Yup.string().min(4).max(25).required("Please enter Course name"),
-    about: Yup.string().min(5).max(25).required("enter short description"),
+    about: Yup.string().min(5).max(50).required("enter short description"),
     duration: Yup.string().required("Please enter course duration"),
     language: Yup.string().required("Please enter course language"),
     price: Yup.number().required("Please enter course price"),
@@ -34,10 +38,25 @@ function AddCourse() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const {data} = await uploadCourse(values)
+      toast.loading("Please Wait Uploading Course")
+      const storageRef = ref(storage, "/course-image/" + image.name);
+      uploadBytes(storageRef, image)
+        .then((snapshot) => {
+          return getDownloadURL(snapshot.ref);
+        })
+        .then(async (url) => {
+           await uploadCourse(values,url).then((res) => {
+            if (res.status === 200) {
+              toast.dismiss()
+              toast.success("Successfully uploaded");
+              navigate('/tutor/dashboard')
+            }
+        })
+      });
     },
   });
 
+ 
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
       <NavBar />
@@ -46,7 +65,7 @@ function AddCourse() {
           {image && (
             <div className="flex  justify-center ">
               <img
-                class="h-48 max-w-xs rounded-lg w-full "
+                className="h-48 max-w-xs rounded-lg w-full "
                 src={image ? URL.createObjectURL(image) : ""}
                 alt="image description"
                 onClick={handleClick}></img>
@@ -94,14 +113,13 @@ function AddCourse() {
                     setImage(e.target.files[0]);
                   }}
                 />
-                
               </label>
             </div>
           </div>
         </div>
 
         <div>
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <div className="flex flex-wrap mx-10 my-3 text-white gap-5">
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
@@ -222,7 +240,10 @@ function AddCourse() {
                 </label>
                 <select
                   name="category"
-                  className="block border text-black border-grey-light w-full p-3 rounded mb-4">
+                  className="block border text-black border-grey-light w-full p-3 rounded mb-4"
+                  onChange={formik.handleChange}
+                  value={formik.values.category}
+                  onBlur={formik.handleBlur}>
                   <option value="">Select Category</option>
                   <option
                     value="Software Development"
@@ -280,7 +301,9 @@ function AddCourse() {
                 ) : null}
               </div>
             </div>
-            <button className="bg-blue-700 rounded-2xl mx-10 mb-5 px-3 py-3">Submit Course</button>
+            <button type="submit" className="bg-blue-700 rounded-2xl mx-10 mb-5 px-3 py-3">
+              Submit Course
+            </button>
           </form>
         </div>
       </div>

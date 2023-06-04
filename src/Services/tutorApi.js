@@ -12,9 +12,10 @@ const tutorAuth =()=>{
     return tutorAxiosInstance.get("/tutorauth")
 }
 
-const uploadCourse = (courseData)=>{
-    return tutorAxiosInstance.post("/uploadCourse",courseData)
+const uploadCourse = (courseData,imageURL)=>{
+    return tutorAxiosInstance.post("/upload/course",{courseData,imageURL})
 }
+
 
 export {
     tutorSignin,
