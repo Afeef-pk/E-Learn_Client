@@ -1,5 +1,9 @@
 import React, { useState, useRef } from "react";
 import NavBar from "../NavBar/NavBar";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { uploadCourse } from "../../../Services/tutorApi";
 
 function AddCourse() {
   const fileInputRef = useRef();
@@ -7,11 +11,38 @@ function AddCourse() {
   const handleClick = () => {
     fileInputRef.current.click();
   };
+
+  const navigate = useNavigate();
+  const initialValues = {
+    name: "",
+    about: "",
+    duration: "",
+    language: "",
+    price: "",
+    description: "",
+  };
+  const validationSchema = Yup.object({
+    name: Yup.string().min(4).max(25).required("Please enter Course name"),
+    about: Yup.string().min(5).max(25).required("enter short description"),
+    duration: Yup.string().required("Please enter course duration"),
+    language: Yup.string().required("Please enter course language"),
+    price: Yup.number().required("Please enter course price"),
+    description: Yup.string().required("Write description about the course"),
+  });
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: async (values) => {
+      const {data} = await uploadCourse(values)
+    },
+  });
+
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
       <NavBar />
       <div className="bg-[#1F2A40] m-10 rounded-lg">
-        <div className=" flex justify-center py-5">
+        <div className=" flex justify-center py-5 ">
           {image && (
             <div className="flex  justify-center ">
               <img
@@ -63,6 +94,7 @@ function AddCourse() {
                     setImage(e.target.files[0]);
                   }}
                 />
+                
               </label>
             </div>
           </div>
@@ -83,92 +115,172 @@ function AddCourse() {
                   type="text"
                   name="name"
                   placeholder="Course   Name"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.name && formik.touched.name ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.name}
+                  </p>
+                ) : null}
               </div>
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
-                  htmlFor="name">
-                  Name
+                  htmlFor="about">
+                  About
                 </label>
                 <input
                   className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
-                  name="name"
-                  placeholder="Course   Name"
+                  name="about"
+                  placeholder="write a short description"
+                  onChange={formik.handleChange}
+                  value={formik.values.about}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.about && formik.touched.about ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.about}
+                  </p>
+                ) : null}
               </div>
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
-                  htmlFor="name">
+                  htmlFor="duration">
                   Duration
                 </label>
                 <input
                   className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
-                  name="name"
+                  name="duration"
                   placeholder="Course Duration"
+                  onChange={formik.handleChange}
+                  value={formik.values.duration}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.duration && formik.touched.duration ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.duration}
+                  </p>
+                ) : null}
               </div>
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
-                  htmlFor="name">
+                  htmlFor="language">
                   Language
                 </label>
                 <input
                   className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
-                  name="name"
+                  name="language"
                   placeholder="Course Language"
+                  onChange={formik.handleChange}
+                  value={formik.values.language}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.language && formik.touched.language ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.language}
+                  </p>
+                ) : null}
               </div>
 
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
-                  htmlFor="name">
+                  htmlFor="price">
                   Price
                 </label>
                 <input
                   className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
-                  name="name"
+                  name="price"
                   placeholder="Course Price"
+                  onChange={formik.handleChange}
+                  value={formik.values.price}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.errors.price && formik.touched.price ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.price}
+                  </p>
+                ) : null}
               </div>
               <div className="w-full md:w-2/6   md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
-                  htmlFor="name">
-                  Price
+                  htmlFor="category">
+                  Category
                 </label>
-                <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
-                        px-4 my-3 leading-tight focus:outline-none focus:bg-white"
-                  type="text"
-                  name="name"
-                  placeholder="Course Price"
-                />
+                <select
+                  name="category"
+                  className="block border text-black border-grey-light w-full p-3 rounded mb-4">
+                  <option value="">Select Category</option>
+                  <option
+                    value="Software Development"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Software Development
+                  </option>
+                  <option
+                    value="Data & Analytics"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Data & Analytics
+                  </option>
+                  <option
+                    value="Design"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Design
+                  </option>
+                  <option
+                    value="Finance & Accounting"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Finance & Accounting
+                  </option>
+                  <option
+                    value="Marketing"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Marketing
+                  </option>
+                  <option
+                    value="other"
+                    className="block border border-grey-light w-full p-3 rounded mb-4">
+                    Other
+                  </option>
+                </select>
               </div>
 
-              <div className='mb-4 w-96'>
-                    <label className="block uppercase tracking-wide text-xs font-bold mb-2" htmlfor="description">
-                        Description
-                    </label>
-
-                    <textarea id="description" rows="5" name='description' className="block p-3 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."
-                      
-                    />
-                </div>
+              <div className="mb-4 w-96">
+                <label
+                  className="block uppercase tracking-wide text-xs font-bold mb-2"
+                  htmlFor="description">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  rows="5"
+                  name="description"
+                  className="block p-3 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Write your thoughts here..."
+                  onChange={formik.handleChange}
+                  value={formik.values.description}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.errors.description && formik.touched.description ? (
+                  <p className="form-error text-[#ff1313] font-mono">
+                    {formik.errors.description}
+                  </p>
+                ) : null}
+              </div>
             </div>
-            
-            
+            <button className="bg-blue-700 rounded-2xl mx-10 mb-5 px-3 py-3">Submit Course</button>
           </form>
         </div>
       </div>

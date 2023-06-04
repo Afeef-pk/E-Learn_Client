@@ -28,8 +28,8 @@ const getTutorsList = ()=>{
 }
 
 const getTutorDetails = (tutorId,status)=>{
-    console.log(status);
-    return adminAxiosInstance.get(`/tutor/view?tutorId=${tutorId}&status=${status}`)
+    console.log(tutorId);
+    return adminAxiosInstance.post('/tutor/view',{tutorId,status})
 }
 export {
     postAdminLogin,
