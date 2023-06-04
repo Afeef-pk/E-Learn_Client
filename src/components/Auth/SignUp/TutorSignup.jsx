@@ -28,7 +28,7 @@ function TutorSignup() {
       .matches(/^[0-9]{10}$/, "Phone number is not valid")
       .required("Please enter your phone"),
     password: Yup.string().min(6).required("Please enter your password"),
-    about: Yup.string().min(10).max(300).required("Please fill your details"),
+    about: Yup.string().min(10).max(500).required("Please fill your details"),
   });
   const sendOtp = async () => {
     try {
@@ -43,6 +43,7 @@ function TutorSignup() {
       const confirmation = await signInWithPhoneNumber(auth, number, recaptcha);
       setUser(confirmation);
       setShowButton(false);
+      toast.dismiss();
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +54,6 @@ function TutorSignup() {
     onSubmit: async (values) => {
       toast.loading("Let's verify your email");
       const { data } = await signupApi({ tutorData: values });
-      toast.dismiss();
       if (!data.status) {
         toast.error(data.message);
       } else {
@@ -78,6 +78,7 @@ function TutorSignup() {
           });
           toast.dismiss();
           if (data.signed) {
+            toast.success("Signup success")
             navigate("/tutor/dashboard");
           }
         })
