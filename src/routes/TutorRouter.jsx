@@ -12,6 +12,7 @@ import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
 const TutorRouter = () => {
   return (
     <Routes>
+      
       <Route element={<PrivateRoutes role={"tutor"} route={"/tutor"} />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/course" element={<CoursePage />} />

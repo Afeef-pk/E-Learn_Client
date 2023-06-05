@@ -22,10 +22,10 @@ function TutorLogin() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { data } = await tutorSignin(values);
+      const  {data}  = await tutorSignin(values);
       if (data.token) {
         toast.success(data.message);
-        dispatch(tutorAuthorized({token:data.token}))
+        dispatch(tutorAuthorized())
         localStorage.setItem("tutorToken",data.token);
         navigate("/tutor/dashboard");
       } else if (data.message) {

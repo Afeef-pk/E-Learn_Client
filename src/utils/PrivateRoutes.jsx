@@ -56,6 +56,7 @@ function PrivateRoutes({ role, route }) {
           if (response.data.status) {
             dispatch(tutorAuthorized());
           } else {
+            
             dispatch(tutorUnauthorized());
             localStorage.removeItem("tutorToken");
           }
@@ -64,7 +65,7 @@ function PrivateRoutes({ role, route }) {
             toast.error(response.data.message);
           }
         })
-        .catch(() => {
+        .catch((res) => {
           setAuth(false);
           localStorage.removeItem("tutorToken");
         });
