@@ -2,37 +2,22 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { getUserList, updateUserStatus } from "../../../Services/adminApi";
 import { toast } from "react-hot-toast";
-import { TiTickOutline } from "react-icons/ti";
+
 function UsersList() {
   const [userData, setUserData] = useState([]);
   const [action, setAction] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("");
 
- 
   const filteredUsers = userData.filter((user) =>
-      user.firstName.toLowerCase().includes(query.toLowerCase())
-    );
-    
-  const handleSearch = (event) => {
-    // const query = event.target.value;
-    // setSearchQuery(query);
-    // if (query === '') {
-    //   getUserList().then((res) => {
-    //     setUserData(res.data.users);
-    //   })
-    // } else {
-    //   const filteredUsers = userData.filter((user) =>
-    //     user.firstName.toLowerCase().includes(query.toLowerCase())
-    //   );
-    //   setUserData(filteredUsers);
-    // }
-  };
+    user.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const AccessManage = async (userId) => {
     const { status, data } = await updateUserStatus(userId);
     status === 200
       ? toast.success(data.message)
       : toast.error("Something went wrong!");
-     
+
     setAction(!action);
   };
   useEffect(() => {
@@ -66,8 +51,7 @@ function UsersList() {
             </svg>
           </div>
           <input
-          value={searchQuery}
-          onChange={handleSearch}
+            onKeyUp={(e) => setSearchQuery(e.target.value)}
             type="text"
             id="table-search-users"
             className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -97,7 +81,7 @@ function UsersList() {
             </tr>
           </thead>
           <tbody>
-            {userData.map((user, index) => {
+            {filteredUsers.map((user, index) => {
               return (
                 <tr
                   key={index}

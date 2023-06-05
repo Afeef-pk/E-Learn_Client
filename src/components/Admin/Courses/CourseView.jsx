@@ -19,9 +19,11 @@ function CourseView() {
       setCourse(response.data.course);
     });
   }, []);
-  console.log(course.courseURL);
+  console.log('k'+course.courseURL);
+
   return (
     <>
+    {console.log('ooi')}
       <div className="h-auto w-full bg-[#141B2D] text-white">
         <NavBar />
         <h1 className="text-3xl mx-5 uppercase  text-white font-bold tracking-widest">
@@ -30,9 +32,9 @@ function CourseView() {
         <div className="h-auto  rounded-lg m-10 bg-[#1F2A40] pb-5">
           <div className="flex  justify-center">
             <div className="my-5 rounded-xl">
-              <video width="320" height="140" controls>
-                <source src={course.courseURL} />
-              </video>
+              {course.courseURL&&<video width="320" height="140" controls>
+                <source src={ course.courseURL} />
+              </video>}
             </div>
           </div>
           <div className=" mx-14 bg-[#141B2D] rounded-md mb-3">
@@ -57,23 +59,24 @@ function CourseView() {
             <p className="text-xl p-5">
               Price : <span className="px-5">{course.price}</span>
             </p>
-          </div>
-          <div className="flex justify-end mx-32">
+            <div className="flex justify-end mx-32 pb-10">
             {!course.isApproved && (
               <>
                 <button
                   onClick={() => handleApprove(false)}
-                  className="bg-red-500 px-3 py-2 rounded-xl  text-center  text-white focus:outline-none my-1">
+                  className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1">
                   Reject
                 </button>
                 <button
                   onClick={() => handleApprove(true)}
-                  className="bg-green-500 px-3 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
+                  className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
                   Approve
                 </button>
               </>
             )}
           </div>
+          </div>
+          
         </div>
       </div>
     </>

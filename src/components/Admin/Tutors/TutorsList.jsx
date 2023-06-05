@@ -8,20 +8,11 @@ function TutorsList() {
   const [action, setAction] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const handleSearch = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    if (query === "") {
-      getTutorsList().then((res) => {
-        setTutorData(res.data.tutors);
-      });
-    } else {
-      const filteredUsers = tutorData.filter((user) =>
-        user.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setTutorData(filteredUsers);
-    }
-  };
+
+  const filteredUsers = tutorData.filter((tutor) =>
+    tutor.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const AccessManage = async (userId) => {
     const { status, data } = await updateTutorStatus(userId);
     status === 200
@@ -31,8 +22,9 @@ function TutorsList() {
   };
 
   const viewTutor = (userId) => {
-    navigate('/admin/tutor/view',{ state: { userId } })
+    navigate("/admin/tutor/view", { state: { userId } });
   };
+
   useEffect(() => {
     getTutorsList().then((res) => {
       setTutorData(res.data.tutors);
@@ -67,8 +59,7 @@ function TutorsList() {
             id="table-search-users"
             className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search for tutors"
-            value={searchQuery}
-            onChange={handleSearch}
+            onKeyUp={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
@@ -97,7 +88,7 @@ function TutorsList() {
             </tr>
           </thead>
           <tbody>
-            {tutorData.map((user, index) => {
+            {filteredUsers.map((user, index) => {
               return (
                 <tr
                   key={index}

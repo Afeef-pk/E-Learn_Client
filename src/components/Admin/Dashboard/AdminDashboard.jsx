@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import img from "/assets/admin/dashboard.svg";
 import Card from "./Card";
 import NavBar from "../NavBar/NavBar";
-import { FaUserGraduate, FaUsers } from "react-icons/fa";
-import { MdOutlineDashboard, MdPayment, MdOndemandVideo } from "react-icons/md";
+import { FaUserGraduate } from "react-icons/fa";
+import {  MdOndemandVideo } from "react-icons/md";
 import { HiUsers } from "react-icons/hi";
 import { dashboardData } from "../../../Services/adminApi";
 
 function AdminDashboard() {
+
   const [count,setCount] = useState([])
   useEffect(() => {
     dashboardData().then((res)=>{

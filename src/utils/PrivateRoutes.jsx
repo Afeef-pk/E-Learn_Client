@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { userAuth } from "../Services/userApi";
 import { adminAuth } from "../Services/adminApi";
 import { tutorAuth } from "../Services/tutorApi";
@@ -10,28 +10,25 @@ import { userAuthorized, userUnauthorized } from "../Redux/app/userSlice";
 import { tutorAuthorized, tutorUnauthorized } from "../Redux/app/tutorSlice";
 
 function PrivateRoutes({ role, route }) {
+  
   const dispatch = useDispatch();
   let [auth, setAuth] = useState(null);
-
   useEffect(() => {
     if (role === "user") {
       userAuth()
         .then((response) => {
-          console.log('p route');
           if (response.data.status) {
-            const token = localStorage.getItem("token");
-            dispatch(userAuthorized({ token }));
-            setAuth(response.data.status);
+            dispatch(userAuthorized());
           } else {
-            setAuth(response.data.status);
             dispatch(userUnauthorized());
             localStorage.removeItem("token");
           }
+          setAuth(response.data.status);
           if (response.data.message) {
             toast.error(response.data.message);
           }
         })
-        .catch((response) => {
+        .catch(() => {
           setAuth(false);
           localStorage.removeItem("token");
         });
@@ -39,16 +36,17 @@ function PrivateRoutes({ role, route }) {
       adminAuth()
         .then((response) => {
           if (response.data.status) {
-            const token = localStorage.getItem("adminToken");
-            dispatch(adminAuthorized({ token }));
-            setAuth(response.data.status);
+            dispatch(adminAuthorized());
           } else {
-            setAuth(response.data.status);
             dispatch(adminUnauthorized());
             localStorage.removeItem("adminToken");
           }
+          setAuth(response.data.status);
+          if (response.data.message) {
+            toast.error(response.data.message);
+          }
         })
-        .catch((response) => {
+        .catch(() => {
           setAuth(false);
           localStorage.removeItem("adminToken");
         });
@@ -56,25 +54,24 @@ function PrivateRoutes({ role, route }) {
       tutorAuth()
         .then((response) => {
           if (response.data.status) {
-            const token = localStorage.getItem("tutorToken");
-            dispatch(tutorAuthorized({ token }));
-            setAuth(response.data.status);
+            dispatch(tutorAuthorized());
           } else {
-            setAuth(response.data.status);
             dispatch(tutorUnauthorized());
             localStorage.removeItem("tutorToken");
           }
+          setAuth(response.data.status);
           if (response.data.message) {
             toast.error(response.data.message);
           }
         })
-        .catch((response) => {
+        .catch(() => {
           setAuth(false);
           localStorage.removeItem("tutorToken");
         });
     }
   }, []);
-  if (auth == null) return;
+
+  if (auth === null) return;
   return auth ? <Outlet /> : <Navigate to={route} />;
 }
 
