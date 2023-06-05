@@ -9,18 +9,20 @@ function TutorView() {
   const tutorId = location.state?.userId;
   const [tutor, setTutor] = useState(null);
   const navigate = useNavigate();
-  const handleApprove = () => {
-    const status = true
-    getTutorDetails(tutorId, status).then((res) => {
+
+  const handleApprove = (status) => {
+    const tutorView = false
+    getTutorDetails(tutorId,tutorView, status).then((res) => {
       navigate("/admin/tutors");
-    });
-  };
+    })
+  }
   useEffect(() => {
-    const status = false
-    getTutorDetails(tutorId,status).then((res) => {
+    const tutorView = true
+    getTutorDetails(tutorId,tutorView).then((res) => {
       setTutor(res.data.tutor);
-    });
-  }, []);
+    })
+  }, [])
+
   return (
     <div className="h-auto w-full bg-[#141B2D]">
       <NavBar />
@@ -56,12 +58,12 @@ function TutorView() {
           />
           <div className="p-7">
             <button
-              onClick={handleApprove}
+              onClick={()=>handleApprove(false)}
               className="w-32 bg-red-500 text-center py-3 mx-3 rounded-xl  text-white hover:bg-[#ff1c1c] focus:outline-none my-1">
               Reject
             </button>
             <button
-              onClick={handleApprove}
+              onClick={()=>handleApprove(true)}
               className="w-32 bg-green-700 text-center py-3 rounded-xl  text-white hover:bg-[#1e4612] focus:outline-none my-1">
               Approve
             </button>

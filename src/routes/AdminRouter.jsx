@@ -8,6 +8,7 @@ import CourseListPage from "../pages/admin/CourseListPage";
 import PrivateRoutes from "../utils/PrivateRoutes";
 import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
 import TutorViewPage from "../pages/admin/TutorViewPage";
+import CourseViewPage from "../pages/admin/CourseViewPage";
 
 const AdminRouter = () => {
   return (    
@@ -18,6 +19,7 @@ const AdminRouter = () => {
         <Route path="/tutors" element={<TutorListPage />} />
         <Route path="/tutor/view" element={<TutorViewPage />} />
         <Route path="/courses" element={<CourseListPage />} />
+        <Route path="/course/view" element={<CourseViewPage />} />
       </Route>
 
       <Route element={<UnAuthenticatedOnlyRoutes role={"admin"} route={"/admin/dashboard"}/>}>

@@ -5,14 +5,19 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { uploadCourse } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
-import {storage} from "../../../firebase/config"
+import { storage } from "../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function AddCourse() {
   const fileInputRef = useRef();
+  const [videoFile, setVideoFile] = useState(null);
   const [image, setImage] = useState("");
   const handleClick = () => {
     fileInputRef.current.click();
+  };
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setVideoFile(selectedFile);
   };
 
   const navigate = useNavigate();
@@ -38,25 +43,33 @@ function AddCourse() {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      toast.loading("Please Wait Uploading Course")
+      toast.loading("Please Wait Uploading Course");
       const storageRef = ref(storage, "/course-image/" + image.name);
       uploadBytes(storageRef, image)
         .then((snapshot) => {
           return getDownloadURL(snapshot.ref);
         })
         .then(async (url) => {
-           await uploadCourse(values,url).then((res) => {
-            if (res.status === 200) {
-              toast.dismiss()
-              toast.success("Successfully uploaded");
-              navigate('/tutor/dashboard')
-            }
-        })
-      });
+          
+          const videoStorageRef = ref(storage, "/course-video/" + videoFile.name);
+          uploadBytes(videoStorageRef, videoFile)
+            .then((snapshot) => {
+              return getDownloadURL(snapshot.ref);
+            })
+            .then(async (courseURL) => {
+              await uploadCourse(values, url,courseURL).then((res) => {
+                if (res.status === 200) {
+                  toast.dismiss();
+                  toast.success("Successfully uploaded");
+                  navigate("/tutor/dashboard");
+                }
+              })
+            })
+          
+        });
     },
   });
 
- 
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
       <NavBar />
@@ -300,8 +313,35 @@ function AddCourse() {
                   </p>
                 ) : null}
               </div>
+              <div className="w-full md:w-2/6 md:mb-0">
+                <label
+                  className="block uppercase tracking-wide text-xs font-bold mb-2"
+                  htmlFor="video">
+                  Course file
+                </label>
+                <input
+                  className={`border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                        px-4 my-3 leading-tight focus:outline-none focus:bg-white ${videoFile&& "hidden"}`}
+                  type="file"
+                  name="video"
+                  placeholder="Course Price"
+                  accept="video/*" onChange={handleFileChange}
+                />
+                 {videoFile && (
+                  <video width="320" height="140" controls>
+                    <source
+                      src={URL.createObjectURL(videoFile)}
+                      type={videoFile.type}
+                    />
+                  </video>
+                )}
+              
+              </div>
+             
             </div>
-            <button type="submit" className="bg-blue-700 rounded-2xl mx-10 mb-5 px-3 py-3">
+            <button
+              type="submit"
+              className="bg-blue-700 rounded-2xl mx-10 mb-5 px-3 py-3">
               Submit Course
             </button>
           </form>

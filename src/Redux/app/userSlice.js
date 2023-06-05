@@ -14,6 +14,7 @@ const userSlice = createSlice({
     userUnauthorized: (state) => {
       state.token = null
       state.authorized = false;
+      localStorage.removeItem('token')
     },
   },
 });

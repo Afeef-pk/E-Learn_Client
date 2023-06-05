@@ -38,8 +38,8 @@ function AdminDashboard() {
         <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
           <Card title="Total Users" icon={HiUsers} count={count.userCount} />
           <Card title="Total Tutors" icon={FaUserGraduate} count={count.tutorCount} />
-          <Card title="Total Courses" icon={MdOndemandVideo} count={20} />
-          <Card title="Total Users" icon={HiUsers} count={30} />
+          <Card title="Total Courses" icon={MdOndemandVideo} count={count.courseCount} />
+          <Card title="Total " icon={HiUsers} count={30} />
         </div>
       </div>
     </>

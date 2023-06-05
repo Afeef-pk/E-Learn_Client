@@ -27,12 +27,20 @@ const getTutorsList = () => {
     return adminAxiosInstance.get("/tutors")
 }
 
-const getTutorDetails = (tutorId, status) => {
-    console.log(tutorId);
-    return adminAxiosInstance.post('/tutor/view', { tutorId, status })
+const getTutorDetails = (tutorId, tutorView ,status) => {
+    return adminAxiosInstance.post('/tutor/view', { tutorId, status,tutorView })
 }
+
 const getCourseData = () => {
     return adminAxiosInstance.get("/courses")
+}
+
+const getCourseDetails = (courseId,status=false) => {
+    return adminAxiosInstance.post(`/course/view`,{courseId, status})
+}
+
+const manageCourse = (courseId)=>{
+    return adminAxiosInstance.post("/course/manage",{courseId})
 }
 
 export {
@@ -44,5 +52,7 @@ export {
     getTutorsList,
     updateTutorStatus,
     getTutorDetails,
-    getCourseData
+    getCourseData,
+    getCourseDetails,
+    manageCourse
 }

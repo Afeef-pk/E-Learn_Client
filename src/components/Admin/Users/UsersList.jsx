@@ -8,19 +8,24 @@ function UsersList() {
   const [action, setAction] = useState(false);
   const [searchQuery, setSearchQuery] = useState('')
 
+ 
+  const filteredUsers = userData.filter((user) =>
+      user.firstName.toLowerCase().includes(query.toLowerCase())
+    );
+    
   const handleSearch = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    if (query === '') {
-      getUserList().then((res) => {
-        setUserData(res.data.users);
-      })
-    } else {
-      const filteredUsers = userData.filter((user) =>
-        user.firstName.toLowerCase().includes(query.toLowerCase())
-      );
-      setUserData(filteredUsers);
-    }
+    // const query = event.target.value;
+    // setSearchQuery(query);
+    // if (query === '') {
+    //   getUserList().then((res) => {
+    //     setUserData(res.data.users);
+    //   })
+    // } else {
+    //   const filteredUsers = userData.filter((user) =>
+    //     user.firstName.toLowerCase().includes(query.toLowerCase())
+    //   );
+    //   setUserData(filteredUsers);
+    // }
   };
   const AccessManage = async (userId) => {
     const { status, data } = await updateUserStatus(userId);

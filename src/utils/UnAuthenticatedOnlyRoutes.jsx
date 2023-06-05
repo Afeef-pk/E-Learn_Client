@@ -10,13 +10,13 @@ import { userAuthorized, userUnauthorized } from "../Redux/app/userSlice";
 import { tutorAuthorized, tutorUnauthorized } from "../Redux/app/tutorSlice";
 
 function UnAuthenticatedOnlyRoutes({ role, route }) {
+  console.log('u route');
   const dispatch = useDispatch();
   let [auth, setAuth] = useState(null);
   useEffect(() => {
     if (role === "user") {
       userAuth()
         .then((response) => {
-          console.log('u route');
           if (response.data.status) {
             const token = localStorage.getItem("token");
             dispatch(userAuthorized({ token }));
@@ -24,7 +24,6 @@ function UnAuthenticatedOnlyRoutes({ role, route }) {
           } else {
             setAuth(response.data.status);
             dispatch(userUnauthorized());
-            localStorage.removeItem("token");
           }
           if (response.data.message) {
             toast.error(response.data.message);

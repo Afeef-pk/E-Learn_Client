@@ -20,7 +20,7 @@ const UserRouter = () => {
         <Route path="/otp" element={<UserOtp />} />
       </Route>
 
-      <Route path="/" element={<UserHomePage />} />
+       <Route path="/" element={<UserHomePage />} />
       <Route path="/*" element={<div>page not found</div>} />
     </Routes>
   );
