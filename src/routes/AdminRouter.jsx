@@ -11,7 +11,7 @@ import TutorViewPage from "../pages/admin/TutorViewPage";
 import CourseViewPage from "../pages/admin/CourseViewPage";
 
 const AdminRouter = () => {
-  return (    
+  return (
     <Routes>
       <Route element={<PrivateRoutes role={"admin"} route={"/admin"} />}>
         <Route path="/dashboard" element={<Dashboard />} />
@@ -22,10 +22,16 @@ const AdminRouter = () => {
         <Route path="/course/view" element={<CourseViewPage />} />
       </Route>
 
-      <Route element={<UnAuthenticatedOnlyRoutes role={"admin"} route={"/admin/dashboard"}/>}>
-        <Route path="/" element={<AdminLoginPage/>} />
+      <Route
+        element={
+          <UnAuthenticatedOnlyRoutes
+            role={"admin"}
+            route={"/admin/dashboard"}
+          />
+        }>
+        <Route path="/" element={<AdminLoginPage />} />
       </Route>
-      
+
       <Route path="/*" element={<div>page not found</div>} />
     </Routes>
   );

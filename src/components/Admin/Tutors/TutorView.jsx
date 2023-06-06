@@ -3,6 +3,7 @@ import NavBar from "../NavBar/NavBar";
 import image from "/assets/tutor/default-dp.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getTutorDetails } from "../../../Services/adminApi";
+import { MdClose } from 'react-icons/md';
 
 function TutorView() {
   const location = useLocation();
@@ -10,18 +11,25 @@ function TutorView() {
   const [tutor, setTutor] = useState(null);
   const navigate = useNavigate();
 
+  const [showPreview, setShowPreview] = useState(false);
+
+  const togglePreview = () => {
+    setShowPreview(!showPreview);
+  };
+
   const handleApprove = (status) => {
-    const tutorView = false
-    getTutorDetails(tutorId,tutorView, status).then((res) => {
+    const tutorView = false;
+    getTutorDetails(tutorId, tutorView, status).then((res) => {
       navigate("/admin/tutors");
-    })
-  }
+    });
+  };
   useEffect(() => {
-    const tutorView = true
-    getTutorDetails(tutorId,tutorView).then((res) => {
+    const tutorView = true;
+    getTutorDetails(tutorId, tutorView).then((res) => {
       setTutor(res.data.tutor);
-    })
-  }, [])
+    });
+  }, []);
+
 
   return (
     <div className="h-auto w-full bg-[#141B2D]">
@@ -55,15 +63,34 @@ function TutorView() {
             src={tutor?.certificate}
             className="h-40 px-10"
             alt="certificate"
+            onClick={togglePreview}
           />
+    
+{showPreview && (
+  <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-sm bg-opacity-75">
+    <div className="relative">
+      <button
+        className="absolute top-2 right-2 text-white text-2xl"
+        onClick={togglePreview}
+        aria-label="Close"
+      >
+        <MdClose className="h-6 w-6" color="black" /> 
+      </button>
+      <img src={tutor?.certificate} className="max-w-3xl max-h-3xl" alt="certificate preview" />
+    </div>
+  </div>
+)}
+
+
+
           <div className="p-7">
             <button
-              onClick={()=>handleApprove(false)}
+              onClick={() => handleApprove(false)}
               className="w-32 bg-red-500 text-center py-3 mx-3 rounded-xl  text-white hover:bg-[#ff1c1c] focus:outline-none my-1">
               Reject
             </button>
             <button
-              onClick={()=>handleApprove(true)}
+              onClick={() => handleApprove(true)}
               className="w-32 bg-green-700 text-center py-3 rounded-xl  text-white hover:bg-[#1e4612] focus:outline-none my-1">
               Approve
             </button>

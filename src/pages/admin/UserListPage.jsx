@@ -4,7 +4,7 @@ import UsersList from '../../components/Admin/Users/UsersList'
 
 function UserListPage() {
   return (
-    <div className='flex'>
+    <div className='flex min-h-screen'>
     <SideBar/>
     <UsersList/>
     </div>

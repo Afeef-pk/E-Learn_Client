@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavBar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -7,11 +7,14 @@ import { uploadCourse } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
 import { storage } from "../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addCategory } from "../../../Services/adminApi";
 
 function AddCourse() {
   const fileInputRef = useRef();
   const [videoFile, setVideoFile] = useState(null);
   const [image, setImage] = useState("");
+  const [categoryData, setCategoryData] = useState([]);
+
   const handleClick = () => {
     fileInputRef.current.click();
   };
@@ -32,7 +35,7 @@ function AddCourse() {
   };
   const validationSchema = Yup.object({
     name: Yup.string().min(4).max(25).required("Please enter Course name"),
-    about: Yup.string().min(5).max(50).required("enter short description"),
+    about: Yup.string().min(5).max(500).required("enter short description"),
     duration: Yup.string().required("Please enter course duration"),
     language: Yup.string().required("Please enter course language"),
     price: Yup.number().required("Please enter course price"),
@@ -50,25 +53,34 @@ function AddCourse() {
           return getDownloadURL(snapshot.ref);
         })
         .then(async (url) => {
-          
-          const videoStorageRef = ref(storage, "/course-video/" + videoFile.name);
+          const videoStorageRef = ref(
+            storage,
+            "/course-video/" + videoFile.name
+          );
           uploadBytes(videoStorageRef, videoFile)
             .then((snapshot) => {
               return getDownloadURL(snapshot.ref);
             })
             .then(async (courseURL) => {
-              await uploadCourse(values, url,courseURL).then((res) => {
+              await uploadCourse(values, url, courseURL).then((res) => {
                 if (res.status === 200) {
                   toast.dismiss();
                   toast.success("Successfully uploaded");
                   navigate("/tutor/dashboard");
                 }
-              })
-            })
-          
+              });
+            });
         });
     },
   });
+
+  useEffect(() => {
+    addCategory().then((res) => {
+      if (res.status === 200) {
+        setCategoryData(res.data.categories);
+      }
+    });
+  }, []);
 
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
@@ -258,31 +270,16 @@ function AddCourse() {
                   value={formik.values.category}
                   onBlur={formik.handleBlur}>
                   <option value="">Select Category</option>
-                  <option
-                    value="Software Development"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Software Development
-                  </option>
-                  <option
-                    value="Data & Analytics"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Data & Analytics
-                  </option>
-                  <option
-                    value="Design"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Design
-                  </option>
-                  <option
-                    value="Finance & Accounting"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Finance & Accounting
-                  </option>
-                  <option
-                    value="Marketing"
-                    className="block border border-grey-light w-full p-3 rounded mb-4">
-                    Marketing
-                  </option>
+                  {categoryData.map((category, index) => {
+                    return (
+                      <option key={index}
+                        value={category._id}
+                        className="block border border-grey-light w-full p-3 rounded mb-4">
+                        {category.name}
+                      </option>
+                    );
+                  })}
+
                   <option
                     value="other"
                     className="block border border-grey-light w-full p-3 rounded mb-4">
@@ -321,13 +318,16 @@ function AddCourse() {
                 </label>
                 <input
                   className={`border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
-                        px-4 my-3 leading-tight focus:outline-none focus:bg-white ${videoFile&& "hidden"}`}
+                        px-4 my-3 leading-tight focus:outline-none focus:bg-white ${
+                          videoFile && "hidden"
+                        }`}
                   type="file"
                   name="video"
                   placeholder="Course Price"
-                  accept="video/*" onChange={handleFileChange}
+                  accept="video/*"
+                  onChange={handleFileChange}
                 />
-                 {videoFile && (
+                {videoFile && (
                   <video width="320" height="140" controls>
                     <source
                       src={URL.createObjectURL(videoFile)}
@@ -335,9 +335,7 @@ function AddCourse() {
                     />
                   </video>
                 )}
-              
               </div>
-             
             </div>
             <button
               type="submit"

@@ -19,11 +19,10 @@ function CourseView() {
       setCourse(response.data.course);
     });
   }, []);
-  console.log('k'+course.courseURL);
+
 
   return (
     <>
-    {console.log('ooi')}
       <div className="h-auto w-full bg-[#141B2D] text-white">
         <NavBar />
         <h1 className="text-3xl mx-5 uppercase  text-white font-bold tracking-widest">
@@ -51,7 +50,7 @@ function CourseView() {
               Language : <span className="px-5">{course.language}</span>
             </p>
             <p className="text-xl p-5">
-              Category : <span className="px-5">{course.category}</span>
+              Category : <span className="px-5">{course.category?.name}</span>
             </p>
             <p className="text-xl p-5">
               Description : <span className="px-5">{course.description}</span>

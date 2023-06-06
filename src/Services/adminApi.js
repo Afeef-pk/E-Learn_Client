@@ -31,6 +31,10 @@ const getTutorDetails = (tutorId, tutorView ,status) => {
     return adminAxiosInstance.post('/tutor/view', { tutorId, status,tutorView })
 }
 
+const addCategory = (categoryName)=>{
+    return adminAxiosInstance.post("/category",{categoryName})
+}
+
 const getCourseData = () => {
     return adminAxiosInstance.get("/courses")
 }
@@ -54,5 +58,6 @@ export {
     getTutorDetails,
     getCourseData,
     getCourseDetails,
-    manageCourse
+    manageCourse,
+    addCategory
 }
