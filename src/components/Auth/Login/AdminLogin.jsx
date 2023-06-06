@@ -20,7 +20,7 @@ function AdminLogin() {
       if(data.token){
         toast.success(data.message);
         localStorage.setItem('adminToken', data.token)
-        dispatch(adminAuthorized({token:data.token}))
+        dispatch(adminAuthorized())
         navigate('/admin/dashboard')
       }else if(data.message){
         toast.error(data.message)

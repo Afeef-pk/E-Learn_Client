@@ -6,10 +6,12 @@ import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { userAuthorized } from "../../../Redux/app/userSlice";
 import { userLogin } from "../../../Services/userApi";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 function UserLogin() {
   const navigate = useNavigate();
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
   const initialValues = {
     email: "",
     password: "",
@@ -18,22 +20,42 @@ function UserLogin() {
     email: Yup.string().email().required("Please enter your email"),
     password: Yup.string().min(6).required("Please enter your password"),
   });
- 
+
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const {data} = await userLogin(values)
-        if (data.token) {
-          toast.success(data.message,{duration:5000});
-          dispatch(userAuthorized({token:data.token}))
-          localStorage.setItem("token", data.token);
-          navigate("/");
-        } else if (data.message) {
-          toast.error(data.message);
-        }
+      const { data } = await userLogin(values);
+      if (data.token) {
+        toast.success(data.message);
+        dispatch(userAuthorized());
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else if (data.message) {
+        toast.error(data.message);
+      }
+    },
+  });
+
+  const googleAuthentication = async (res) => {
+    const decoded = await jwt_decode(res.credential);
+    const userData ={
+      email:decoded.email,
+      password:decoded.sub
     }
-  })
+     const { data } = await userLogin(userData)
+      if (data.token) {
+        toast.success(data.message);
+        dispatch(userAuthorized());
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else if (data.message) {
+        toast.error(data.message);
+      }
+  };
+  const googleFailed = (error) => {
+    console.log(error);
+  };
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
       <div className="text-white mt-10 max-w-sm mx-auto p-3 rounded-2xl">
@@ -83,7 +105,7 @@ function UserLogin() {
         </div>
 
         <div className="text-white mt-6">
-          Don't have an account?
+          Don't have an account ?
           <Link
             className="no-underline border-b ml-2 border-white text-yellow"
             to="/signup">
@@ -91,13 +113,14 @@ function UserLogin() {
           </Link>
         </div>
         <div className="text-white mb-5">
-          Sign in as a tutor?
+          Sign in as a tutor ?
           <Link
             to="/tutor"
             className="no-underline border-b ml-2 border-white text-yellow">
             Sign in
           </Link>
         </div>
+        <GoogleLogin onSuccess={googleAuthentication} onError={googleFailed} />
       </div>
     </div>
   );

@@ -4,6 +4,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
 import { userSignup } from "../../../Services/userApi";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { verifySignup } from "../../../Services/userApi";
 
 function UserSignup() {
   const navigate = useNavigate();
@@ -43,6 +46,26 @@ function UserSignup() {
     }
   })
 
+  const googleAuthentication = async (res) => {
+    const decoded = await jwt_decode(res.credential);
+    console.log(decoded);
+    const userData = {
+      firstName: decoded.given_name,
+      lastName: decoded.family_name,
+      email: decoded.email,
+      password:decoded.sub
+    }
+    const { data } = await verifySignup(userData, null,true);
+      if (data.verified) {
+        toast.success("otp verified");
+        navigate("/signin");
+      } else {
+        toast.error("invalid Otp");
+      }
+  };
+  const googleFailed = (error) => {
+    console.log(error);
+  };
   return (
     <div className="bg-[#232946] max-w-screen-2xl mx-auto min-h-screen flex flex-col">
       <div className="text-white mt-5 max-w-sm mx-auto p-3 rounded-2xl">
@@ -180,6 +203,7 @@ function UserSignup() {
             Register
           </Link>
         </div>
+        <GoogleLogin onSuccess={googleAuthentication} onError={googleFailed} />
       </div>
     </div>
   );

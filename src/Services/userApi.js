@@ -1,15 +1,15 @@
 import  {userAxiosInstance} from "../axios/axios"
 
-const userLogin = (values)=>{
-    return userAxiosInstance.post("/signin",values)
+const userLogin = (userData)=>{
+    return userAxiosInstance.post("/signin",userData)
 }
 
 const userSignup = (phone) =>{
     return userAxiosInstance.post("/user/exist",{phone})
 }
 
-const verifySignup = (userData,code)=>{
-    return userAxiosInstance.post("/verify/signup",{userData,code})
+const verifySignup = (userData,code,googleAuth=false)=>{
+    return userAxiosInstance.post("/verify/signup",{userData,code,googleAuth})
 } 
 
 const userAuth = ()=>{
