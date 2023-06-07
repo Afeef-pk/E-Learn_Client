@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { userAuthorized } from "../../../Redux/app/userSlice";
-import { userLogin } from "../../../Services/userApi";
+import { userLogin, verifySignup } from "../../../Services/userApi";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 
@@ -39,19 +39,21 @@ function UserLogin() {
 
   const googleAuthentication = async (res) => {
     const decoded = await jwt_decode(res.credential);
-    const userData ={
-      email:decoded.email,
+    const userData = {
+      firstName: decoded.given_name,
+      lastName: decoded.family_name,
+      email: decoded.email,
       password:decoded.sub
     }
-     const { data } = await userLogin(userData)
-      if (data.token) {
-        toast.success(data.message);
-        dispatch(userAuthorized());
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      } else if (data.message) {
-        toast.error(data.message);
-      }
+    const { data } = await verifySignup(userData, null,true);
+    if (data.token) {
+      toast.success(data.message)
+      dispatch(userAuthorized())
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } else {
+      toast.error("there was an error signing up");
+    }
   };
   const googleFailed = (error) => {
     console.log(error);

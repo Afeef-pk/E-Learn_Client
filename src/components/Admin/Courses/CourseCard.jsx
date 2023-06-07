@@ -21,7 +21,7 @@ function CourseCard({ image, title, date, id, isApproved, status }) {
     });
   };
   return (
-    <div className=" rounded-xl bg-[#1F2A40]">
+    <div className=" rounded-xl bg-[#1F2A40] translate-y-2">
       <img src={image} className="w-full rounded-t-xl" alt="course img" />
       <h1 className="text-xl font-bold mx-5 my-3">{title}</h1>
       <p className="my-2 mx-5 text-[#B3A4A4]">{datee}</p>

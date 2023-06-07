@@ -7,8 +7,11 @@ import { userSignup } from "../../../Services/userApi";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { verifySignup } from "../../../Services/userApi";
+import { useDispatch } from "react-redux";
+import { userAuthorized } from "../../../Redux/app/userSlice";
 
 function UserSignup() {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const initialValues = {
     firstName: "",
@@ -48,7 +51,6 @@ function UserSignup() {
 
   const googleAuthentication = async (res) => {
     const decoded = await jwt_decode(res.credential);
-    console.log(decoded);
     const userData = {
       firstName: decoded.given_name,
       lastName: decoded.family_name,
@@ -56,11 +58,13 @@ function UserSignup() {
       password:decoded.sub
     }
     const { data } = await verifySignup(userData, null,true);
-      if (data.verified) {
-        toast.success("otp verified");
-        navigate("/signin");
+      if (data.token) {
+        toast.success(data.message)
+        dispatch(userAuthorized())
+        localStorage.setItem("token", data.token);
+        navigate("/");
       } else {
-        toast.error("invalid Otp");
+        toast.error("there was an error signing up");
       }
   };
   const googleFailed = (error) => {

@@ -6,6 +6,7 @@ import UserLoginPage from "../pages/user/UserLoginPage";
 import UserSignupPage from "../pages/user/UserSignupPage";
 import UserHomePage from "../pages/user/UserHomePage";
 import UserOtp from "../components/Auth/SignUp/UserOtp";
+import UserCoursePage from "../pages/user/UserCoursePage";
 
 const UserRouter = () => {
   return (
@@ -21,6 +22,7 @@ const UserRouter = () => {
       </Route>
 
        <Route path="/" element={<UserHomePage />} />
+       <Route path="/course" element={<UserCoursePage />} />
       <Route path="/*" element={<div>page not found</div>} />
     </Routes>
   );

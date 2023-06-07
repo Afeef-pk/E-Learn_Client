@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import logo1 from "/icons/design.svg";
@@ -12,8 +12,16 @@ import courseImage2 from "/assets/course/photoshop.webp";
 import courseImage3 from "/assets/course/react.jpg";
 import homekid from "/assets/home-kid.png";
 import homeImg from "/assets/home-image.png";
+import { homeCourseLoad } from "../../../Services/userApi";
 
 function UserHomePage() {
+  const [courses,setCourse] = useState([])
+   useEffect(()=>{
+    homeCourseLoad().then((res)=>{
+      setCourse(res.data.course);
+    })
+  },[])
+  
   return (
     <>
       <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
@@ -107,30 +115,14 @@ function UserHomePage() {
         </div>
         <h1 className="mt-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
         <div className="mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-          <CourseCard
-            title={"The complete Js course For web Development"}
-            image={courseImage1}
-            tutor={"Jhon"}
-            price={"1999"}
-          />
-          <CourseCard
-            title={"The complete Js course For web Development"}
-            image={courseImage2}
-            tutor={"Jhon"}
-            price={"1999"}
-          />
-          <CourseCard
-            title={"The complete Js course For web Development"}
-            image={courseImage3}
-            tutor={"Jhon"}
-            price={"1999"}
-          />
-          <CourseCard
-            title={"The complete Js course For web Development"}
-            image={courseImage2}
-            tutor={"Jhon"}
-            price={"1999"}
-          />
+          {courses.map((course,index)=>{
+          return <CourseCard
+          key={index}
+            title={course.name}
+            image={course.imageURL}
+            tutor={course.teacher.name}
+            price={course.price}
+          /> })}
         </div>
         <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 " style={{ backgroundColor: "#F2FFF7" }}>
           <div className="w-full">

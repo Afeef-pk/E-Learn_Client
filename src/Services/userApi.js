@@ -16,10 +16,14 @@ const userAuth = ()=>{
     return userAxiosInstance.get("/userAuth")
 }
 
+const homeCourseLoad = ()=>{
+    return userAxiosInstance.get("/home")
+}
 
 export {
     userSignup,
     userLogin,
     verifySignup,
-    userAuth
+    userAuth,
+    homeCourseLoad
 }

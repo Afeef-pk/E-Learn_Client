@@ -11,16 +11,42 @@ function CourseList() {
   const [showCategory, setShowCategory] = useState(false);
   const [categoryButton, setAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await addCategory(category);
-    if (data.message) {
-      toast.success(data.message);
-      setAddCategory(false);
-      setCategory("");
+    if(category !=''){
+      const { data } = await addCategory(category);
+      if (data.message) {
+        toast.success(data.message);
+        setAddCategory(false);
+        setCategory("");
+      }
+    }else{
+      toast.error("category name can't be empty");
     }
+    
   };
+
+  const handleCategoryChange = (event) => {
+    const categoryId = event.target.value;
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedCategories([...selectedCategories, categoryId]);
+    } else {
+      setSelectedCategories(
+        selectedCategories.filter((id) => id !== categoryId)
+      );
+    }
+  }
+  let filteredCourses;
+  if (selectedCategories.length === 0) {
+    filteredCourses = courses; // Show all courses when no categories are selected
+  } else {
+    filteredCourses = courses.filter((course) =>
+      selectedCategories.includes(course.category)
+    );
+  }
   useEffect(() => {
     getCourseData().then((res) => {
       setCourses(res.data.course);
@@ -73,25 +99,38 @@ function CourseList() {
           <div className="flex justify-end absolute inset-x-0.5">
             <div
               id="dropdown"
-              className="z-10 mx-8 my-2  w-44 p-3 bg-white rounded-lg shadow dark:bg-gray-700 ">
+              className="z-10 mx-8   w-44 p-3 bg-white rounded-lg shadow dark:bg-gray-700 ">
               <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                 Category
               </h6>
               <ul
                 className="space-y-2 text-sm "
                 aria-labelledby="dropdownDefault">
+                   <li className="flex items-center">
+                      <input
+                        id="all"
+                        type="checkbox"
+                        className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                      />
+                      <label
+                        htmlFor="all"
+                        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                        All
+                      </label>
+                    </li>
                 {categories.map((categorie, index) => {
                   return (
-                    <li value={index} className="flex items-center">
+                    <li value={index} className="flex items-center" key={index}>
                       <input
                         id="fitbit"
                         type="checkbox"
-                        defaultValue=""
+                        
                         className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                      value={categorie._id}
+                        value={categorie._id}
+                        onChange={handleCategoryChange}
                       />
                       <label
-                        htmlFor="fitbit"
+                        htmlFor={categorie._id}
                         className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
                         {categorie.name}
                       </label>
@@ -103,8 +142,8 @@ function CourseList() {
           </div>
         )}
 
-        <div className="grid grid-cols-4 gap-10 m-8 ">
-          {courses.map((course, index) => {
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-10 m-8 ">
+          {filteredCourses.map((course, index) => {
             return (
               <CourseCard
                 key={index}
