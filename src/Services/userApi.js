@@ -17,7 +17,14 @@ const userAuth = ()=>{
 }
 
 const homeCourseLoad = ()=>{
-    return userAxiosInstance.get("/home")
+    return userAxiosInstance.get("/home-course")
+}
+
+const getCourseList =()=>{
+    return userAxiosInstance.get("/course")
+}
+const getCourseView = (courseId)=>{
+    return userAxiosInstance.get(`/course-details/${courseId}`)
 }
 
 export {
@@ -25,5 +32,7 @@ export {
     userLogin,
     verifySignup,
     userAuth,
-    homeCourseLoad
+    homeCourseLoad,
+    getCourseList,
+    getCourseView
 }

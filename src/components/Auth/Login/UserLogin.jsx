@@ -8,22 +8,15 @@ import { userAuthorized } from "../../../Redux/app/userSlice";
 import { userLogin, verifySignup } from "../../../Services/userApi";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import { loginValidationSchema,loginInitialValues } from "../../../constants/constant";
 
 function UserLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required("Please enter your email"),
-    password: Yup.string().min(6).required("Please enter your password"),
-  });
 
   const formik = useFormik({
-    initialValues,
-    validationSchema,
+    initialValues: loginInitialValues,
+    validationSchema:loginValidationSchema,
     onSubmit: async (values) => {
       const { data } = await userLogin(values);
       if (data.token) {
@@ -43,12 +36,12 @@ function UserLogin() {
       firstName: decoded.given_name,
       lastName: decoded.family_name,
       email: decoded.email,
-      password:decoded.sub
-    }
-    const { data } = await verifySignup(userData, null,true);
+      password: decoded.sub,
+    };
+    const { data } = await verifySignup(userData, null, true);
     if (data.token) {
-      toast.success(data.message)
-      dispatch(userAuthorized())
+      toast.success(data.message);
+      dispatch(userAuthorized());
       localStorage.setItem("token", data.token);
       navigate("/");
     } else {

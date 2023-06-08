@@ -120,6 +120,8 @@ export default function NavBar() {
       } else {
         toast.error(res.data.message);
       }
+    }).catch(({response})=>{
+      localStorage.removeItem("token");
     })
   }, []);
   const currentPath = window.location.pathname;

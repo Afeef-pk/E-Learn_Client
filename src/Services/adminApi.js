@@ -47,6 +47,7 @@ const manageCourse = (courseId)=>{
     return adminAxiosInstance.post("/course/manage",{courseId})
 }
 
+
 export {
     postAdminLogin,
     adminAuth,

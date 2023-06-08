@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast"
 import { Link } from "react-router-dom";
 import logo1 from "/icons/design.svg";
 import logo2 from "/icons/monitor.svg";
@@ -7,9 +7,6 @@ import logo3 from "/icons/it-logo.svg";
 import logo4 from "/icons/business-logo.svg";
 import Card from "./Card";
 import CourseCard from "./CourseCard";
-import courseImage1 from "/assets/course/js.webp";
-import courseImage2 from "/assets/course/photoshop.webp";
-import courseImage3 from "/assets/course/react.jpg";
 import homekid from "/assets/home-kid.png";
 import homeImg from "/assets/home-image.png";
 import { homeCourseLoad } from "../../../Services/userApi";
@@ -18,10 +15,9 @@ function UserHomePage() {
   const [courses,setCourse] = useState([])
    useEffect(()=>{
     homeCourseLoad().then((res)=>{
-      setCourse(res.data.course);
+      setCourse(res.data.courseData);
     })
   },[])
-  
   return (
     <>
       <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
@@ -114,14 +110,11 @@ function UserHomePage() {
           </h5>
         </div>
         <h1 className="mt-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
-        <div className="mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
           {courses.map((course,index)=>{
           return <CourseCard
           key={index}
-            title={course.name}
-            image={course.imageURL}
-            tutor={course.teacher.name}
-            price={course.price}
+          course={course}
           /> })}
         </div>
         <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 " style={{ backgroundColor: "#F2FFF7" }}>

@@ -3,7 +3,7 @@ import NavBar from "../NavBar/NavBar";
 import image from "/assets/tutor/default-dp.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getTutorDetails } from "../../../Services/adminApi";
-import { MdClose } from 'react-icons/md';
+import { MdClose } from "react-icons/md";
 
 function TutorView() {
   const location = useLocation();
@@ -29,7 +29,6 @@ function TutorView() {
       setTutor(res.data.tutor);
     });
   }, []);
-
 
   return (
     <div className="h-auto w-full bg-[#141B2D]">
@@ -65,23 +64,24 @@ function TutorView() {
             alt="certificate"
             onClick={togglePreview}
           />
-    
-{showPreview && (
-  <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-sm bg-opacity-75">
-    <div className="relative">
-      <button
-        className="absolute top-2 right-2 text-white text-2xl"
-        onClick={togglePreview}
-        aria-label="Close"
-      >
-        <MdClose className="h-6 w-6" color="black" /> 
-      </button>
-      <img src={tutor?.certificate} className="max-w-3xl max-h-3xl" alt="certificate preview" />
-    </div>
-  </div>
-)}
 
-
+          {showPreview && (
+            <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-sm bg-opacity-75">
+              <div className="relative">
+                <button
+                  className="absolute top-2 right-2 text-white text-2xl"
+                  onClick={togglePreview}
+                  aria-label="Close">
+                  <MdClose className="h-6 w-6" color="black" />
+                </button>
+                <img
+                  src={tutor?.certificate}
+                  className="max-w-3xl max-h-3xl"
+                  alt="certificate preview"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="p-7">
             <button

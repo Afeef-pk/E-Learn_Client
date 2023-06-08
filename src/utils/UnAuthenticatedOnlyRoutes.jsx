@@ -9,7 +9,7 @@ import { adminAuthorized, adminUnauthorized } from "../Redux/app/adminSlice";
 import { userAuthorized, userUnauthorized } from "../Redux/app/userSlice";
 import { tutorAuthorized, tutorUnauthorized } from "../Redux/app/tutorSlice";
 
-function UnAuthenticatedOnlyRoutes({ role, route }) {
+function UnAuthenticatedOnlyRoutes({ role, route }) { 
   const dispatch = useDispatch();
   let [auth, setAuth] = useState(null);
   useEffect(() => {

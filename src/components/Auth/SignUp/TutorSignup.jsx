@@ -1,43 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { auth, storage } from "../../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { signupApi } from "../../../Services/tutorApi";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  tutorInitialValues,
+  tutorValidationSchema,
+} from "../../../constants/constant";
 
 function TutorSignup() {
   const [user, setUser] = useState(null);
   const [showButton, setShowButton] = useState(true);
   const [certificate, setCertificate] = useState(null);
   const navigate = useNavigate();
-  const initialValues = {
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    about: "",
-    otp: "",
-  };
-  const validationSchema = Yup.object({
-    name: Yup.string().matches(/^[a-zA-Z ]*$/, 'Name must be a letter').min(2).max(25).required("Please enter your name"),
-    email: Yup.string().email().required("Please enter your email"),
-    phone: Yup.string()
-      .matches(/^[0-9]{10}$/, "Phone number is not valid")
-      .required("Please enter your phone"),
-    password: Yup.string().min(6).required("Please enter your password"),
-    about: Yup.string().min(10).max(500).required("Please fill your details"),
-  });
+
   const sendOtp = async () => {
     try {
       const number = "+91" + formik.values.phone;
       let recaptcha = new RecaptchaVerifier(
         "sign-in-button",
-        {
-          size: "invisible",
-        },
+        { size: "invisible" },
         auth
       );
       const confirmation = await signInWithPhoneNumber(auth, number, recaptcha);
@@ -49,8 +34,8 @@ function TutorSignup() {
     }
   };
   const formik = useFormik({
-    initialValues,
-    validationSchema,
+    initialValues: tutorInitialValues,
+    validationSchema: tutorValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Let's verify your email");
       const { data } = await signupApi({ tutorData: values });
@@ -78,7 +63,7 @@ function TutorSignup() {
           });
           toast.dismiss();
           if (data.signed) {
-            toast.success("Signup success")
+            toast.success("Signup success");
             navigate("/tutor/dashboard");
           }
         })
@@ -92,6 +77,7 @@ function TutorSignup() {
       toast.error("invalid otp");
     }
   };
+
   return (
     <div className="bg-gray-800 max-w-screen-2xl mx-auto min-h-screen flex flex-col">
       <div id="sign-in-button"></div>

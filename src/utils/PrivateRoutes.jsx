@@ -10,7 +10,6 @@ import { userAuthorized, userUnauthorized } from "../Redux/app/userSlice";
 import { tutorAuthorized, tutorUnauthorized } from "../Redux/app/tutorSlice";
 
 function PrivateRoutes({ role, route }) {
-  
   const dispatch = useDispatch();
   let [auth, setAuth] = useState(null);
   useEffect(() => {

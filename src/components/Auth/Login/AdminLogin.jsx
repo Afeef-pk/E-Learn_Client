@@ -5,28 +5,27 @@ import { postAdminLogin } from "../../../Services/adminApi";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { adminAuthorized } from "../../../Redux/app/adminSlice";
+import { loginInitialValues } from "../../../constants/constant";
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const initialValues = {
-    email: "",
-    password: "",
-  };
+  const dispatch = useDispatch();
+
   const formik = useFormik({
-    initialValues,
-    onSubmit: async(values) => {
-      const {data} = await postAdminLogin(values)
-      if(data.token){
+    initialValues: loginInitialValues,
+    onSubmit: async (values) => {
+      const { data } = await postAdminLogin(values);
+      if (data.token) {
         toast.success(data.message);
-        localStorage.setItem('adminToken', data.token)
-        dispatch(adminAuthorized())
-        navigate('/admin/dashboard')
-      }else if(data.message){
-        toast.error(data.message)
+        localStorage.setItem("adminToken", data.token);
+        dispatch(adminAuthorized());
+        navigate("/admin/dashboard");
+      } else if (data.message) {
+        toast.error(data.message);
       }
     },
   });
+
   return (
     <div className="min-h-screen bg-[#141b2d] flex justify-center items-center h-screen">
       <div className="bg-[#1f2a40] h-auto w-96 rounded-xl shadow-2xl">
@@ -57,7 +56,7 @@ function AdminLogin() {
                 </svg>
               </div>
               <input
-              name="email"
+                name="email"
                 type="text"
                 id="input-group-1"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -97,7 +96,7 @@ function AdminLogin() {
                 </svg>
               </div>
               <input
-              name="password"
+                name="password"
                 type="password"
                 id="input-group-2"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -109,7 +108,9 @@ function AdminLogin() {
             </div>
           </div>
           <div className="mx-10 my-10">
-            <button className="uppercase text-white font-medium  py-2 px-10 rounded bg-gray-700 hover:bg-slate-950 w-full" type="submit">
+            <button
+              className="uppercase text-white font-medium  py-2 px-10 rounded bg-gray-700 hover:bg-slate-950 w-full"
+              type="submit">
               Sign in
             </button>
           </div>

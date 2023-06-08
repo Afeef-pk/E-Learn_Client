@@ -1,38 +1,34 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import { tutorSignin } from "../../../Services/tutorApi";
 import { useDispatch } from "react-redux";
 import { tutorAuthorized } from "../../../Redux/app/tutorSlice";
+import {
+  loginValidationSchema,
+  loginInitialValues,
+} from "../../../constants/constant";
 
 function TutorLogin() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required("Please enter your email"),
-    password: Yup.string().min(6).required("Please enter your password"),
-  });
+  const dispatch = useDispatch();
+
   const formik = useFormik({
-    initialValues,
-    validationSchema,
+    initialValues: loginInitialValues,
+    validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      const  {data}  = await tutorSignin(values);
+      const { data } = await tutorSignin(values);
       if (data.token) {
         toast.success(data.message);
-        dispatch(tutorAuthorized())
-        localStorage.setItem("tutorToken",data.token);
+        dispatch(tutorAuthorized());
+        localStorage.setItem("tutorToken", data.token);
         navigate("/tutor/dashboard");
       } else if (data.message) {
         toast.error(data.message);
       }
     },
-  });
+  })
 
   return (
     <div className="bg-gray-800 max-w-screen-2xl mx-auto min-h-screen flex flex-col">

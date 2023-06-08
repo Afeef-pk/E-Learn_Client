@@ -1,39 +1,19 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { userSignup } from "../../../Services/userApi";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { verifySignup } from "../../../Services/userApi";
 import { useDispatch } from "react-redux";
 import { userAuthorized } from "../../../Redux/app/userSlice";
+import { initialValues,validationSchema } from "../../../constants/constant";
 
 function UserSignup() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  const initialValues = {
-    firstName: "",
-    lastName:"",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  };
-  const validationSchema = Yup.object({
-    firstName: Yup.string().matches(/^[a-zA-Z ]*$/,'Name must be a letter').min(2).max(25).required("Please enter your name"),
-    lastName: Yup.string().min(1).max(25).required("Please enter your last name"),
-    email: Yup.string().email().required("Please enter your email"),
-    phone: Yup.string()
-      .matches(/^[0-9]{10}$/, "Phone number is not valid")
-      .required("Please enter your phone"),
-    password: Yup.string().min(6).required("Please enter your password"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
-
+  
   const formik = useFormik({
     initialValues,
     validationSchema,
