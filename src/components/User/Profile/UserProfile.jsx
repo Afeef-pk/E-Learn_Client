@@ -1,21 +1,21 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { FiEdit2 } from "react-icons/fi";
 import { TiTick } from "react-icons/ti";
 import { useFormik } from "formik";
 
 function UserProfile() {
     const user = null
+    const [image,setImage] = useState(null)
     const formik = useFormik({})
+        
   return (
     <div className="md:flex  no-wrap md:-mx-2 ">
-            {/* Left Side */}
             <div className="w-full md:w-3/12 md:mx-2 rounded-md h-full">
-                {/* Profile Card */}
                 <div className="bg-white p-3 rounded-md border-t-4 border-green-400">
                     <div className="image overflow-hidden relative">
-                        {/* <img className="h-48 w-48 object-cover mx-auto rounded-full" src={!image ? user?.picture : URL.createObjectURL(image)}  /> */}
+                        <img className="h-48 w-48 object-cover mx-auto rounded-full" src={!image ? user?.image : URL.createObjectURL(image)}  />
                         <div className="ab bg-green-500 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
-                            <input type="file" name="photo"  className="absolute inset-0  opacity-0 cursor-pointer"  /> <FiEdit2 size={14} />
+                            <input type="file" name="photo"  className="absolute inset-0  opacity-0 cursor-pointer"  onChange={(e)=>setImage(e.target.files[0])}/> <FiEdit2 size={14} />
                         </div>
                     </div>
                     <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{user?.firstName}</h1>
@@ -57,7 +57,7 @@ function UserProfile() {
                         <div className="grid md:grid-cols-2 text-sm gap-2">
                             <div className="grid ">
                                 <div className=" py-2  font-semibold">First Name</div>
-                                <input className="mt-2 border-2 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" value='' name="firstName"
+                                <input className="mt-2 border-2 h-10 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text"  name="firstName"
                                     // onChange={(event) => {
                                     //     handleChange(event)
                                     // }}
@@ -69,7 +69,7 @@ function UserProfile() {
 
                             <div className="grid ">
                                 <div className=" py-2  font-semibold">Last Name</div>
-                                <input className="mt-2 border-2 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" value='' name="lastName"
+                                <input className="mt-2 border-2 h-10 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text"  name="lastName"
                                     // onChange={(event) => { handleChange(event) }}
                                 />
                                 {/* {formik.touched.lastName && formik.errors.lastName ? (
@@ -87,6 +87,15 @@ function UserProfile() {
                                         <TiTick size={20} />
                                     </div>
                                 </div>
+                            </div>
+                            <div className="grid ">
+                                <div className=" py-2  font-semibold">phone</div>
+                                <input className="mt-2 border-2 h-10 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text"  name="lastName"
+                                    // onChange={(event) => { handleChange(event) }}
+                                />
+                                {/* {formik.touched.lastName && formik.errors.lastName ? (
+                                    <div className='text-red-500 mt-1'>{formik.errors.lastName}</div>
+                                ) : null} */}
                             </div>
 
                         </div>
