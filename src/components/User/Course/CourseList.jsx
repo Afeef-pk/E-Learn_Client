@@ -15,16 +15,16 @@ function CourseList() {
 
   return (
     <div>
-      <div className="my-5 mx-10 bg-[#f5f5f5 rounded-lg flex text-black font-bold justify-between shadow-md shadow-gray-500 ">
+      <div className="my-5 mx-10 bg-[#f5f5f5 rounded-md flex text-black font-bold justify-between shadow-md shadow-gray-500 border-t-2 border-gray-300">
         <div className="mx-10">
-          <button className="px-5 py-2 rounded-xl  bg-[#232946] ml-20 my-5 mr-5 text-white shadow-md shadow-gray-700">
+          <button className="px-5 py-2 rounded-xl  bg-[#232946] ml-20 my-5 mr-5 text-white shadow-md shadow-gray-700 border-t-2">
             All Course
           </button>
           {categoryData.map((category, index) => {
             return (
               <button
                 key={index}
-                className="px-5 py-2 rounded-xl  bg-[#ffffff]  m-5 shadow-md shadow-gray-500">
+                className="px-5 py-2 rounded-xl  bg-[#ffffff]  m-5 shadow-md shadow-gray-500 border-t-2">
                 {category.name}
               </button>
             );
@@ -76,7 +76,7 @@ function CourseList() {
           </form>
         </div>
       </div>
-      <div className="my-10 mx-20 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+      <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
         {courses?.map((course, index) => {
           return <CourseCard key={index} course={course} />;
         })}

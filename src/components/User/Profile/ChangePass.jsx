@@ -1,11 +1,33 @@
 import React from 'react'
+import { useFormik } from "formik";
+import { changePassInitialValues,ChangePassvalidationSchema } from '../../../constants/constant'; 
+import { toast } from 'react-hot-toast';
+import { updateUserDetails } from '../../../Services/userApi';
+import { useNavigate } from 'react-router-dom';
 
 function Settings() {
+const navigate = useNavigate()
+  const formik = useFormik({
+    initialValues:changePassInitialValues,
+    validationSchema:ChangePassvalidationSchema,
+    onSubmit: async (values) => {
+      toast.loading("Updating ...");
+      await updateUserDetails(values).then(({ data }) => {
+        toast.dismiss();
+        toast.success(data.message);
+        navigate('/profile')
+      }).catch(({response})=>{
+        toast.dismiss();
+        toast.error(response.data.message);
+      })
+    },
+  });
+
   return (
     <div>
       <div className="text-gray-500 font-bold">
         <div className="container text-gray-500 mx-auto max-w-6xl ">
-          <form  >
+          <form onSubmit={formik.handleSubmit} >
             <div className="w-full shadow-lg bg-white rounded-lg mx-auto flex overflow-hidden rounded-b-none">
               <div className="w-1/3 bg-white border-r p-8 hidden md:inline-block">
                 <h2 className="font-medium text-md text-gray-700 mb-4 tracking-wide">Note</h2>
@@ -19,22 +41,45 @@ function Settings() {
               </div>
               <div className="md:w-2/3 w-full">
                 <div className="py-8 px-16">
-                  <label htmlFor="name" className="text-sm text-gray-600">Old Password</label>
-                  <input className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text"  name="password" />
+                  <label htmlFor="name" className="text-sm text-gray-600">Current Password</label>
+                  <input onChange={formik.handleChange}
+                    value={formik.values.oldPassword}
+                    onBlur={formik.handleBlur} className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text"  name="oldPassword" />
+                    {formik.touched.oldPassword && formik.errors.oldPassword ? (
+                    <p className="text-red-500 mt-1">
+                      {formik.errors.oldPassword}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="py-8 px-16">
                   <label htmlFor="email" className="text-sm text-gray-600">New Password</label>
-                  <input className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" name="newPassword"  />
+                  <input  onChange={formik.handleChange}
+                    value={formik.values.newPassword}
+                    onBlur={formik.handleBlur} className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" name="newPassword"  placeholder='New Password'/>
+                   
+                     {formik.touched.newPassword && formik.errors.newPassword ? (
+                    <p className="text-red-500 mt-1">
+                      {formik.errors.newPassword}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="py-8 px-16">
                   <label htmlFor="email" className="text-sm text-gray-600">Confirm Password</label>
-                  <input className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" name="confirmPassword"  />
+                  <input  onChange={formik.handleChange}
+                    value={formik.values.confirmPassword}
+                    onBlur={formik.handleBlur} className="mt-2 border-2 border-gray-200 px-3 py-2 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500" type="text" name="confirmPassword" placeholder='Retype new password'  />
+                   
+                     {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                    <p className="text-red-500 mt-1">
+                      {formik.errors.confirmPassword}
+                    </p>
+                  ) : null}
                 </div>
                 
               </div>
             </div>
             <div className="p-16 py-8 bg-white clearfix rounded-b-lg border-t flex justify-end border-gray-200">
-              <button type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Update</button>
+              <button type="submit" className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Update</button>
             </div>
           </form>
         </div>

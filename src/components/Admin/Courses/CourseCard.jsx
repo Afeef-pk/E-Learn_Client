@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { manageCourse } from "../../../Services/adminApi";
 import { toast } from "react-hot-toast";
+
 function CourseCard({ image, title, date, id, isApproved, status }) {
   const datee = date.slice(0, 10);
   const navigate = useNavigate();

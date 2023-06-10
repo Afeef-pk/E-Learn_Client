@@ -23,8 +23,17 @@ const homeCourseLoad = ()=>{
 const getCourseList =()=>{
     return userAxiosInstance.get("/course")
 }
+
 const getCourseView = (courseId)=>{
     return userAxiosInstance.get(`/course-details/${courseId}`)
+}
+
+const getUserDetails = ()=>{
+    return userAxiosInstance.get('/profile',)
+}
+
+const updateUserDetails = (userData)=>{
+    return userAxiosInstance.post('/update/profile',{...userData})
 }
 
 export {
@@ -34,5 +43,7 @@ export {
     userAuth,
     homeCourseLoad,
     getCourseList,
-    getCourseView
+    getCourseView,
+    getUserDetails,
+    updateUserDetails
 }

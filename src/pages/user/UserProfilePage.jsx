@@ -21,7 +21,7 @@ function UserProfilePage() {
   return (
     <>
       <NavBar/>
-      <div className="bg-gray-100 lg:px-24">
+      <div className="bg-gray-100 lg:px-24 mt-5">
         <div className=' p-5  mx-auto'>
           <ul className=" text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow flex ">
             <li className="w-full cursor-pointer">
