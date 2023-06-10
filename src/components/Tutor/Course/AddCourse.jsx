@@ -153,7 +153,7 @@ function AddCourse() {
                   Name
                 </label>
                 <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   name="name"
@@ -175,7 +175,7 @@ function AddCourse() {
                   About
                 </label>
                 <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   name="about"
@@ -197,7 +197,7 @@ function AddCourse() {
                   Duration
                 </label>
                 <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   name="duration"
@@ -219,7 +219,7 @@ function AddCourse() {
                   Language
                 </label>
                 <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   name="language"
@@ -242,7 +242,7 @@ function AddCourse() {
                   Price
                 </label>
                 <input
-                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className="border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   name="price"
@@ -272,7 +272,8 @@ function AddCourse() {
                   <option value="">Select Category</option>
                   {categoryData.map((category, index) => {
                     return (
-                      <option key={index}
+                      <option
+                        key={index}
                         value={category._id}
                         className="block border border-grey-light w-full p-3 rounded mb-4">
                         {category.name}
@@ -317,7 +318,7 @@ function AddCourse() {
                   Course file
                 </label>
                 <input
-                  className={`border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3 
+                  className={`border-gray-300  appearance-none block w-full bg-white text-black border  rounded py-3
                         px-4 my-3 leading-tight focus:outline-none focus:bg-white ${
                           videoFile && "hidden"
                         }`}
@@ -346,6 +347,8 @@ function AddCourse() {
         </div>
       </div>
     </div>
+
+   
   );
 }
 

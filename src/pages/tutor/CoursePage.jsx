@@ -7,6 +7,8 @@ function CoursePage() {
     <div className='flex'>
       <SideBar/>
       <AddCourse/>
+
+      
     </div>
   )
 }

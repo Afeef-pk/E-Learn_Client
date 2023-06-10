@@ -10,6 +10,10 @@ export default {
        "outfit":['Outfit', 'sans-serif'],
        'sans': ['Roboto', 'Arial', 'sans-serif']
     },
+    colors:{
+      darkBlue: '#326789',
+      lightBlue:'#78a6c8'
+    }
   },
 
 },

@@ -41,8 +41,7 @@ function UserProfile() {
   useEffect(() => {
     getUserDetails().then(({ data }) => {
       setUser(data.user);
-      initialValues.firstName = data.user.firstName;
-      initialValues.lastName = data.user.lastName;
+      initialValues.name = data.user.name;
       initialValues.email = data.user.email;
       initialValues.phone = data.user.phone;
     });
@@ -139,12 +138,12 @@ function UserProfile() {
                     type="text"
                     name="firstName"
                     onChange={formik.handleChange}
-                    value={formik.values.firstName}
+                    value={formik.values.name}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.firstName && formik.errors.firstName ? (
+                  {formik.touched.name && formik.errors.name ? (
                     <p className="text-red-500 mt-1">
-                      {formik.errors.firstName}
+                      {formik.errors.name}
                     </p>
                   ) : null}
                 </div>
