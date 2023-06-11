@@ -71,3 +71,65 @@ export const ChangePassvalidationSchema = Yup.object({
     .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
     .required("Confirm Password is required"),
 });
+
+export const course = [
+  {
+      "chapter": "Getting started with JS",
+      "lessons": [
+          {
+              "chapterName": "Getting started with JS",
+              "lessonName": "Welcome to new JavaScript course"
+          }
+      ],
+      open:false,
+      "_id": "6478383ee3c462104a136b12"
+  },
+  {
+      "chapter": "Adding basic complexity to code",
+      "lessons": [
+          {
+              "chapterName": "Adding basic complexity to code",
+              "lessonName": "Variable and datatypes in javascript"
+          },
+          {
+              "chapterName": "Adding basic complexity to code",
+              "lessonName": "Our first User Signup"
+          },
+          {
+              "chapterName": "Adding basic complexity to code",
+              "lessonName": "Operators in javascript | Calculate discount"
+          }
+      ],
+      open:false,
+      "_id": "6478383ee3c462104a136b14"
+  },
+  {
+      "chapter": "Functions in javascript",
+      "lessons": [
+          {
+              "chapterName": "Functions in javascript",
+              "lessonName": "Basics of functions in javascript"
+          }
+      ],
+      open:false,
+      "_id": "6478383ee3c462104a136b18"
+  }
+]
+export const courseInitialValues = {
+  name: "",
+  about: "",
+  duration: "",
+  language: "",
+  price: "",
+  category: "",
+  description: "",
+};
+
+export const courseValidationSchema = Yup.object({
+  name: Yup.string().min(4).max(25).required("Please enter Course name"),
+  about: Yup.string().min(5).max(500).required("enter short description"),
+  duration: Yup.string().required("Please enter course duration"),
+  language: Yup.string().required("Please enter course language"),
+  price: Yup.number().required("Please enter course price"),
+  description: Yup.string().required("Write description about the course"),
+});

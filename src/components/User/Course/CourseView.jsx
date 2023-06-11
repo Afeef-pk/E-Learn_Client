@@ -2,18 +2,32 @@ import React, { useEffect, useState } from "react";
 import { getCourseView } from "../../../Services/userApi";
 import { useParams } from "react-router-dom";
 import BuyNowCard from "./BuyNowCard";
+import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
+
 
 function CourseView() {
     const [courseDetails,setCourseDetails] = useState([])
     const { courseId } = useParams()
    
-    useEffect(()=>{
-        getCourseView(courseId).then((res)=>{
-            setCourseDetails(res.data.courseDetails)
-        })
-    },[])
+    
+    const toggleDropdown = index => {
+      let course = courseDetails.course.map((course, i) => {
+          if (i === index) {
+              course.open = !course.open;
+          } else {
+              course.open = false;
+          }
+          return course;
+      })
+      setCourseDetails({ ...courseDetails, course });
+  };
 
-
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+    getCourseView(courseId).then((res)=>{
+        setCourseDetails(res.data.courseDetails)
+    })
+},[])
   return (
     <section>
       <div className="p-2 lg:p-20 lg:pb-10 mx-auto sm:p-14">
@@ -35,15 +49,14 @@ function CourseView() {
 
             <div className="App">
               <div className="syllabus syllabus-wrap rounded-lg">
-                {/* {courseDetails.course &&
-                  courseDetails.course.map((course, index) => (
+                {courseDetails.course?.map((course, index) => (
                     <SyllabusDropdown
                       course={course}
                       index={index}
                       key={index}
                       toggleDropdown={toggleDropdown}
                     />
-                  ))} */}
+                  ))}
               </div>
             </div>
 

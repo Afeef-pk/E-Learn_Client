@@ -9,7 +9,7 @@ function CoursePage() {
       <AddCourse/>
 
       
-    </div>
+     </div>
   )
 }
 

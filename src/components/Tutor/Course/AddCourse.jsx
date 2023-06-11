@@ -2,12 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import NavBar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { uploadCourse } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
 import { storage } from "../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addCategory } from "../../../Services/adminApi";
+import {
+  courseValidationSchema,
+  courseInitialValues,
+} from "../../../constants/constant";
 
 function AddCourse() {
   const fileInputRef = useRef();
@@ -23,28 +26,12 @@ function AddCourse() {
     setVideoFile(selectedFile);
   };
 
+  const [modal, setModal] = useState(false);
   const navigate = useNavigate();
-  const initialValues = {
-    name: "",
-    about: "",
-    duration: "",
-    language: "",
-    price: "",
-    category: "",
-    description: "",
-  };
-  const validationSchema = Yup.object({
-    name: Yup.string().min(4).max(25).required("Please enter Course name"),
-    about: Yup.string().min(5).max(500).required("enter short description"),
-    duration: Yup.string().required("Please enter course duration"),
-    language: Yup.string().required("Please enter course language"),
-    price: Yup.number().required("Please enter course price"),
-    description: Yup.string().required("Write description about the course"),
-  });
 
   const formik = useFormik({
-    initialValues,
-    validationSchema,
+    initialValues: courseInitialValues,
+    validationSchema: courseValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Please Wait Uploading Course");
       const storageRef = ref(storage, "/course-image/" + image.name);
@@ -71,6 +58,34 @@ function AddCourse() {
               });
             });
         });
+    },
+  });
+
+  const addChapter = () => {
+    setCourse([...course, { chapter, lessons: lesson }]);
+    setLesson([]);
+    toast.success("Chapter Add successfull");
+    setChapter("");
+  };
+  const [chapter, setChapter] = useState("");
+  const handleLessonChange = (e) => {
+    lessonFormik.setValues((prev) => {
+      const formFields = { ...prev };
+      formFields[e.target.name] = e.target.value;
+      return formFields;
+    });
+  };
+  const [lesson, setLesson] = useState([]);
+  const lessonFormik = useFormik({
+    initialValues: {
+      chapterName: "",
+      lessonName: "",
+      videoUrl: "",
+    },
+    onSubmit: (values) => {
+      setLesson([...lesson, values]);
+      lessonFormik.setFieldValue("lessonName", "");
+      lessonFormik.setFieldValue("videoUrl", "");
     },
   });
 
@@ -289,7 +304,7 @@ function AddCourse() {
                 </select>
               </div>
 
-              <div className="mb-4 w-96">
+              <div className="mb-4 w-full md:w-2/6">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
                   htmlFor="description">
@@ -311,7 +326,7 @@ function AddCourse() {
                   </p>
                 ) : null}
               </div>
-              <div className="w-full md:w-2/6 md:mb-0">
+              {/* <div className="w-full md:w-2/6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-xs font-bold mb-2"
                   htmlFor="video">
@@ -336,6 +351,37 @@ function AddCourse() {
                     />
                   </video>
                 )}
+              </div> */}
+
+              <div className="mt-">
+                <label
+                  className="block uppercase tracking-wide text-violet-600 text-xs font-bold mb-2"
+                  htmlFor="addchapter">
+                  Add Chapter
+                </label>
+
+                <div className="chapter mt-7">
+                  <button
+                    type="button"
+                    onClick={() => setModal(true)}
+                    className=" bg-gray-700 hover:bg-gray-600   focus:ring-4 focus:outline-none text-white focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  mr-2 mb-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+
+                    <span className="ml-3 ">Add Chapter</span>
+                  </button>
+                </div>
               </div>
             </div>
             <button
@@ -346,9 +392,165 @@ function AddCourse() {
           </form>
         </div>
       </div>
-    </div>
 
-   
+      {modal && (
+        <div className="fixed top-0 left-0 z-[1055]  h-full w-full  outline-none flex items-center justify-center">
+          <div className="pointer-events-none relative w-auto translate-y-[-50px]  duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px] min-[1200px]:max-w-[1140px]">
+            <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-[#1d2e56] bg-clip-padding text-current shadow-lg outline-none ">
+              <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-50 p-4 ">
+                <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
+                  Add Chapter
+                </h5>
+
+                <button
+                  onClick={() => setModal(false)}
+                  type="button"
+                  className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="h-6 w-6">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="p-7">
+                <div className="flex ">
+                  <div className="relative mb-3 w-full md:w-1/2 m-3">
+                    <input
+                      type="text"
+                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none   "
+                      name="chapterName"
+                      value={chapter}
+                      onChange={(e) => {
+                        handleLessonChange(e);
+                        setChapter(e.target.value);
+                      }}
+                    />
+
+                    {lessonFormik.touched.chapterName &&
+                    lessonFormik.errors.chapterName ? (
+                      <p className="text-red-500 text-xs ">
+                        {lessonFormik.errors.chapterName}
+                      </p>
+                    ) : null}
+
+                    <label
+                      htmlFor="chapterName"
+                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      Chapter Name
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex  mt-5 ">
+                  <div className="relative mb-3 w-full md:w-1/2 m-3">
+                    <input
+                      type="text"
+                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="lessonName"
+                      value={lessonFormik.values.lessonName}
+                      onChange={(e) => {
+                        handleLessonChange(e);
+                      }}
+                    />
+                    {/* {lessonFormik.touched.lessonName &&
+                  lessonFormik.errors.lessonName ? (
+                    <p className="text-red-500 text-xs ">
+                      {lessonFormik.errors.lessonName}
+                    </p>
+                  ) : null} */}
+                    <label
+                      htmlFor="lessonName"
+                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      Lesson Name
+                    </label>
+                  </div>
+                  <div className="relative mb-3 w-full md:w-1/2 sm:w-1/1 m-3">
+                    <input
+                      type="text"
+                      name="videoUrl"
+                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      onChange={(e) => {
+                        handleLessonChange(e);
+                      }}
+                      value={lessonFormik.values.videoUrl}
+                    />
+                    {/* {lessonFormik.touched.videoUrl &&
+                  lessonFormik.errors.videoUrl ? (
+                    <p className="text-red-500 text-xs ">
+                      {lessonFormik.errors.videoUrl}
+                    </p>
+                  ) : null} */}
+                    <label
+                      htmlFor="videoUrl"
+                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      Video Link
+                    </label>
+                  </div>
+                  <div className="relative mb-3 w-full md:w-1/3 m-3">
+                    <button
+                      type="button"
+                      className="focus:outline-none text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+                      onClick={lessonFormik.handleSubmit}>
+                      Add Lesson
+                    </button>
+                  </div>
+                </div>
+
+                {lesson[0] ? (
+                  <div>
+                    <div>
+                      <h1 className="m-3">Lessons</h1>
+                    </div>
+
+                    <div className="flex flex-wrap">
+                      {lesson.map((obj, index) => {
+                        return (
+                          <div className="w-full  md:w-1/2" key={index}>
+                            <div className="m-2">
+                              <p className="flex flex-col items-center  rounded-lg shadow md:flex-row md:max-w-xl  border-gray-700 bg-gray-800 hover:bg-gray-700">
+                                <div className="flex flex-col justify-between px-3 py-2  leading-normal">
+                                  <h5 className=" text-md font-semibold tracking-tighttext-white">
+                                    <span className="mr-3">{index + 1}.</span>
+                                    {obj.lessonName}
+                                  </h5>
+                                </div>
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="flex flex-wrap -mx-3 mb-2">
+                      <div className="mt-8 w-full  flex justify-end mr-7">
+                        <button
+                          type="button"
+                          onClick={addChapter}
+                          className="loading-btn form-btn mt-2 font-medium rounded bg-blue-600 p-3">
+                          <span className="txt">Submit Chapter</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

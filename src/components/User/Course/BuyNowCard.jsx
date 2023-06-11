@@ -11,22 +11,23 @@ import { GrLanguage } from "react-icons/Gr";
 function BuyNowCard({ courseDetails }) {
   const user = useSelector((state) => state.user);
   const [isEnrolled, setIsEnrolled] = useState(false);
-  useEffect(() => {
-    //   if(user.firstName){
-    //       isCourseEnrolled(courseDetails._id).then((response) => {
-    //           if (response.data.enrolled) {
-    //               setIsEnrolled(true);
-    //           }
-    //       })
-    //   }
-  }, []);
+  // useEffect(() => {
+  //   //   if(user.firstName){
+  //   //       isCourseEnrolled(courseDetails._id).then((response) => {
+  //   //           if (response.data.enrolled) {
+  //   //               setIsEnrolled(true);
+  //   //           }
+  //   //       })
+  //   //   }
+  // }, []);
+
   return (
     <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
       <div className="p-5">
         <img
           className="rounded w-full object-cover"
           src={courseDetails.imageURL}
-          alt
+          alt="course thumbnail"
         />
       </div>
       <div className="p-5 pt-2">
@@ -58,12 +59,12 @@ function BuyNowCard({ courseDetails }) {
             <p className="my-3">{courseDetails.language}</p>
           </div>
         </div>
-        <p>
+       
           <h5 className="mb-2 m-2 text-2xl font-bold tracking-tight text-gray-900">
             ₹ {courseDetails.price}
           </h5>
         <p className="mb-3 font-normal text-gray-700 ">Life Long Validity</p>
-        </p>
+        
         <div className="button">
           {isEnrolled ? //         Continue Learning //     <button width={true}> // <Link to={`/my-enrollments`}>
           //     </button>
