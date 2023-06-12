@@ -16,10 +16,14 @@ const uploadCourse = (courseData,imageURL,courseURL)=>{
     return tutorAxiosInstance.post("/upload/course",{courseData,imageURL,courseURL})
 }
 
+const dashboardCourses = ()=>{
+    return tutorAxiosInstance.get("/all-course/")
+}
 
 export {
     tutorSignin,
     signupApi,
     tutorAuth,
-    uploadCourse
+    uploadCourse,
+    dashboardCourses
 }

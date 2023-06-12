@@ -9,7 +9,7 @@ function UsersList() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredUsers = userData.filter((user) =>
-    user.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+    user.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const AccessManage = async (userId) => {
@@ -97,7 +97,7 @@ function UsersList() {
                     />
                     <div className="pl-3">
                       <div className="text-base font-semibold">
-                        {user.firstName}
+                        {user.name}
                       </div>
                       <div className="font-normal text-gray-500">
                         {user.email}

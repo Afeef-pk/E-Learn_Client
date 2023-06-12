@@ -6,6 +6,7 @@ import { BiLogOut } from "react-icons/bi";
 import { AiOutlineMessage } from "react-icons/ai";
 import { FaUserGraduate } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const menus = [
@@ -18,6 +19,7 @@ const SideBar = () => {
   const [open, setOpen] = useState(true);
   const [active,setActive]= useState('')
   const currentpath = location.pathname
+  const {tutorName} = useSelector(state => state.tutor)
   useEffect (()=>{
     const currentMenu = menus.find((item)=>item.link === currentpath)
     setActive(currentMenu?.name)
@@ -38,7 +40,7 @@ const SideBar = () => {
       { open && <div className=" bg-[#2a3a5fed] rounded-md py-7 px-5 my-5">
           <div className="flex">
             {React.createElement(FaUserGraduate, { size: "30", color: "#70D8BD"})}
-            <span className="text-xl mx-3">Tutor Name</span>
+            <span className="text-xl mx-3">{tutorName}</span>
           </div>
           <p className="mt-2">Tutor</p>
         </div>}

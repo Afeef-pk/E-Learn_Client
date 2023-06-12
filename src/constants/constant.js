@@ -2,6 +2,7 @@ import * as Yup from "yup";
 
 export const initialValues = {
   name: "",
+  lastName: "",
   email: "",
   phone: "",
   password: "",
@@ -46,7 +47,7 @@ export const tutorValidationSchema = Yup.object({
 });
 
 export const userProfileValidationSchema = Yup.object({
-  firstName: Yup.string()
+  name: Yup.string()
     .matches(/^[a-zA-Z ]*$/, "Name must be a letter")
     .min(2)
     .max(15)
@@ -74,45 +75,39 @@ export const ChangePassvalidationSchema = Yup.object({
 
 export const course = [
   {
-      "chapter": "Getting started with JS",
+      "chapter": "Getting started with React",
       "lessons": [
           {
-              "chapterName": "Getting started with JS",
-              "lessonName": "Welcome to new JavaScript course"
+              "chapterName": "Getting started with React",
+              "lessonName": "Welcome to new React course"
           }
       ],
-      open:false,
-      "_id": "6478383ee3c462104a136b12"
   },
   {
-      "chapter": "Adding basic complexity to code",
+      "chapter": "Basics of to React",
       "lessons": [
           {
-              "chapterName": "Adding basic complexity to code",
-              "lessonName": "Variable and datatypes in javascript"
+              "chapterName": "Basics of to React",
+              "lessonName": "Map and arrow function in javascript"
           },
           {
-              "chapterName": "Adding basic complexity to code",
-              "lessonName": "Our first User Signup"
+              "chapterName": "Basics of to React",
+              "lessonName": "functional components"
           },
           {
-              "chapterName": "Adding basic complexity to code",
-              "lessonName": "Operators in javascript | Calculate discount"
+              "chapterName": "Basics of to React",
+              "lessonName": "Hook's concepts"
           }
       ],
-      open:false,
-      "_id": "6478383ee3c462104a136b14"
   },
   {
-      "chapter": "Functions in javascript",
+      "chapter": "Components in React",
       "lessons": [
           {
-              "chapterName": "Functions in javascript",
-              "lessonName": "Basics of functions in javascript"
+              "chapterName": "Components in React",
+              "lessonName": "Class & functional componets"
           }
       ],
-      open:false,
-      "_id": "6478383ee3c462104a136b18"
   }
 ]
 export const courseInitialValues = {
@@ -126,7 +121,7 @@ export const courseInitialValues = {
 };
 
 export const courseValidationSchema = Yup.object({
-  name: Yup.string().min(4).max(25).required("Please enter Course name"),
+  name: Yup.string().min(4).max(40).required("Please enter Course name"),
   about: Yup.string().min(5).max(500).required("enter short description"),
   duration: Yup.string().required("Please enter course duration"),
   language: Yup.string().required("Please enter course language"),

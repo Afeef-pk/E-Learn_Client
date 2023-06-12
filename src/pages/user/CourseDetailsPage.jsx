@@ -1,13 +1,13 @@
 import React from 'react'
 import NavBar from '../../components/User/NavBar/NavBar'
-import CourseView from '../../components/User/Course/CourseView'
 import Footer from '../../components/User/Footer/Footer'
+import CourseDetails from '../../components/User/Course/CourseDetails'
 
 function CourseDetailsPage() {
   return (
     <>
       <NavBar/>
-      <CourseView/>
+      <CourseDetails/>
       <Footer/>
     </>
   )

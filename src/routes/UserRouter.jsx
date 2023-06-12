@@ -9,12 +9,14 @@ import UserOtp from "../components/Auth/SignUp/UserOtp";
 import UserCoursePage from "../pages/user/UserCoursePage";
 import CourseDetailsPage from "../pages/user/CourseDetailsPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
+import CourseWatchPage from "../pages/user/CourseWatchPage";
 
 const UserRouter = () => {
   return (
     <Routes>
       <Route element={<PrivateRoutes role={"user"} route={"/signin"} />}>
         <Route path="/profile" element={<UserProfilePage/>} />
+        <Route path="/course/view/:courseId" element={<CourseWatchPage />} />
       </Route>
 
       <Route element={<UnAuthenticatedOnlyRoutes role={"user"} route={"/"} />}>

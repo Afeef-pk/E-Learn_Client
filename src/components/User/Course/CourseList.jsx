@@ -83,12 +83,6 @@ function CourseList() {
         {courses?.map((course, index) => {
           return <CourseCard key={index} course={course} />;
         })}
-        {courses?.map((course, index) => {
-          return <CourseCard key={index} course={course} />;
-        })}
-        {courses?.map((course, index) => {
-          return <CourseCard key={index} course={course} />;
-        })}
       </div>
     </div>
   );

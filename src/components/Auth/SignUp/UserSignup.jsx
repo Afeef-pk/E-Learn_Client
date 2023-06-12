@@ -31,8 +31,10 @@ function UserSignup() {
 
   const googleAuthentication = async (res) => {
     const decoded = await jwt_decode(res.credential);
+    console.log(decoded);
     const userData = {
-      name: decoded.name,
+      name: decoded.given_name,
+      lastName: decoded.family_name,
       email: decoded.email,
       password: decoded.sub,
       image:decoded.picture

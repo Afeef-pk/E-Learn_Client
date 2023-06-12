@@ -20,7 +20,14 @@ function BuyNowCard({ courseDetails }) {
   //   //       })
   //   //   }
   // }, []);
-
+  let count = 0
+  courseDetails.course.map((chapter)=>{
+    return(
+     
+    count += chapter.lessons.length
+    )
+  })
+  
   return (
     <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
       <div className="p-5">
@@ -55,7 +62,7 @@ function BuyNowCard({ courseDetails }) {
           <div>
             <p className="my-2">{courseDetails.teacher.name}</p>
             <p className="my-3">{courseDetails.duration}</p>
-            <p className="my-3">6 Lessons</p>
+            <p className="my-3">{count} Lessons</p>
             <p className="my-3">{courseDetails.language}</p>
           </div>
         </div>
@@ -72,7 +79,7 @@ function BuyNowCard({ courseDetails }) {
           null : (
             <Link
               className="w-full"
-              to={`/course-payment/${courseDetails._id}`}>
+              to={`/course/view/${courseDetails._id}`}>
               <button className="bg-[#6255a4] p-3 text-white loading-btn form-btn mt-2 font-medium rounded w-full">
                 Buy Now
               </button>

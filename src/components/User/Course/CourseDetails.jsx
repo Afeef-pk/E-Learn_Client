@@ -5,7 +5,7 @@ import BuyNowCard from "./BuyNowCard";
 import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
 
 
-function CourseView() {
+function CourseDetails() {
     const [courseDetails,setCourseDetails] = useState([])
     const { courseId } = useParams()
    
@@ -110,4 +110,4 @@ function CourseView() {
   );
 }
 
-export default CourseView;
+export default CourseDetails;

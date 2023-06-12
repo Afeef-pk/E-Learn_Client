@@ -76,7 +76,7 @@ function UserProfile() {
             </div>
           </div>
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-            {user?.firstName}
+            {user?.name}
           </h1>
           <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
             <li className="flex items-center py-3">
@@ -217,7 +217,6 @@ function UserProfile() {
                 <button
                   type="submit"
                   className="w-full md:w-32 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                  // onClick={() => formik.handleSubmit()}
                 >
                   Update
                 </button>

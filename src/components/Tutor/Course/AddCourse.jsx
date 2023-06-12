@@ -3,7 +3,7 @@ import NavBar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { uploadCourse } from "../../../Services/tutorApi";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { storage } from "../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addCategory } from "../../../Services/adminApi";
@@ -29,37 +29,37 @@ function AddCourse() {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
 
+const uploadThumbnail = async()=>{
+  const storageRef = ref(storage, "/course-image/" + image.name);
+  const snapshot = await uploadBytes(storageRef, image)
+  return getDownloadURL(snapshot.ref);
+}
   const formik = useFormik({
     initialValues: courseInitialValues,
     validationSchema: courseValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Please Wait Uploading Course");
-      const storageRef = ref(storage, "/course-image/" + image.name);
-      uploadBytes(storageRef, image)
-        .then((snapshot) => {
-          return getDownloadURL(snapshot.ref);
-        })
-        .then(async (url) => {
-          const videoStorageRef = ref(
-            storage,
-            "/course-video/" + videoFile.name
-          );
-          uploadBytes(videoStorageRef, videoFile)
-            .then((snapshot) => {
-              return getDownloadURL(snapshot.ref);
-            })
-            .then(async (courseURL) => {
-              await uploadCourse(values, url, courseURL).then((res) => {
-                if (res.status === 200) {
-                  toast.dismiss();
-                  toast.success("Successfully uploaded");
-                  navigate("/tutor/dashboard");
-                }
-              });
-            });
-        });
+      values={
+        ...values,
+        course
+      }
+      const imageURL = await uploadThumbnail()
+      await uploadCourse(values, imageURL,).then((res) => {
+        toast.dismiss();
+        if (res.status === 200) {
+          toast.success("Successfully uploaded");
+          navigate("/tutor/dashboard");
+        }else{
+          toast.error(res.data.message)
+        }
+      });
     },
   });
+  
+
+  const [course,setCourse] = useState([])
+  const [chapter, setChapter] = useState('');
+  const [lesson, setLesson] = useState([]);
 
   const addChapter = () => {
     setCourse([...course, { chapter, lessons: lesson }]);
@@ -67,7 +67,7 @@ function AddCourse() {
     toast.success("Chapter Add successfull");
     setChapter("");
   };
-  const [chapter, setChapter] = useState("");
+
   const handleLessonChange = (e) => {
     lessonFormik.setValues((prev) => {
       const formFields = { ...prev };
@@ -75,7 +75,7 @@ function AddCourse() {
       return formFields;
     });
   };
-  const [lesson, setLesson] = useState([]);
+
   const lessonFormik = useFormik({
     initialValues: {
       chapterName: "",
@@ -99,6 +99,7 @@ function AddCourse() {
 
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
+      <Toaster/>
       <NavBar />
       <div className="bg-[#1F2A40] m-10 rounded-lg">
         <div className=" flex justify-center py-5 ">
@@ -536,7 +537,7 @@ function AddCourse() {
                         <button
                           type="button"
                           onClick={addChapter}
-                          className="loading-btn form-btn mt-2 font-medium rounded bg-blue-600 p-3">
+                          className=" form-btn mt-2 font-medium rounded bg-blue-600 p-3">
                           <span className="txt">Submit Chapter</span>
                         </button>
                       </div>
