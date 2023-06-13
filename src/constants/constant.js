@@ -73,43 +73,6 @@ export const ChangePassvalidationSchema = Yup.object({
     .required("Confirm Password is required"),
 });
 
-export const course = [
-  {
-      "chapter": "Getting started with React",
-      "lessons": [
-          {
-              "chapterName": "Getting started with React",
-              "lessonName": "Welcome to new React course"
-          }
-      ],
-  },
-  {
-      "chapter": "Basics of to React",
-      "lessons": [
-          {
-              "chapterName": "Basics of to React",
-              "lessonName": "Map and arrow function in javascript"
-          },
-          {
-              "chapterName": "Basics of to React",
-              "lessonName": "functional components"
-          },
-          {
-              "chapterName": "Basics of to React",
-              "lessonName": "Hook's concepts"
-          }
-      ],
-  },
-  {
-      "chapter": "Components in React",
-      "lessons": [
-          {
-              "chapterName": "Components in React",
-              "lessonName": "Class & functional componets"
-          }
-      ],
-  }
-]
 export const courseInitialValues = {
   name: "",
   about: "",

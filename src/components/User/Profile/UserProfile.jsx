@@ -42,8 +42,9 @@ function UserProfile() {
     getUserDetails().then(({ data }) => {
       setUser(data.user);
       initialValues.name = data.user.name;
+      initialValues.lastName = data.user.lastName;
       initialValues.email = data.user.email;
-      initialValues.phone = data.user.phone;
+      initialValues.phone = data.user.phone||''
     });
   }, []);
 
@@ -185,13 +186,13 @@ function UserProfile() {
                 <div className="grid mt- ">
                   <div className=" py-2  font-semibold">Phone</div>
                   <input
-                    className="mt-2 px-4 border-2 h-10 border-gray-300  bg-gray-200  cursor-not-allowed opacity-50 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500"
+                    className="mt-2 px-4 border-2 h-10 border-gray-300  bg-gray-200   opacity-50 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500"
                     type="text"
                     name="phone"
                     onChange={formik.handleChange}
                     value={formik.values.phone}
                     onBlur={formik.handleBlur}
-                    disabled
+                     disabled={!user?.loginwithgoogle}
                   />
                   {/* <div className="w-8 h-8 text-green-600 border-2 flex justify-center items-center rounded-full border-green-600">
                     <TiTick size={20} />

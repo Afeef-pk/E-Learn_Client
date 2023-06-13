@@ -5,7 +5,7 @@ function SyllabusDropdown({ course, index, toggleDropdown, getYoutubeVideoId }) 
    
     return (
         <div
-            className={"syllabus" + (course.open ? "open" : "")}
+            className={`syllabus` + (course.open ? "open" : "")}
             key={index}
         >
             <div onClick={() => toggleDropdown(index)} className={"syllabus-title p-4  " + (course.open ? "lesson-open-bg" : "")} >
@@ -23,7 +23,7 @@ function SyllabusDropdown({ course, index, toggleDropdown, getYoutubeVideoId }) 
                         </svg>
                     }
                 </div>
-                <div className='lessons-count text-xs mt-1  text-slate-500'>{course.lessons.length} Lessons</div>
+                <div className='lessons-count text-xs mt-1  text-slate-500'>{course?.lessons.length} Lessons</div>
             </div>
             {
                 course.lessons.map((lesson, index) => {
@@ -38,6 +38,7 @@ function SyllabusDropdown({ course, index, toggleDropdown, getYoutubeVideoId }) 
                             </div>
                         </div>
                     )
+                    
                 })
             }
         </div>

@@ -23,7 +23,7 @@ function UserHomePage() {
       <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
         <div className="w-full">
           <div className="flex justify-center items-center">
-            <h3 className="text-3xl text-center md:text-1xl lg:text-3xl xl:text-5xl xl:py-20 py-8 px-10 font-semibold leading-10">
+            <h3 className="text-3xl text-center md:text-1xl lg:text-3xl xl:text-3xl xl:py-20 py-8 px-10 font-semibold leading-10">
               Welcome to the World of Lifelong Learning !
             </h3>
           </div>
@@ -49,7 +49,7 @@ function UserHomePage() {
       </div>
 
       <div className="">
-        <div className="grid justify-items-center">
+        <div className="grid justify-items-center m-5">
           <div>
             <h4 className="font-bold text-3xl  p-3 text-center">
               Choose favourite course from top category

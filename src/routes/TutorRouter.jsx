@@ -8,6 +8,7 @@ import CoursePage from "../pages/tutor/CoursePage";
 import MessagePage from "../pages/tutor/MessagePage";
 import ProfilePage from "../pages/tutor/ProfilePage";
 import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
+import CourseDetailsPage from "../pages/tutor/CourseDetailsPage";
 
 const TutorRouter = () => {
   return (
@@ -15,6 +16,7 @@ const TutorRouter = () => {
       
       <Route element={<PrivateRoutes role={"tutor"} route={"/tutor"} />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/course/details" element={<CourseDetailsPage />} />
         <Route path="/course" element={<CoursePage />} />
         <Route path="/message" element={<MessagePage />} />
         <Route path="/profile" element={<ProfilePage />} />

@@ -36,6 +36,11 @@ const updateUserDetails = (userData)=>{
     return userAxiosInstance.post('/update/profile',{...userData})
 }
 
+const getCourseWatch = (courseId)=>{
+    return userAxiosInstance.get(`/course/view/${courseId}`)
+}
+
+
 export {
     userSignup,
     userLogin,
@@ -45,5 +50,6 @@ export {
     getCourseList,
     getCourseView,
     getUserDetails,
-    updateUserDetails
+    updateUserDetails,
+    getCourseWatch
 }

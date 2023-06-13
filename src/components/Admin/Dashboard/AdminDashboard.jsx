@@ -3,18 +3,22 @@ import img from "/assets/admin/dashboard.svg";
 import Card from "./Card";
 import NavBar from "../NavBar/NavBar";
 import { FaUserGraduate } from "react-icons/fa";
-import {  MdOndemandVideo } from "react-icons/md";
+import {  MdOndemandVideo,MdPayment } from "react-icons/md";
 import { HiUsers } from "react-icons/hi";
 import { dashboardData } from "../../../Services/adminApi";
 
 function AdminDashboard() {
-
   const [count,setCount] = useState([])
+  const [currentDate, setCurrentDate] = useState("");
   useEffect(() => {
     dashboardData().then((res)=>{
       setCount(res.data)
     })
-  }, []);
+    const date = new Date();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const day = date.getDate();
+    setCurrentDate(`${month} ${day}`);
+  }, []); 
   return (
     <>
       <div className="h-auto w-full bg-[#141B2D] text-white">
@@ -35,14 +39,14 @@ function AdminDashboard() {
             </div>
           </div>
           <div className="w-3/12 bg-[#1F2A40]  max-sm:hidden rounded-md flex justify-center items-center">
-            <h1 className="text-xs sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl">June 5</h1>
+            <h1 className="text-xs sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl">{currentDate}</h1>
           </div>
         </div>
         <div className="grid  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
           <Card title="Total Users" icon={HiUsers} count={count.userCount} />
           <Card title="Total Tutors" icon={FaUserGraduate} count={count.tutorCount} />
           <Card title="Total Courses" icon={MdOndemandVideo} count={count.courseCount} />
-          <Card title="Total " icon={HiUsers} count={30} />
+          <Card title="Total Orders" icon={MdPayment} count={30} />
         </div>
       </div>
     </>

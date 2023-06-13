@@ -33,6 +33,7 @@ function Dashboard() {
                 id={course._id}
                 isApproved={course.isApproved}
                 status={course.status}
+                tutorSide={true}
               />
             );
           })}

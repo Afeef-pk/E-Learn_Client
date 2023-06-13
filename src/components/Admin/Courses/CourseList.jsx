@@ -41,7 +41,7 @@ function CourseList() {
   }
   let filteredCourses;
   if (selectedCategories.length === 0) {
-    filteredCourses = courses; // Show all courses when no categories are selected
+    filteredCourses = courses;
   } else {
     filteredCourses = courses.filter((course) =>
       selectedCategories.includes(course.category)
@@ -114,7 +114,7 @@ function CourseList() {
                       />
                       <label
                         htmlFor="all"
-                        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 ">
                         All
                       </label>
                     </li>
