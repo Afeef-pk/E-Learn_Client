@@ -14,51 +14,45 @@ import {
 
 function AddCourse() {
   const fileInputRef = useRef();
-  const [videoFile, setVideoFile] = useState(null);
   const [image, setImage] = useState("");
   const [categoryData, setCategoryData] = useState([]);
 
   const handleClick = () => {
     fileInputRef.current.click();
   };
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setVideoFile(selectedFile);
-  };
 
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
 
-const uploadThumbnail = async()=>{
-  const storageRef = ref(storage, "/course-image/" + image.name);
-  const snapshot = await uploadBytes(storageRef, image)
-  return getDownloadURL(snapshot.ref);
-}
+  const uploadThumbnail = async () => {
+    const storageRef = ref(storage, "/course-image/" + image.name);
+    const snapshot = await uploadBytes(storageRef, image);
+    return getDownloadURL(snapshot.ref);
+  };
   const formik = useFormik({
     initialValues: courseInitialValues,
     validationSchema: courseValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Please Wait Uploading Course");
-      values={
+      values = {
         ...values,
-        course
-      }
-      const imageURL = await uploadThumbnail()
-      await uploadCourse(values, imageURL,).then((res) => {
+        course,
+      };
+      const imageURL = await uploadThumbnail();
+      await uploadCourse(values, imageURL).then((res) => {
         toast.dismiss();
         if (res.status === 200) {
           toast.success("Successfully uploaded");
           navigate("/tutor/dashboard");
-        }else{
-          toast.error(res.data.message)
+        } else {
+          toast.error(res.data.message);
         }
       });
     },
   });
-  
 
-  const [course,setCourse] = useState([])
-  const [chapter, setChapter] = useState('');
+  const [course, setCourse] = useState([]);
+  const [chapter, setChapter] = useState("");
   const [lesson, setLesson] = useState([]);
 
   const addChapter = () => {
@@ -66,6 +60,7 @@ const uploadThumbnail = async()=>{
     setLesson([]);
     toast.success("Chapter Add successfull");
     setChapter("");
+    setModal(false);
   };
 
   const handleLessonChange = (e) => {
@@ -99,7 +94,7 @@ const uploadThumbnail = async()=>{
 
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
-      <Toaster/>
+      <Toaster />
       <NavBar />
       <div className="bg-[#1F2A40] m-10 rounded-lg">
         <div className=" flex justify-center py-5 ">
@@ -428,12 +423,18 @@ const uploadThumbnail = async()=>{
                   <div className="relative mb-3 w-full md:w-1/2 m-3">
                     <input
                       type="text"
-                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none   "
+                      className="peer block min-h-[auto] w-full rounded border-gray-300 bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none"
                       name="chapterName"
                       value={chapter}
                       onChange={(e) => {
                         handleLessonChange(e);
                         setChapter(e.target.value);
+                      }}
+                      onBlur={() => {
+                        if (chapter.trim() !== "") {
+                          return;
+                        }
+                        setChapter("");
                       }}
                     />
 
@@ -446,7 +447,13 @@ const uploadThumbnail = async()=>{
 
                     <label
                       htmlFor="chapterName"
-                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      className={`pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out ${
+                        chapter.trim() !== ""
+                          ? "-translate-y-[1.7rem] scale-[0.8] text-primary"
+                          : ""
+                      } motion-reduce:transition-none dark:text-neutral-200 dark:${
+                        chapter.trim() !== "" ? "text-primary" : ""
+                      }`}>
                       Chapter Name
                     </label>
                   </div>
@@ -456,22 +463,36 @@ const uploadThumbnail = async()=>{
                   <div className="relative mb-3 w-full md:w-1/2 m-3">
                     <input
                       type="text"
-                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-gray-300 bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       name="lessonName"
                       value={lessonFormik.values.lessonName}
                       onChange={(e) => {
                         handleLessonChange(e);
                       }}
+                      onBlur={() => {
+                        if (lessonFormik.values.lessonName.trim() !== "") {
+                          return;
+                        }
+                        lessonFormik.setFieldValue("lessonName", "");
+                      }}
                     />
-                    {/* {lessonFormik.touched.lessonName &&
-                  lessonFormik.errors.lessonName ? (
-                    <p className="text-red-500 text-xs ">
-                      {lessonFormik.errors.lessonName}
-                    </p>
-                  ) : null} */}
+                    {lessonFormik.touched.lessonName &&
+                    lessonFormik.errors.lessonName ? (
+                      <p className="text-red-500 text-xs ">
+                        {lessonFormik.errors.lessonName}
+                      </p>
+                    ) : null}
                     <label
                       htmlFor="lessonName"
-                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      className={`pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out ${
+                        lessonFormik.values.lessonName.trim() !== ""
+                          ? "-translate-y-[1.7rem] scale-[0.8] text-primary"
+                          : ""
+                      } motion-reduce:transition-none dark:text-neutral-200 dark:${
+                        lessonFormik.values.lessonName.trim() !== ""
+                          ? "text-primary"
+                          : ""
+                      }`}>
                       Lesson Name
                     </label>
                   </div>
@@ -479,21 +500,35 @@ const uploadThumbnail = async()=>{
                     <input
                       type="text"
                       name="videoUrl"
-                      className="peer block min-h-[auto] w-full rounded border-gray-300  bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-gray-300 bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       onChange={(e) => {
                         handleLessonChange(e);
                       }}
+                      onBlur={() => {
+                        if (lessonFormik.values.videoUrl.trim() !== "") {
+                          return;
+                        }
+                        lessonFormik.setFieldValue("videoUrl", "");
+                      }}
                       value={lessonFormik.values.videoUrl}
                     />
-                    {/* {lessonFormik.touched.videoUrl &&
+                    {lessonFormik.touched.videoUrl &&
                   lessonFormik.errors.videoUrl ? (
                     <p className="text-red-500 text-xs ">
                       {lessonFormik.errors.videoUrl}
                     </p>
-                  ) : null} */}
+                  ) : null}
                     <label
                       htmlFor="videoUrl"
-                      className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200">
+                      className={`pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out ${
+                        lessonFormik.values.videoUrl.trim() !== ""
+                          ? "-translate-y-[1.7rem] scale-[0.8] text-primary"
+                          : ""
+                      } motion-reduce:transition-none dark:text-neutral-200 dark:${
+                        lessonFormik.values.videoUrl.trim() !== ""
+                          ? "text-primary"
+                          : ""
+                      }`}>
                       Video Link
                     </label>
                   </div>

@@ -5,6 +5,8 @@ import { getCourseDetails } from "../../../Services/adminApi";
 import SyllabusDropdown from "../../User/Course/SyllabusDropdown/SyllabusDropdown";
 import YouTube from "react-youtube";
 import getYouTubeID from "get-youtube-id";
+import { deleteCourse } from "../../../Services/tutorApi";
+import { toast } from "react-hot-toast";
 
 function CourseView({ tutor }) {
   const location = useLocation();
@@ -69,7 +71,12 @@ function CourseView({ tutor }) {
 
   const handleDelete =()=>{
     try {
-      courseId
+      deleteCourse(courseId).then(({data})=>{
+        toast.success(data.message)
+        navigate('/tutor/dashboard')
+      }).catch(()=>{
+        toast.error(data.message)
+      })
     } catch (error) {
       
     }
@@ -161,7 +168,7 @@ function CourseView({ tutor }) {
               Price : <span className="px-5">{course?.price}</span>
             </p>
             <div className="flex justify-end mx-32 pb-10">
-              {!course?.isApproved && (
+              {!course?.isApproved && !tutor&&(
                 <>
                   <button
                     onClick={() => handleApprove(false)}

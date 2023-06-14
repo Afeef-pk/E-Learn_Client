@@ -20,10 +20,15 @@ const dashboardCourses = ()=>{
     return tutorAxiosInstance.get("/all-course/")
 }
 
+const deleteCourse = (courseId)=>{
+    return tutorAxiosInstance.delete(`/delete/${courseId}`)
+}
+
 export {
     tutorSignin,
     signupApi,
     tutorAuth,
     uploadCourse,
-    dashboardCourses
+    dashboardCourses,
+    deleteCourse
 }
