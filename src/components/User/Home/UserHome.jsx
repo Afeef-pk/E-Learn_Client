@@ -109,8 +109,8 @@ function UserHomePage() {
             We Have Tones of Course for You !!
           </h5>
         </div>
-        <h1 className="mt-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
-        <div className="mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+        <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
+        <div className="items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
           {courses.map((course,index)=>{
           return <CourseCard
           key={index}

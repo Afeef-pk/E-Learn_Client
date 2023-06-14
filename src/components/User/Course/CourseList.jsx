@@ -1,54 +1,52 @@
 import React, { useState, useEffect } from "react";
 import CourseCard from "../Home/CourseCard";
 import { getCourseList } from "../../../Services/userApi";
+import Pagination from "../Pagination/Pagination";
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
-  const [filteredCourses, setFilteredCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-  const categoryFilter = (categoryId) => {
-    let filtered = courses;
-    setSelectedCategory(categoryId)
-    if (categoryId) {
-      filtered = courses.filter((course) => course.category === categoryId);
-    }
-    if (searchQuery) {
-      filtered = filtered.filter((course) =>
-        course.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    setFilteredCourses(filtered);
-  };
-  const handleSearch = (event) => {
-    const searchValue = event.target.value;
-    setSearchQuery(searchValue);
-    categoryFilter();
-  };
-
+  const [totalCourse, setTotalCourse] = useState(0);
+  const [activePage, setActivePage] = useState(1);
+  const courseLimitPerPage = 2;
   useEffect(() => {
-    getCourseList().then((res) => {
+    getCourseList(
+      activePage,
+      courseLimitPerPage,
+      searchQuery,
+      selectedCategory
+    ).then((res) => {
       setCourses(res.data.courseData);
       setCategoryData(res.data.categoryData);
-      setFilteredCourses(res.data.courseData)
+      setTotalCourse(res.data.total);
     });
-  }, []);
+  }, [activePage, searchQuery, selectedCategory]);
 
   return (
-    <div> 
+    <div>
       <div className="my-5 mx-10 bg-[#f5f5f5 rounded-md flex text-black font-bold justify-between shadow-sm shadow-gray-500 border-t-2 border-gray-300">
         <div className="mx-10">
-          <button className={`px-5 py-2 rounded-xl ${selectedCategory === null ? 'bg-[#232946] text-white' : ' bg-[#ffffff]'} ml-20 my-5 mr-5 shadow-md shadow-gray-700 border-t-2`} onClick={()=>categoryFilter(null)} >
+          <button
+            className={`px-5 py-2 rounded-xl ${
+              selectedCategory === null
+                ? "bg-[#232946] text-white"
+                : " bg-[#ffffff]"
+            } ml-20 my-5 mr-5 shadow-md shadow-gray-700 border-t-2`}
+            onClick={() => setSelectedCategory(null)}>
             All Course
           </button>
           {categoryData.map((category, index) => {
             return (
               <button
                 key={index}
-                onClick={()=>categoryFilter(category._id)}
-                className={`px-5 py-2 rounded-xl ${selectedCategory === category._id ? 'bg-[#232946] text-white' : 'bg-[#ffffff]'} m-5 shadow-md shadow-gray-500 border-t-2`}>
+                onClick={() => setSelectedCategory(category._id)}
+                className={`px-5 py-2 rounded-xl ${
+                  selectedCategory === category._id
+                    ? "bg-[#232946] text-white"
+                    : "bg-[#ffffff]"
+                } m-5 shadow-md shadow-gray-500 border-t-2`}>
                 {category.name}
               </button>
             );
@@ -78,19 +76,25 @@ function CourseList() {
                 id="simple-search"
                 className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search"
-                onKeyUp={handleSearch}
+                onKeyUp={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </form>
         </div>
       </div>
       <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 bg-[#EFEFF6] grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
-        {filteredCourses?.map((course, index) => {
+        {courses?.map((course, index) => {
           return <CourseCard key={index} course={course} />;
         })}
       </div>
+      <Pagination
+        activePage={activePage}
+        limit={courseLimitPerPage}
+        setActivePage={setActivePage}
+        totalCourse={totalCourse}
+      />
     </div>
-  )
+  );
 }
 
 export default CourseList;

@@ -20,8 +20,15 @@ const homeCourseLoad = ()=>{
     return userAxiosInstance.get("/home-course")
 }
 
-const getCourseList =()=>{
-    return userAxiosInstance.get("/course")
+const getCourseList =(page,size,searchQuery,category)=>{
+    return userAxiosInstance.get("/course", {
+        params:{
+            page,
+            size,
+            searchQuery,
+            category
+        }
+    })
 }
 
 const getCourseView = (courseId)=>{
