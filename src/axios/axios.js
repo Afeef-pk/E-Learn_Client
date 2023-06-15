@@ -6,7 +6,7 @@ const adminBaseURL = import.meta.env.VITE_AdminBaseURL
 const createAxiosInstance = (baseURL) => {
   const instance = axios.create({
     baseURL,
-    timeout: 4000,
+    timeout: 10000,
     timeoutErrorMessage: "Request timeout... Please Try Again!!!"
   })
   return instance

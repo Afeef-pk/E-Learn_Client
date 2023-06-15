@@ -26,6 +26,8 @@ function CourseDetails() {
     window.scrollTo(0, 0);
     getCourseView(courseId).then((res)=>{
         setCourseDetails(res.data.courseDetails)
+    }).catch((error)=>{
+      console.log(error);
     })
 },[])
   return (
