@@ -7,21 +7,10 @@ import tutorIcon from "/icons/tutorIcon.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { ImFilm } from "react-icons/im";
 import { GrLanguage } from "react-icons/Gr";
-import { paymentGateway } from "../../../Services/userApi";
 
 function BuyNowCard({ courseDetails }) {
   const user = useSelector((state) => state.user);
   const [isEnrolled, setIsEnrolled] = useState(false);
-
-  const handlePayment = () => {
-    console.log('here');
-    paymentGateway(courseDetails._id).then(({data})=>{
-      console.log(data);
-      if(data.url){
-        window.location.href = data.url
-      }
-    })
-  };
 
   const getLessonsCount = () => {
     let count = 0;
@@ -75,18 +64,15 @@ function BuyNowCard({ courseDetails }) {
         <p className="mb-3 font-normal text-gray-700 ">Life Long Validity</p>
 
         <div className="button">
-          {isEnrolled ? //     </button> //         Continue Learning //     <button width={true}> // <Link to={`/my-enrollments`}>
-          // </Link>
+          {isEnrolled ? // </Link> //     </button> //         Continue Learning //     <button width={true}> // <Link to={`/my-enrollments`}>
           null : (
-            // <Link
-            //   className="w-full"
-            //   to={`/create-checkout-session${courseDetails._id}`}>
-            // </Link>
-            <button
-              className="bg-[#6255a4] p-3 text-white loading-btn form-btn mt-2 font-medium rounded w-full"
-              onClick={handlePayment}>
-              Buy Now
-            </button>
+            <Link
+              className="w-full"
+              to={`/course-payment/${courseDetails._id}`}>
+              <button className="bg-[#6255a4] p-3 flex justify-center text-white loading-btn form-btn mt-2 font-medium rounded w-full">
+                Buy Now
+              </button>
+            </Link>
           )}
         </div>
       </div>
