@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import './LoadingButton.css'
+import 'boxicons/css/boxicons.min.css';
 
 const Button = (props) => {
     const btnRef = useRef();
@@ -8,7 +9,7 @@ const Button = (props) => {
         <button
             type="button"
             ref={btnRef}
-            className='loading-btn w-auto form-btn mt-2 font-medium rounded'
+            className='loading-btn w-auto form-btn mt-2 font-medium rounded '
             onClick={props.onClick}
         >
             <span className={`spinner ${props.loading ? 'active' : ''}`}>
