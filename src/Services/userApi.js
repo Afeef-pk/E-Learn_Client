@@ -40,7 +40,7 @@ const getUserDetails = ()=>{
 }
 
 const updateUserDetails = (userData)=>{
-    return userAxiosInstance.post('/update/profile',{...userData})
+    return userAxiosInstance.put('/update/profile',{...userData})
 }
 
 const getCourseWatch = (courseId)=>{

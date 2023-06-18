@@ -41,10 +41,7 @@ function UserProfile() {
   useEffect(() => {
     getUserDetails().then(({ data }) => {
       setUser(data.user);
-      initialValues.name = data.user.name;
-      initialValues.lastName = data.user.lastName;
-      initialValues.email = data.user.email;
-      initialValues.phone = data.user.phone||''
+      formik.setValues(data.user)
     });
   }, []);
 

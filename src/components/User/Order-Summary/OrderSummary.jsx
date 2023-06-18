@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { applyCouponCode, getCourseView, paymentGateway } from "../../../Services/userApi";
+import {
+  applyCouponCode,
+  getCourseView,
+  paymentGateway,
+} from "../../../Services/userApi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import LoadingButton from "../LoadingButton/LoadingButton";
 import { Link } from "react-router-dom";
-import {toast} from "react-hot-toast"
+import { toast } from "react-hot-toast";
 
 function OrderSummary() {
   const { courseId } = useParams();
   const [courseDetails, setCourseDetails] = useState([]);
   const [btnloading, setBtnLoading] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+
   const validate = Yup.object({
     address: Yup.string()
       .max(30, "Must be 30 characters or less")
@@ -29,6 +35,10 @@ function OrderSummary() {
     validationSchema: validate,
     onSubmit: async (values) => {
       setBtnLoading(true);
+      values={
+        ...values,
+        couponCode
+      }
       paymentGateway(courseId, values).then(({ data }) => {
         if (data.url) {
           window.location.href = data.url;
@@ -56,15 +66,24 @@ function OrderSummary() {
   };
 
   const applyCoupon = () => {
-    applyCouponCode(couponCode).then(({data})=>{
-      if(data.discount){
-        toast.success(data.message)
-      }else{
-        toast.error(data.message)
-      }
-    })
-  };
+    if(discount<=0){
+      applyCouponCode(couponCode).then(({ data }) => {
+        if (data.discount) {
 
+          toast.success(data.message);
+          setDiscount(Math.ceil(courseDetails.price / data.discount));
+
+        } else {
+          toast.error(data.message);
+        }
+      })
+    }else{
+      setDiscount(0)
+      toast.error("Coupon successfully removed")
+      setCouponCode('')
+    }
+  };
+console.log(discount);
   return (
     <section>
       <div className="lg:px-20 mt-5 mx-auto mb-14">
@@ -189,7 +208,7 @@ function OrderSummary() {
 
                 <div className="flex justify-between mt-3">
                   <p className="mb-3 font-semibold text-gray-700 ">Discount</p>
-                  <p className="mb-3 font-semibold text-gray-700 ">₹ 0</p>
+                  <p className="mb-3 font-semibold text-gray-700 ">{discount}</p>
                 </div>
 
                 <hr className="h-px my-4 bg-gray-200 border-0 "></hr>
@@ -199,7 +218,7 @@ function OrderSummary() {
                     TOTAL (INR)
                   </p>
                   <p className="mb-3 font-semibold text-gray-700 ">
-                    ₹ {courseDetails.price}
+                    ₹ {courseDetails.price-discount}
                   </p>
                 </div>
 
@@ -232,18 +251,20 @@ function OrderSummary() {
                 </h5>
                 <div className="flex items-center w-full h-13 pl-3  bg-gray-100 border border-gray-300 rounded-full">
                   <input
+                   disabled={discount > 0}
                     type="text"
                     name="couponCode"
                     value={couponCode}
-                    onChange={(e)=>setCouponCode(e.target.value)}
+                    onChange={(e) => setCouponCode(e.target.value)}
                     placeholder="Enter coupon code"
-                    className="w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none"
+                    className={`w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none ${
+                      discount > 0 ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
                   <button
                     type="button"
                     onClick={applyCoupon}
                     className="text-sm flex items-center px-3 py-3 text-white bg-gray-800 rounded-3xl outline-none md:px-4 hover:bg-gray-700 focus:outline-none active:outline-none">
-                    <span className="font-medium w-24"> Apply coupon</span>
+                    <span className="font-medium w-28">{discount<=0 ?"Apply coupon":"Remove coupon"} </span>
                   </button>
                 </div>
               </div>
