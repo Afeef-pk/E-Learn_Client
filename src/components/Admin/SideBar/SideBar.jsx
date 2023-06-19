@@ -14,7 +14,7 @@ const SideBar = () => {
     { name: "Users", link: "/admin/users", icon: FaUsers },
     { name: "Tutors", link: "/admin/tutors", icon: FaUserGraduate },
     { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
-    { name: "Transctions", link: "/transction", icon: MdPayment },
+    { name: "Transctions", link: "/admin/transctions", icon: MdPayment },
     { name: "Logout", link: "/", icon: BiLogOut },
   ];
   const [open, setOpen] = useState(true);

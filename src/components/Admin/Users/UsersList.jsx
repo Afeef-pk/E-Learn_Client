@@ -92,13 +92,13 @@ function UsersList() {
                     className="flex items-center  py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                      alt="Jese image"
+                      src={
+                        user.image ? user.image : "/assets/admin/defaultdp.png"
+                      }
+                      alt="user-image"
                     />
                     <div className="pl-3">
-                      <div className="text-base font-semibold">
-                        {user.name}
-                      </div>
+                      <div className="text-base font-semibold">{user.name}</div>
                       <div className="font-normal text-gray-500">
                         {user.email}
                       </div>

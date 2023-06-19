@@ -12,6 +12,7 @@ import UserProfilePage from "../pages/user/UserProfilePage";
 import CourseWatchPage from "../pages/user/CourseWatchPage";
 import OrderSucessPage from "../pages/user/OrderSucessPage";
 import OrderSummaryPage from "../pages/user/OrderSummaryPage";
+import MyCoursePage from "../pages/user/MyCoursePage";
 
 const UserRouter = () => {
   return (
@@ -21,6 +22,7 @@ const UserRouter = () => {
         <Route path="/course/view/:courseId" element={<CourseWatchPage />} />
         <Route path='/course-payment/:courseId' element={< OrderSummaryPage />}/>
         <Route path="/order-success" element={<OrderSucessPage />} />
+        <Route path="/my-courses" element={<MyCoursePage/>} />
       </Route>
 
       <Route element={<UnAuthenticatedOnlyRoutes role={"user"} route={"/"} />}>

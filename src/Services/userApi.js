@@ -55,6 +55,9 @@ const paymentGateway = (courseId,address)=>{
     return userAxiosInstance.post('/create-checkout-session',{courseId,...address})
 }
 
+const getEnrolledCourse = () => {
+    return userAxiosInstance.get('/enrolled-course')
+}
 
 export {
     userSignup,
@@ -68,5 +71,6 @@ export {
     updateUserDetails,
     getCourseWatch,
     applyCouponCode,
-    paymentGateway
+    paymentGateway,
+    getEnrolledCourse
 }

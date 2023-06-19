@@ -42,11 +42,13 @@ function AdminDashboard() {
             <h1 className="text-xs sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl">{currentDate}</h1>
           </div>
         </div>
-        <div className="grid  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+        <div className="grid  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5 mx-10 ">
           <Card title="Total Users" icon={HiUsers} count={count.userCount} />
           <Card title="Total Tutors" icon={FaUserGraduate} count={count.tutorCount} />
           <Card title="Total Courses" icon={MdOndemandVideo} count={count.courseCount} />
-          <Card title="Total Orders" icon={MdPayment} count={30} />
+          <Card title="Total Orders" icon={MdPayment} count={count.orderCount} />
+          <Card title="Total Coupons" icon={MdPayment} count={count.couponCount} />
+         
         </div>
       </div>
     </>

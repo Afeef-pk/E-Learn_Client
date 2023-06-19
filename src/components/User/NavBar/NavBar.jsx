@@ -139,6 +139,18 @@ export default function NavBar() {
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
+                            <Link
+                              to="/my-courses"
+                              className={classNames(
+                                active ? "bg-gray-300" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}>
+                              Your Enrollments
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
                             <p
                               onClick={handleSignOut}
                               className={classNames(

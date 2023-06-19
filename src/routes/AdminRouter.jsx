@@ -9,6 +9,7 @@ import PrivateRoutes from "../utils/PrivateRoutes";
 import UnAuthenticatedOnlyRoutes from "../utils/UnAuthenticatedOnlyRoutes";
 import TutorViewPage from "../pages/admin/TutorViewPage";
 import CourseViewPage from "../pages/admin/CourseViewPage";
+import TransctionsPage from "../pages/admin/TransctionsPage";
 
 const AdminRouter = () => {
   return (
@@ -20,6 +21,7 @@ const AdminRouter = () => {
         <Route path="/tutor/view" element={<TutorViewPage />} />
         <Route path="/courses" element={<CourseListPage />} />
         <Route path="/course/view" element={<CourseViewPage />} />
+        <Route path="/transctions" element={<TransctionsPage />} />
       </Route>
 
       <Route

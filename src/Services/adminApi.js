@@ -47,6 +47,9 @@ const manageCourse = (courseId)=>{
     return adminAxiosInstance.post("/course/manage",{courseId})
 }
 
+const getOrderList = ()=>{
+    return adminAxiosInstance.get("/transctions")
+}
 
 export {
     postAdminLogin,
@@ -60,5 +63,6 @@ export {
     getCourseData,
     getCourseDetails,
     manageCourse,
-    addCategory
+    addCategory,
+    getOrderList
 }

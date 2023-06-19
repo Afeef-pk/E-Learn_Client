@@ -99,7 +99,9 @@ function TutorsList() {
                     className="flex items-center  py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                      src={
+                        user.image ? user.image : "/assets/admin/defaultdp.png"
+                      }
                       alt="Jese image"
                     />
                     <div className="pl-3">

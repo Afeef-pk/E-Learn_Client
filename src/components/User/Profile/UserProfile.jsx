@@ -44,7 +44,7 @@ function UserProfile() {
       formik.setValues(data.user)
     });
   }, []);
-
+console.log(user);
   return (
     <div className="md:flex  no-wrap md:-mx-2 ">
       <div className="w-full md:w-3/12 md:mx-2 rounded-md h-full">
@@ -134,7 +134,7 @@ function UserProfile() {
                   <input
                     className="mt-2 border-2 h-10 px-4 border-gray-200   block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500"
                     type="text"
-                    name="firstName"
+                    name="name"
                     onChange={formik.handleChange}
                     value={formik.values.name}
                     onBlur={formik.handleBlur}

@@ -10,7 +10,7 @@ function OrderSuccess() {
         }, 1000);
         if (time === 0) {
           clearInterval(timer);
-          navigate('/my-enrollments');
+          navigate('/my-courses');
         }
         return () => clearInterval(timer);
       }, [time]);
