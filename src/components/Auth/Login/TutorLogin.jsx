@@ -21,7 +21,7 @@ function TutorLogin() {
       const { data } = await tutorSignin(values);
       if (data.token) {
         toast.success(data.message);
-        dispatch(tutorAuthorized({name: "afa"}));
+        dispatch(tutorAuthorized({name:data.name}));
         localStorage.setItem("tutorToken", data.token);
         navigate("/tutor/dashboard");
       } else if (data.message) {

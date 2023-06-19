@@ -1,4 +1,7 @@
 import * as Yup from "yup";
+import { MdOutlineDashboard, MdPayment, MdOndemandVideo } from "react-icons/md";
+import { FaUserGraduate, FaUsers } from "react-icons/fa";
+import { BiLogOut } from "react-icons/bi";
 
 export const initialValues = {
   name: "",
@@ -91,3 +94,13 @@ export const courseValidationSchema = Yup.object({
   price: Yup.number().required("Please enter course price"),
   description: Yup.string().required("Write description about the course"),
 });
+
+
+export const menus = [
+  { name: "Dashboard", link: "/admin/dashboard", icon: MdOutlineDashboard },
+  { name: "Users", link: "/admin/users", icon: FaUsers },
+  { name: "Tutors", link: "/admin/tutors", icon: FaUserGraduate },
+  { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
+  { name: "Transctions", link: "/admin/transctions", icon: MdPayment },
+  { name: "Logout", link: "/admin/", icon: BiLogOut },
+];

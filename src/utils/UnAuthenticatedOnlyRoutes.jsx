@@ -12,6 +12,7 @@ import { tutorAuthorized, tutorUnauthorized } from "../Redux/app/tutorSlice";
 function UnAuthenticatedOnlyRoutes({ role, route }) { 
   const dispatch = useDispatch();
   let [auth, setAuth] = useState(null);
+
   useEffect(() => {
     if (role === "user") {
       userAuth()
@@ -51,16 +52,16 @@ function UnAuthenticatedOnlyRoutes({ role, route }) {
         });
     } else if (role === "tutor") {
       tutorAuth()
-        .then((response) => {
-          if (response.data.status) {
-            dispatch(tutorAuthorized());
+        .then(({data}) => {
+          if (data.status) {
+            dispatch(tutorAuthorized({name: data.tutorName}));
           } else {
             dispatch(tutorUnauthorized());
             localStorage.removeItem("tutorToken");
           }
-          setAuth(response.data.status);
-          if (response.data.message) {
-            toast.error(response.data.message);
+          setAuth(data.status);
+          if (data.message) {
+            toast.error(data.message);
           }
         })
         .catch(() => {

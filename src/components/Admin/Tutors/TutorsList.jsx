@@ -85,6 +85,9 @@ function TutorsList() {
               <th scope="col" className="px-6 py-3">
                 Acces Level
               </th>
+              <th scope="col" className="px-6 py-3">
+                view
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -133,21 +136,20 @@ function TutorsList() {
                   </td>
 
                   <td className="px-6 py-4">
-                    {user.isApproved ? (
-                      <button
-                        onClick={() => AccessManage(user._id)}
-                        className={`${
-                          user.status ? "bg-[#3DA58A]" : "bg-[#D93737]"
-                        } w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white`}>
-                        {user.status ? "Active" : "Blocked"}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => viewTutor(user._id)}
-                        className="bg-blue-500 w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white">
-                        View
-                      </button>
-                    )}
+                    <button
+                      onClick={() => AccessManage(user._id)}
+                      className={`${
+                        user.status ? "bg-[#3DA58A]" : "bg-[#D93737]"
+                      } w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white`}>
+                      {user.status ? "Active" : "Blocked"}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => viewTutor(user._id)}
+                      className="bg-blue-500 w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white">
+                      View
+                    </button>
                   </td>
                 </tr>
               );

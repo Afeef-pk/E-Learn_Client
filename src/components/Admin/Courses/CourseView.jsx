@@ -69,18 +69,19 @@ function CourseView({ tutor }) {
     setCourse({ ...course, cours });
   };
 
-  const handleDelete =()=>{
+  const handleDelete = () => {
     try {
-      deleteCourse(courseId).then(({data})=>{
-        toast.success(data.message)
-        navigate('/tutor/dashboard')
-      }).catch(()=>{
-        toast.error(data.message)
-      })
-    } catch (error) {
-      
-    }
-  }
+      deleteCourse(courseId)
+        .then(({ data }) => {
+          toast.success(data.message);
+          navigate("/tutor/dashboard");
+        })
+        .catch(() => {
+          toast.error(data.message);
+        });
+    } catch (error) {}
+  };
+
   return (
     <>
       <div className="h-auto w-full bg-[#141B2D] text-white">
@@ -145,57 +146,54 @@ function CourseView({ tutor }) {
             </div>
           </div>
 
-          <div className=" mx-10  bg-[#141B2D] rounded-md">
-            <p className="text-xl p-5">
-              Tittle : <span className="px-5">{course?.name}</span>
-            </p>
-            <p className="text-xl p-5">
-              About : <span className="px-5">{course?.about}</span>
-            </p>
-            <p className="text-xl p-5 ">
-              Duration : <span className="px-5">{course?.duration}</span>
-            </p>
-            <p className="text-xl p-5">
-              Language : <span className="px-5">{course?.language}</span>
-            </p>
-            <p className="text-xl p-5">
-              Category : <span className="px-5">{course?.category?.name}</span>
-            </p>
-            <p className="text-xl p-5">
-              Description : <span className="px-5">{course?.description}</span>
-            </p>
-            <p className="text-xl p-5">
-              Price : <span className="px-5">{course?.price}</span>
-            </p>
-            <div className="flex justify-end mx-32 pb-10">
-              {!course?.isApproved && !tutor&&(
-                <>
-                  <button
-                    onClick={() => handleApprove(false)}
-                    className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1">
-                    Reject
-                  </button>
-                  <button
-                    onClick={() => handleApprove(true)}
-                    className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
-                    Approve
-                  </button>
-                </>
-              )}
-
-              {tutor && (
-                <>
-                  <button className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1" onClick={handleDelete}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
-                    Edit
-                  </button>
-                </>
-              )}
+          <div className=" mx-10  bg-[#141B2D] rounded-md flex ">
+            <div>
+              <p className="text-xl p-5">Course Name</p>
+              <p className="text-xl p-5">Language</p>
+              <p className="text-xl p-5 ">Duration</p>
+              <p className="text-xl p-5">Category</p>
+              <p className="text-xl p-5"> Price </p>
+              <p className="text-xl p-5">About</p>
+              <p className="text-xl p-5">Description</p>
             </div>
+            <div>
+              <p className="text-xl p-5">{course?.name}</p>
+              <p className="text-xl p-5">{course?.language}</p>
+              <p className="text-xl p-5 ">{course?.duration}</p>
+              <p className="text-xl p-5">{course?.category.name}</p>
+              <p className="text-xl p-5">{course?.price}</p>
+              <p className="text-xl p-5">{course?.about}</p>
+              <p className="text-xl p-5">{course?.description}</p>
+            </div>
+          </div>
+          <div className="flex justify-end mx-32 m-6">
+            {!course?.isApproved && !tutor && (
+              <>
+                <button
+                  onClick={() => handleApprove(false)}
+                  className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1">
+                  Reject
+                </button>
+                <button
+                  onClick={() => handleApprove(true)}
+                  className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
+                  Approve
+                </button>
+              </>
+            )}
+
+            {tutor && (
+              <>
+                <button
+                  className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1"
+                  onClick={handleDelete}>
+                  Delete
+                </button>
+                <button className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
+                  Edit
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
