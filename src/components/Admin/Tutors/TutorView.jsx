@@ -38,46 +38,69 @@ function TutorView() {
       </h1>
 
       <div className="bg-[#1F2A40]  h-auto m-10 grid grid-cols-10 text-white shadow-slate-200">
-        <div className="my-10 w-fit mx-8 col-span-3">
-          <img
-            src={image}
-            className="rounded-full w-36 "
-            alt="profile picture"
-          />
-          <div className="py-10">
-            <button
-              onClick={() => handleApprove(false)}
-              className="w-32 bg-red-500 text-center py-3 mx-3 rounded-xl  text-white hover:bg-[#ff1c1c] focus:outline-none my-1">
-              Reject
-            </button>
-            <button
-              onClick={() => handleApprove(true)}
-              className="w-32 bg-green-700 text-center py-3 rounded-xl  text-white hover:bg-[#1e4612] focus:outline-none my-1">
-              Approve
-            </button>
+        <div className="my-10 mx-8 col-span-4 bg-[#33405a] rounded-md">
+          <div className="flex justify-center my-5">
+            <img
+              src={tutor?.image ?tutor?.image :image}
+              className="rounded-full w-36 "
+              alt="profile picture"
+            />
+          </div>
+          <div className="py-10 ">
+            <div className="mx-16">
+
+              <div className="flex flex-wrap  mb-3 ">
+                <div className="w-32">
+                  <p className="text-lg ">Name</p>
+                </div>
+                <div>
+                  <h1 className="text-lg">{tutor?.name}</h1>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap mb-3 ">
+                <div className="w-32">
+                  <p className="text-lg ">E-mail</p>
+                </div>
+                <div>
+                  <h1 className="text-lg">{tutor?.email}</h1>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap  ">
+                <div>
+                  <p className="text-lg w-32">Phone</p>
+                </div>
+                <div>
+                  <h1 className="text-lg">{tutor?.phone}</h1>
+                </div>
+              </div>
+            </div>
+
+            {!tutor?.isApproved && <div className="my-10 flex justify-center">
+              <button
+                onClick={() => handleApprove(true)}
+                className="w-32 bg-green-600 text-center py-3 rounded-xl  text-white hover:bg-[#1e4612] focus:outline-none my-1">
+                Approve
+              </button>
+            </div>}
           </div>
         </div>
-        <div className="col-span-7 font-normal font-sans">
-          <h1 className="text-xl px-10 py-5">
-            Name :<span className="px-7">{tutor?.name}</span>
+        <div className="col-span-6 font-normal font-sans">
+          <div className="my-10">
+          <h1 className="text-xl px-10 py-2">
+            About
           </h1>
-          <h1 className="text-xl px-10 py-3">
-            E-mail :<span className="px-7">{tutor?.email}</span>
-          </h1>
-          <h1 className="text-xl px-10 py-3">
-            Phone :<span className="px-7">{tutor?.phone}</span>
-          </h1>
-          <h1 className="text-xl px-10 py-3">
-            About :<span className="px-7">{tutor?.about}</span>
-          </h1>
-          <h1 className="text-xl px-10 py-3">Certificate :</h1>
+          <p className="px-10">{tutor?.about}</p>
+          <h1 className="text-xl px-10 py-3">Certificate</h1>
           <img
             src={tutor?.certificate}
             className="h-40 px-10"
             alt="certificate"
             onClick={togglePreview}
-          />
+            />
 
+            </div>
           {showPreview && (
             <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-sm bg-opacity-75">
               <div className="relative">

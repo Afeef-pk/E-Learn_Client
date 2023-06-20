@@ -13,8 +13,8 @@ function TutorsList() {
     tutor.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const AccessManage = async (userId) => {
-    const { status, data } = await updateTutorStatus(userId);
+  const AccessManage = async (userId,approve=false) => {
+    const { status, data } = await updateTutorStatus(userId,approve);
     status === 200
       ? toast.success(data.message)
       : toast.error("Something went wrong!");
@@ -136,13 +136,23 @@ function TutorsList() {
                   </td>
 
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() => AccessManage(user._id)}
-                      className={`${
-                        user.status ? "bg-[#3DA58A]" : "bg-[#D93737]"
-                      } w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white`}>
-                      {user.status ? "Active" : "Blocked"}
-                    </button>
+                    {!user.isApproved ? (
+                      <button 
+                      className="bg-[#099cb9] w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white"
+                      onClick={() => AccessManage(user._id,true)} >
+                        Approve
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => AccessManage(user._id)}
+                        className={`${
+                          user.status ? "bg-[#3DA58A]" : "bg-[#D93737]"
+                        } w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white`}>
+                        {user.status
+                          ? "Active"
+                          : "Block"}
+                      </button>
+                    )}
                   </td>
                   <td>
                     <button

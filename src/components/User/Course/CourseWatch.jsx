@@ -49,9 +49,7 @@ function CourseWatch() {
   };
 
   useEffect(() => {
-    //scroll to top
-    window.scrollTo(0, 0);
-    
+    window.scrollTo(0, 0);  
     if (!courseDetails) {
         getCourseWatch(courseId)
         .then((response) => {
@@ -61,7 +59,7 @@ function CourseWatch() {
             dispatch(setCourseDetails({ ...response.data.courseDetails, courseInfo: { ...response.data.courseDetails }, course }))
         })
         .catch((error)=>{
-            toast.error('failed')
+            toast.error(error.response.data.err)
             navigate('/')
         })
     }

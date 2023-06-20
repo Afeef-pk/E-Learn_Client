@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 //import { isCourseEnrolled } from '../../services/userApi';
-//import Button from '../Button/Button';
 import tutorIcon from "/icons/tutorIcon.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { ImFilm } from "react-icons/im";
 import { GrLanguage } from "react-icons/Gr";
+import Button from "../Button/Button";
+import { isCourseEnrolled } from "../../../Services/userApi";
 
 function BuyNowCard({ courseDetails }) {
-  const user = useSelector((state) => state.user);
+  
   const [isEnrolled, setIsEnrolled] = useState(false);
-
+const user = useSelector((state)=>state.user);
   const getLessonsCount = () => {
     let count = 0;
     courseDetails.course.map((chapter) => {
@@ -19,6 +20,16 @@ function BuyNowCard({ courseDetails }) {
     });
     return count;
   };
+
+  useEffect(()=>{
+    if(user.authorized){
+        isCourseEnrolled(courseDetails._id).then((response) => {
+            if (response.data.enrolled) {
+                setIsEnrolled(true);
+            }
+        })
+    }
+  },[])
 
   return (
     <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
@@ -64,8 +75,11 @@ function BuyNowCard({ courseDetails }) {
         <p className="mb-3 font-normal text-gray-700 ">Life Long Validity</p>
 
         <div className="button">
-          {isEnrolled ? // </Link> //     </button> //         Continue Learning //     <button width={true}> // <Link to={`/my-enrollments`}>
-          null : (
+          {isEnrolled ? 
+          <Link to={`/course/view/${courseDetails._id}`} className="w-full"><button className="bg-[#6255a4] p-3 flex justify-center text-white loading-btn form-btn mt-2 font-medium rounded w-full">
+          Continue Learning
+        </button></Link>
+           : (
             <Link
               className="w-full"
               to={`/course-payment/${courseDetails._id}`}>
@@ -78,7 +92,6 @@ function BuyNowCard({ courseDetails }) {
       </div>
       <div className="border-t pl-5 mt-4 mb-4">
         <h4 className="font-semibold mt-3">Whats included</h4>
-        {/* <p className='mt-3'>{courseDetails.course && courseDetails.course.length} Chapter </p> */}
         <p className="mt-3">Online accessibility</p>
       </div>
     </div>

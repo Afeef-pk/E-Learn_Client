@@ -59,6 +59,10 @@ const getEnrolledCourse = () => {
     return userAxiosInstance.get('/enrolled-course')
 }
 
+export const isCourseEnrolled = (courseId) => {
+    return userAxiosInstance.get(`/is-course-enrolled/${courseId}`)
+}
+
 export {
     userSignup,
     userLogin,

@@ -3,7 +3,7 @@ import React from "react";
 function Pagination({activePage,limit,setActivePage,totalCourse}) {
   const totalPages = (total, limit) => {
     const pages = [];
-    for (let i = 1; i <= parseInt(total) / limit; i++) {
+    for (let i = 1; i <= Math.ceil(total / limit); i++) {
       pages.push(i);
     }
     return pages;
@@ -21,7 +21,7 @@ function Pagination({activePage,limit,setActivePage,totalCourse}) {
           <p
             className={`${
               activePage === 1 ? "cursor-not-allowed bg-[#e7e6e6] hover:bg-[#e1e1e1]" : ""
-            }cursor-pointer block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 `}>
+            }cursor-pointer block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700} `}>
             <span className="sr-only">Previous</span>
             <svg
               aria-hidden="true"
@@ -57,7 +57,7 @@ function Pagination({activePage,limit,setActivePage,totalCourse}) {
               setActivePage(activePage + 1);
             }
           }}>
-          <p className={`${activePage === Math.ceil(totalCourse/limit) ? "cursor-not-allowed bg-[#e7e6e6] hover:bg-[#e1e1e1]" : ""} cursor-pointer block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 `}>
+          <p className={`${activePage === Math.ceil(totalCourse/limit) ? "cursor-not-allowed bg-[#e7e6e6] hover:bg-[#e1e1e1]" : "cursor-pointer"}  block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 `}>
             <span className="sr-only">Next</span>
             <svg
               aria-hidden="true"

@@ -93,7 +93,7 @@ function UsersList() {
                     <img
                       className="w-10 h-10 rounded-full"
                       src={
-                        user.image ? user.image : "/assets/admin/defaultdp.png"
+                        user?.image ? user?.image : "/assets/admin/defaultdp.png"
                       }
                       alt="user-image"
                     />
