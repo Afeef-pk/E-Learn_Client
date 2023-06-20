@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { auth, storage } from "../../../firebase/config";
+import { auth } from "../../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { signupApi } from "../../../Services/tutorApi";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
+  handleImage,
+  imageUpload,
   tutorInitialValues,
   tutorValidationSchema,
 } from "../../../constants/constant";
@@ -33,6 +34,7 @@ function TutorSignup() {
       console.log(error);
     }
   };
+
   const formik = useFormik({
     initialValues: tutorInitialValues,
     validationSchema: tutorValidationSchema,
@@ -49,28 +51,18 @@ function TutorSignup() {
 
   const verifyOtp = async () => {
     try {
-      toast.loading("verifying otp..");
+      toast.loading("verifying otp...");
       await user.confirm(formik.values.otp);
-      const storageRef = ref(storage, "/tutor-certificate/" + certificate.name);
-      uploadBytes(storageRef, certificate)
-        .then((snapshot) => {
-          return getDownloadURL(snapshot.ref);
-        })
-        .then(async (url) => {
-          const { data } = await signupApi({
-            tutorData: formik.values,
-            imageUrl: url,
-          });
-          toast.dismiss();
-          if (data.signed) {
-            toast.success("Signup success");
-            navigate("/tutor/dashboard");
-          }
-        })
-        .catch((error) => {
-          toast.dismiss();
-          toast.error(error);
+      const url = await imageUpload("/tutor-certificate/",certificate)        
+        const { data } = await signupApi({
+          tutorData: formik.values,
+          imageUrl: url,
         });
+        toast.dismiss();
+        if (data.signed) {
+          toast.success("Signup success");
+          navigate("/tutor/dashboard");
+        }
     } catch (error) {
       console.log(error);
       toast.dismiss();
@@ -193,7 +185,7 @@ function TutorSignup() {
                   type="file"
                   className="block border border-grey-light w-full p-3 rounded mb-4"
                   name="certificate"
-                  onChange={(e) => setCertificate(e.target.files[0])}
+                  onChange={(e) => setCertificate(handleImage(e))}
                 />
                 {formik.errors.profession && formik.touched.profession ? (
                   <p className="form-error text-red-600">

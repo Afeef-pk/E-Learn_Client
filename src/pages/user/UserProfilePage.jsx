@@ -25,10 +25,10 @@ function UserProfilePage() {
         <div className=' p-5  mx-auto'>
           <ul className=" text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow flex ">
             <li className="w-full cursor-pointer">
-              <a onClick={() => { setActiveTab('profile') }} className={activeTab == 'profile' ? "inline-block w-full p-4 text-gray-900 bg-[#CED1E1] rounded-lg  " : "bg-white inline-block w-full p-4 text-gray-900 rounded-l-lg "} aria-current="page">Profile</a>
+              <a onClick={() => { setActiveTab('profile') }} className={activeTab == 'profile' ? "inline-block w-full p-4 text-gray-900 bg-[#CED1E1] rounded-md" : "bg-white inline-block w-full p-4 text-gray-900 rounded-l-lg "} aria-current="page">Profile</a>
             </li>
-            <li className="w-full hover:cursor-pointer">
-              <p onClick={() => { setActiveTab('settings') }} className={activeTab == 'settings' ? "mx-5 inline-block w-full p-4 text-gray-900 bg-[#CED1E1] rounded-lg " : "mx-5 bg-white inline-block w-full p-4 text-gray-900 rounded-l-lg "} >Settings</p>
+            <li className="w-full hover:cursor-pointer rounded-lg">
+              <p onClick={() => { setActiveTab('settings') }} className={activeTab == 'settings' ? " inline-block w-full p-4 text-gray-900 bg-[#CED1E1]  rounded-md" : "mx-5 bg-white inline-block w-full p-4 text-gray-900 rounded-r-lg "} >Settings</p>
             </li>
           </ul>
         </div>

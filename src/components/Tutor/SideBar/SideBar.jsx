@@ -1,29 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { MdOutlineDashboard,MdOndemandVideo } from "react-icons/md";
-import {  CgProfile } from "react-icons/cg";
-import { BiLogOut } from "react-icons/bi";
-import { AiOutlineMessage } from "react-icons/ai";
 import { FaUserGraduate } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { tutorMenus } from "../../../constants/constant";
 
 const SideBar = () => {
-  const menus = [
-    { name: "Dashboard", link: "/tutor/dashboard", icon: MdOutlineDashboard },
-    { name: "Courses", link: "/tutor/course", icon: MdOndemandVideo },
-    { name: "Messages", link: "/tutor/message", icon: AiOutlineMessage },
-    { name: "Account", link: "/tutor/profile", icon: CgProfile },
-    { name: "Logout", link: "/", icon: BiLogOut },
-  ];
   const [open, setOpen] = useState(true);
   const [active,setActive]= useState('')
   const currentpath = location.pathname
   const {tutorName} = useSelector(state => state.tutor)
   useEffect (()=>{
-    const currentMenu = menus.find((item)=>item.link === currentpath)
+    const currentMenu = tutorMenus.find((item)=>item.link === currentpath)
     setActive(currentMenu?.name)
   },[currentpath])
+  
   return (
     <div
       className={`bg-[#1F2A40] min-h-screen ${
@@ -49,7 +40,7 @@ const SideBar = () => {
         className={`mt-10 max-sm:mt-16 ${
           open ? "ml-5" : ""
         } max-sm:ml-0 flex flex-col gap-4 relative`}>
-        {menus?.map((menu, i) => (
+        {tutorMenus?.map((menu, i) => (
           <Link
             to={menu?.link}
             key={i}

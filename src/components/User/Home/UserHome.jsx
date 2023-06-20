@@ -10,6 +10,7 @@ import CourseCard from "./CourseCard";
 import homekid from "/assets/home-kid.png";
 import homeImg from "/assets/home-image.png";
 import { homeCourseLoad } from "../../../Services/userApi";
+import Button from "../Button/Button";
 
 function UserHomePage() {
   const [courses,setCourse] = useState([])
@@ -37,9 +38,9 @@ function UserHomePage() {
 
           <div className="xl:pl-24 pl-16 pt-5  ">
             <Link to="/course">
-              <button className="bg-[#232946] hover:bg-[#334364] text-white font-medium py-2 px-4 rounded">
+              <Button className="bg-[#232946] hover:bg-[#334364] text-white font-medium py-2 px-4 rounded">
                 Explore courses
-              </button>
+              </Button>
             </Link>
           </div>
         </div>
@@ -56,9 +57,9 @@ function UserHomePage() {
             </h4>
           </div>
           <div className="p-3">
-            <Link to="/course"><button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
+            <Link to="/course"><Button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
               See All category
-            </button></Link>
+            </Button></Link>
           </div>
         </div>
 
@@ -110,14 +111,14 @@ function UserHomePage() {
           </h5>
         </div>
         <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
-        <div className="items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8 bg-[#EFEFF6] grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+        <div className="items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
           {courses.map((course,index)=>{
           return <CourseCard
           key={index}
           course={course}
           /> })}
         </div>
-        <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 " style={{ backgroundColor: "#F2FFF7" }}>
+        <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 bg-[#F2FFF7] my-20" >
           <div className="w-full">
             <div className="max-sm:px-12 max-sm:pt-10 px-20 pt-10 ">
               <h3 className="text-5xl font-medium leading-tight">
@@ -133,7 +134,7 @@ function UserHomePage() {
               </h1>
             </div>
             <div className="max-sm:px-12 px-20 mt-5">
-              <button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">Connect</button>
+              <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">Connect</Button>
             </div>
           </div>
           <div className="grid justify-items-center max-sm:hidden">

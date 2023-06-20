@@ -1,15 +1,16 @@
 import React from 'react'
 import { useFormik } from "formik";
-import { changePassInitialValues,ChangePassvalidationSchema } from '../../../constants/constant'; 
+import { changePassInitialValues,ChangePassValidation } from '../../../constants/constant'; 
 import { toast } from 'react-hot-toast';
 import { updateUserDetails } from '../../../Services/userApi';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
 
 function Settings() {
 const navigate = useNavigate()
   const formik = useFormik({
     initialValues:changePassInitialValues,
-    validationSchema:ChangePassvalidationSchema,
+    validationSchema:ChangePassValidation,
     onSubmit: async (values) => {
       toast.loading("Updating ...");
       await updateUserDetails(values).then(({ data }) => {
@@ -79,7 +80,7 @@ const navigate = useNavigate()
               </div>
             </div>
             <div className="p-16 py-8 bg-white clearfix rounded-b-lg border-t flex justify-end border-gray-200">
-              <button type="submit" className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Update</button>
+            <Button type="submit">Save</Button>
             </div>
           </form>
         </div>

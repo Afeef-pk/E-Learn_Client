@@ -1,5 +1,5 @@
 .loading-btn {
-    background: #6255a4 !important;
+    background: #232946 !important;
     color: white !important;
     padding: 10px 45px 10px 45px !important;
     cursor: pointer;
@@ -9,7 +9,7 @@
 }
 
 .loading-btn:hover {
-    background-color: #2b92f7;
+    background-color: #fd0000;
 }
 
 .loading-btn .spinner {

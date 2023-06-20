@@ -174,22 +174,6 @@ console.log(discount);
                 </form>
               </div>
             </div>
-
-            {/* <div className="payment-box mx-6 hidden lg:block">
-              <h5 className="mb-3 mt-3 text-2xl font-bold tracking-tight text-gray-900 ">
-                Payment
-              </h5>
-              <p className="mb-3 text-sm text-gray-700 ">
-                Make payment for the product here
-              </p>
-              <div className="mt-8">
-                <LoadingButton
-                  onClick={formik.handleSubmit}
-                  loading={btnloading}>
-                  Pay Securely
-                </LoadingButton>
-              </div>
-            </div> */}
           </div>
           <div className="w-full lg:w-4/12 ">
             <div className="flex lg:block justify-center mt-10 lg:mt-0 m-3 ">
@@ -221,12 +205,6 @@ console.log(discount);
                     ₹ {courseDetails.price-discount}
                   </p>
                 </div>
-
-                {/* <div className="mt-5 ">
-                  <p className="text-sm text-center my-5">
-                    30-Day Money-Back Guarantee
-                  </p>
-                </div> */}
                 <div className="payment-box ">
                   <div className="mt-2  flex justify-between">
                     <h5 className="mb-3 mt-3 text-xl font-bold tracking-tight text-gray-900 ">
@@ -269,22 +247,6 @@ console.log(discount);
                 </div>
               </div>
             </div>
-
-            {/* <div className="payment-box mx-6 block lg:hidden mt-8">
-              <h5 className="mb-3 mt-3 text-2xl font-bold tracking-tight text-gray-900 ">
-                Payment
-              </h5>
-              <p className="mb-3 text-sm text-gray-700">
-                Make payment for the product here
-              </p>
-              <div className="mt-8">
-                <LoadingButton
-                  onClick={formik.handleSubmit}
-                  loading={btnloading}>
-                  Pay Securely
-                </LoadingButton>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

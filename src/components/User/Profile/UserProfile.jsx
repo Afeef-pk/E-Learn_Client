@@ -4,27 +4,26 @@ import { TiTick } from "react-icons/ti";
 import { useFormik } from "formik";
 import { getUserDetails, updateUserDetails } from "../../../Services/userApi";
 import { toast } from "react-hot-toast";
-import { storage } from "../../../firebase/config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import defaultDp from "/assets/tutor/default-dp.png";
-import { initialValues,userProfileValidationSchema } from "../../../constants/constant";
+import {
+  initialValues,
+  userProfileValidation,
+  handleImage,
+  imageUpload,
+} from "../../../constants/constant";
+import Button from "../Button/Button";
 
 function UserProfile() {
   const [user, setUser] = useState(null);
   const [image, setImage] = useState(null);
-  const imageUpload = async () => {
-    const storageRef = ref(storage, "/user-Profile/" + image.name);
-    const snapshot = await uploadBytes(storageRef, image);
-    return getDownloadURL(snapshot.ref);
-  };
 
   const formik = useFormik({
     initialValues,
-    validationSchema:userProfileValidationSchema,
+    validationSchema: userProfileValidation,
     onSubmit: async (values) => {
       toast.loading("Updating ...");
       if (image) {
-        const url = await imageUpload();
+        const url = await imageUpload("/user-Profile/", image);
         values = {
           ...values,
           image: url,
@@ -37,18 +36,17 @@ function UserProfile() {
       });
     },
   });
-
   useEffect(() => {
     getUserDetails().then(({ data }) => {
       setUser(data.user);
-      formik.setValues(data.user)
+      formik.setValues(data.user);
     });
   }, []);
-console.log(user);
+
   return (
     <div className="md:flex  no-wrap md:-mx-2 ">
       <div className="w-full md:w-3/12 md:mx-2 rounded-md h-full">
-        <div className="bg-white p-3 rounded-md border-t-4 border-green-400">
+        <div className="bg-white p-3 rounded-md border-t-4 border-gray-800">
           <div className="image overflow-hidden relative">
             {!image ? (
               <img
@@ -63,12 +61,12 @@ console.log(user);
                 alt="Preview"
               />
             )}
-            <div className="ab bg-green-500 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
+            <div className="ab bg-gray-800 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
               <input
                 type="file"
                 name="photo"
                 className="absolute inset-0  opacity-0 cursor-pointer"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => setImage(handleImage(e))}
               />
               <FiEdit2 size={14} />
             </div>
@@ -104,9 +102,7 @@ console.log(user);
         <div className="my-4" />
       </div>
 
-      
       <div className="w-full md:w-9/12  ">
-       
         <div className="bg-white p-3 shadow-sm rounded-md h-full ">
           <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
             <span clas="text-green-500">
@@ -140,9 +136,7 @@ console.log(user);
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.name && formik.errors.name ? (
-                    <p className="text-red-500 mt-1">
-                      {formik.errors.name}
-                    </p>
+                    <p className="text-red-500 mt-1">{formik.errors.name}</p>
                   ) : null}
                 </div>
 
@@ -174,9 +168,7 @@ console.log(user);
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.email && formik.errors.email ? (
-                    <p className="text-red-500 mt-1">
-                      {formik.errors.email}
-                    </p>
+                    <p className="text-red-500 mt-1">{formik.errors.email}</p>
                   ) : null}
                 </div>
 
@@ -189,7 +181,7 @@ console.log(user);
                     onChange={formik.handleChange}
                     value={formik.values.phone}
                     onBlur={formik.handleBlur}
-                     disabled={!user?.loginwithgoogle}
+                    disabled={!user?.loginwithgoogle}
                   />
                   {/* <div className="w-8 h-8 text-green-600 border-2 flex justify-center items-center rounded-full border-green-600">
                     <TiTick size={20} />
@@ -212,12 +204,7 @@ console.log(user);
               </div> */}
               </div>
               <div className="flex justify-end mt-5">
-                <button
-                  type="submit"
-                  className="w-full md:w-32 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                >
-                  Update
-                </button>
+                <Button type={"submit"}>Save</Button>
               </div>
             </form>
           </div>

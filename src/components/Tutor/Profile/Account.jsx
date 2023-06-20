@@ -3,32 +3,31 @@ import NavBar from "../NavBar/NavBar";
 import defaultDp from "/assets/tutor/default-dp.png";
 import { FiEdit2 } from "react-icons/fi";
 import { useFormik } from "formik";
-import { getTutorProfile, updateTutorProfile } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
-import { storage } from "../../../firebase/config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Button from "../../User/Button/Button";
+import {
+  getTutorProfile,
+  updateTutorProfile,
+} from "../../../Services/tutorApi";
+import {
+  handleImage,
+  imageUpload,
+  tutorProfileInitialValues,
+  tutorProfileValidation,
+} from "../../../constants/constant";
+import { TiTick } from "react-icons/ti";
 
 function Account() {
   const [image, setImage] = useState(null);
   const [tutor, setTutor] = useState(null);
 
-  const initialValues = {
-    name: "",
-    email: "",
-    about: "",
-  };
-
-  const imageUpload = async () => {
-    const storageRef = ref(storage, "/Tutor-Profile/" + image.name);
-    const snapshot = await uploadBytes(storageRef, image);
-    return getDownloadURL(snapshot.ref);
-  };
   const formik = useFormik({
-    initialValues,
-    onSubmit: async(values) => {
+    initialValues: tutorProfileInitialValues,
+    validationSchema: tutorProfileValidation,
+    onSubmit: async (values) => {
       toast.loading("Updating ...");
       if (image) {
-        const url = await imageUpload();
+        const url = await imageUpload("/Tutor-Profile/", image);
         values = {
           ...values,
           image: url,
@@ -52,13 +51,14 @@ function Account() {
         toast.error(data.message);
       });
   }, []);
+
   return (
     <div className=" w-full bg-[#141B2D] text-white">
       <NavBar />
       <div className="bg-[#1F2A40] mx-10  rounded-lg">
         <div className="md:flex  no-wrap py-20 px-8">
           <div className="w-full md:w-3/12 md:mx-2 rounded-md h-full">
-            <div className="bg-white p-3 rounded-md border-t-4 border-green-400">
+            <div className="bg-white p-3 rounded-md border-t-4 border-gray-800 ">
               <div className="image overflow-hidden relative">
                 {!image ? (
                   <img
@@ -73,17 +73,17 @@ function Account() {
                     alt="Preview"
                   />
                 )}
-                <div className="ab bg-green-500 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
+                <div className="ab bg-gray-800 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
                   <input
                     type="file"
-                    name="photo"
+                    name="image"
                     className="absolute inset-0  opacity-0 cursor-pointer"
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={(e) => setImage(handleImage(e))}
                   />
                   <FiEdit2 size={14} />
                 </div>
               </div>
-              <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
+              <h1 className="text-gray-900 font-bold text-xl leading-8 my-5 text-center">
                 {tutor?.name}
               </h1>
               <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
@@ -117,7 +117,7 @@ function Account() {
           </div>
 
           <div className="w-full md:w-9/12  ">
-            <div className="bg-white p-3 shadow-sm rounded-md h-full ">
+            <div className="bg-white p-3 shadow-sm rounded-md h-full">
               <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                 <span clas="text-green-500">
                   <svg
@@ -173,20 +173,21 @@ function Account() {
                       ) : null}
                     </div>
 
-                    <div className="grid mt- ">
+                    <div className="grid ">
                       <div className=" py-2  font-semibold">Phone</div>
+                      <div className="flex gap-5">
+
                       <input
                         className=" px-4 border-2 h-10 border-gray-300  bg-gray-200  cursor-not-allowed opacity-50 block w-full rounded-lg text-base text-gray-900 focus:outline-none focus:border-indigo-500"
                         type="text"
                         name="phone"
-                        onChange={formik.handleChange}
-                        value={formik.values.phone}
-                        onBlur={formik.handleBlur}
+                        defaultValue={tutor?.phone}
                         disabled
-                      />
-                      {/* <div className="w-8 h-8 text-green-600 border-2 flex justify-center items-center rounded-full border-green-600">
-                    <TiTick size={20} />
-                  </div> */}
+                        />
+                      <div className="w-9 mt-1 h-8 text-green-600 border-2 flex justify-center items-center rounded-full border-green-600">
+                        <TiTick size={20} />
+                      </div>
+                        </div>
                     </div>
                   </div>
                   <div className="grid ">
@@ -206,26 +207,14 @@ function Account() {
                   </div>
                   <div className="grid md:grid-cols-2 mt-8">
                     <div className="grid grid-cols-2">
-                      <div className=" py-2 font-bold">
-                        Total Purchased course :
-                      </div>
+                      <div className=" py-2 font-bold">Total courses :</div>
                       <div className="md:px-4 py-2 font-bold">
                         {tutor?.totalCourses}
                       </div>
                     </div>
-                    {/* <div className="grid grid-cols-2">
-                <div className="md:px-4 md:py-2 font-semibold">
-                  No. Community
-                </div>
-                <div className="px-4 py-2">{tutor?.community.length}</div>
-              </div> */}
                   </div>
                   <div className="flex justify-end mt-5">
-                    <button
-                      type="submit"
-                      className="w-full md:w-32 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                      Update
-                    </button>
+                    <Button type="submit">Update</Button>
                   </div>
                 </form>
               </div>
@@ -236,5 +225,4 @@ function Account() {
     </div>
   );
 }
-
 export default Account;

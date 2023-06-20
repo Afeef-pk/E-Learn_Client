@@ -8,13 +8,6 @@ import { userAuthorized, userUnauthorized } from "../../../Redux/app/userSlice";
 import { toast } from "react-hot-toast";
 import { userAuth } from "../../../Services/userApi";
 
-const navigation = [
-  { name: "Home", href: "/", current: false },
-  { name: "Course", href: "/course", current: false },
-  { name: "Community", href: "/community", current: false },
-  { name: "News", href: "/news", current: false },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -23,12 +16,15 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
+  const currentPath = window.location.pathname;
+
   const handleSignOut = () => {
     dispatch(userUnauthorized());
     localStorage.removeItem("token");
     toast.error("Sign out");
     navigate("/signin");
   };
+
   useEffect(() => {
     userAuth()
       .then(({data}) => {
@@ -43,14 +39,15 @@ export default function NavBar() {
         localStorage.removeItem("token");
       });
   }, []);
-  const currentPath = window.location.pathname;
-  const updatedNavigation = navigation.map((item) => {
+  
+  const updatedNavigation = userNavBar.map((item) => {
     if (item.href === currentPath) {
       return { ...item, current: true };
     } else {
       return item;
     }
   });
+  
   const { authorized } = useSelector((state) => state.user);
 
   return (
@@ -177,7 +174,7 @@ export default function NavBar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
+              {userNavBar.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"

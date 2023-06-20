@@ -1,17 +1,15 @@
-import React from 'react'
+import React from "react";
 
 function Button(props) {
+  const buttonType = props.type === "submit" ? "submit" : "button";
   return (
-      <button
-          type="button"
-          className={props.width ? 'loading-btn form-btn mt-2 font-medium rounded w-full' :'loading-btn form-btn mt-2 font-medium rounded'}
-          onClick={props.onClick}
-      >
-          <span className="txt">
-              {props.children}
-          </span>
-      </button>
-  )
+    <button
+      type={buttonType}
+      className="loading-btn hover:bg-[#232946]  mt-2 font-medium rounded"
+      onClick={props.onClick}>
+      <span className="txt">{props.children}</span>
+    </button>
+  );
 }
 
-export default Button
+export default Button;

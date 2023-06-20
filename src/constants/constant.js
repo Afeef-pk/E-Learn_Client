@@ -2,6 +2,11 @@ import * as Yup from "yup";
 import { MdOutlineDashboard, MdPayment, MdOndemandVideo } from "react-icons/md";
 import { FaUserGraduate, FaUsers } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
+import { toast } from "react-hot-toast";
+import { storage } from "../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {  CgProfile } from "react-icons/cg";
+import { AiOutlineMessage } from "react-icons/ai";
 
 export const initialValues = {
   name: "",
@@ -49,26 +54,20 @@ export const tutorValidationSchema = Yup.object({
   about: Yup.string().min(10).max(500).required("Please fill your details"),
 });
 
-export const userProfileValidationSchema = Yup.object({
+export const userProfileValidation = Yup.object({
   name: Yup.string()
-    .matches(/^[a-zA-Z ]*$/, "Name must be a letter")
-    .min(2)
-    .max(15)
-    .required("Please enter your name"),
-  lastName: Yup.string()
-    .min(1)
-    .max(15)
-    .required("Please enter your last name"),
+    .matches(/^[a-zA-Z ]*$/, "Name must be a letter").min(2).max(15).required("Please enter your name"),
+  lastName: Yup.string().min(1).max(15).required("Please enter your last name"),
   email: Yup.string().email().required("Please enter your email"),
 });
 
 export const changePassInitialValues = {
-  oldPassword:"",
+  oldPassword: "",
   newPassword: "",
   confirmPassword: "",
 }
 
-export const ChangePassvalidationSchema = Yup.object({
+export const ChangePassValidation = Yup.object({
   oldPassword: Yup.string().min(6).required("Please enter your old password"),
   newPassword: Yup.string().min(6).required("Please enter your password"),
   confirmPassword: Yup.string()
@@ -95,7 +94,6 @@ export const courseValidationSchema = Yup.object({
   description: Yup.string().required("Write description about the course"),
 });
 
-
 export const menus = [
   { name: "Dashboard", link: "/admin/dashboard", icon: MdOutlineDashboard },
   { name: "Users", link: "/admin/users", icon: FaUsers },
@@ -103,4 +101,59 @@ export const menus = [
   { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
   { name: "Transctions", link: "/admin/transctions", icon: MdPayment },
   { name: "Logout", link: "/admin/", icon: BiLogOut },
+];
+
+export const handleImage = (e) => {
+  const file = e.target.files[0];
+  if (imageValidation(file)) {
+    return e.target.files[0]
+  }
+};
+
+export const imageValidation = (file) => {
+  const supportedFormats = ["image/jpeg", "image/png", "image/gif"];
+  const maxSizeInBytes = 5 * 1024 * 1024;
+  if (!supportedFormats.includes(file.type)) {
+    toast.error("Please Choose a image file");
+    return false;
+  }
+  if (file.size > maxSizeInBytes) {
+    toast.error("The image size exceeds the maximum allowed limit of 5MB.");
+    return false;
+  }
+  return true;
+};
+
+export const imageUpload = async (path, image) => {
+  const storageRef = ref(storage, path + image.name);
+  const snapshot = await uploadBytes(storageRef, image);
+  return getDownloadURL(snapshot.ref);
+};
+
+export const tutorProfileInitialValues = {
+  name: "",
+  email: "",
+  about: "",
+};
+
+export const tutorProfileValidation = Yup.object({
+  name: Yup.string()
+    .matches(/^[a-zA-Z ]*$/, "Name must be a letter").min(2).max(15).required("Please enter your name"),
+  email: Yup.string().email().required("Please enter your email"),
+  about: Yup.string().min(10).max(500).required("Please enter your details"),
+});
+
+export const tutorMenus = [
+  { name: "Dashboard", link: "/tutor/dashboard", icon: MdOutlineDashboard },
+  { name: "Courses", link: "/tutor/course", icon: MdOndemandVideo },
+  { name: "Messages", link: "/tutor/message", icon: AiOutlineMessage },
+  { name: "Account", link: "/tutor/profile", icon: CgProfile },
+  { name: "Logout", link: "/", icon: BiLogOut },
+];
+
+export const userNavBar = [
+  { name: "Home", href: "/", current: false },
+  { name: "Course", href: "/course", current: false },
+  { name: "Community", href: "/community", current: false },
+  { name: "News", href: "/news", current: false },
 ];
