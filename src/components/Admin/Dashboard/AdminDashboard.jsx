@@ -4,8 +4,9 @@ import Card from "./Card";
 import NavBar from "../NavBar/NavBar";
 import { FaUserGraduate } from "react-icons/fa";
 import {  MdOndemandVideo,MdPayment } from "react-icons/md";
+import {  RiCoupon2Line } from "react-icons/ri";
 import { HiUsers } from "react-icons/hi";
-import { dashboardData, getOrderList } from "../../../Services/adminApi";
+import { dashboardData } from "../../../Services/adminApi";
 
 function AdminDashboard() {
   const [count,setCount] = useState([])
@@ -15,14 +16,12 @@ function AdminDashboard() {
   useEffect(() => {
     dashboardData().then((res)=>{
       setCount(res.data)
+      setOrders(res.data.orders)
     })
     const date = new Date();
     const month = date.toLocaleString("en-US", { month: "long" });
     const day = date.getDate();
     setCurrentDate(`${month} ${day}`);
-    getOrderList().then(({ data }) => {
-      setOrders(data.orders);
-    });
   }, []); 
 
   
@@ -54,7 +53,7 @@ function AdminDashboard() {
           <Card title="Total Tutors" icon={FaUserGraduate} count={count.tutorCount} />
           <Card title="Total Courses" icon={MdOndemandVideo} count={count.courseCount} />
           <Card title="Total Orders" icon={MdPayment} count={count.orderCount} />
-          <Card title="Total Coupons" icon={MdPayment} count={count.couponCount} />
+          <Card title="Total Coupons" icon={RiCoupon2Line} count={count.couponCount} />
         </div>
 
 <h1 className="mx-10">Recent Transctions</h1>

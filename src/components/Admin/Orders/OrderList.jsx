@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { getOrderList } from "../../../Services/adminApi";
+import TablePagination from "../TablePagination/TablePagination";
 
 function OrderList() {
   const [orders, setOrders] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [activePage, setActivePage] = useState(1);
+  const [limit, setLimit] = useState(0);
+
   useEffect(() => {
-    getOrderList().then(({ data }) => {
+    getOrderList(activePage).then(({ data }) => {
       setOrders(data.orders);
+      setTotalOrders(data.total)
+      setLimit(data.size)
     });
-  },[]);
+  },[activePage]);
+
   return (
     <>
       <div className="h-auto w-full bg-[#141B2D] text-white">
@@ -79,6 +87,12 @@ function OrderList() {
               })}
             </tbody>
           </table>
+          <TablePagination
+          activePage={activePage}
+          setActivePage={setActivePage}
+          totalData={totalOrders}
+          limit={limit}
+        />
         </div>
       </div>
     </>

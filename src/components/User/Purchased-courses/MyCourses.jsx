@@ -28,7 +28,7 @@ function MyCourses() {
         </h3>
       </div>
       <div>
-       {enrolledCourse ? (
+       {enrolledCourse?.length ? (
               <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 bg-[#EFEFF6] grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
               {enrolledCourse?.map((course, index) => {
                 course.course={

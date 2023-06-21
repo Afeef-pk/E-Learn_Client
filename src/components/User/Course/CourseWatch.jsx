@@ -16,7 +16,7 @@ function CourseWatch() {
   const [videoId, setVideoId] = useState();
   const { courseId } = useParams()
   const navigate = useNavigate();
-
+console.log(courseDetails);
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -45,7 +45,8 @@ function CourseWatch() {
 
   //youtube video id generator
   const getYoutubeVideoId = (videoUrl) => {
-    setVideoId(getYouTubeID(videoUrl));
+    console.log(videoUrl);
+    setVideoId(videoUrl); 
   };
 
   useEffect(() => {
@@ -56,7 +57,7 @@ function CourseWatch() {
             const course = response.data.courseDetails.course.map(obj => {
                 return { ...obj, open: false };
             });
-            dispatch(setCourseDetails({ ...response.data.courseDetails, courseInfo: { ...response.data.courseDetails }, course }))
+            dispatch(setCourseDetails({ ...response.data.courseDetails, course }))
         })
         .catch((error)=>{
             toast.error(error.response.data.err)
@@ -84,7 +85,7 @@ function CourseWatch() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+console.log(videoId);
   return (
     <section>
       <div className="mx-auto  h-screen">
@@ -106,14 +107,20 @@ function CourseWatch() {
               </Link>
 
               <h1 className="ml-3 text-md ">
-              {courseDetails && courseDetails.courseInfo.name}
+              {courseDetails && courseDetails.name}
               </h1>
             </div>
 
             <div>
               {videoId ? (
                 <div>
-                  <YouTube videoId={videoId} opts={opts} />
+                  {/* <YouTube videoId={videoId} opts={opts} /> */}
+                  <video width="100%" height="589" controls>
+                    <source
+                      src={videoId}
+                      type={videoId.type}
+                    />
+                  </video>
                 </div>
               ) : (
                 <div
@@ -143,7 +150,7 @@ function CourseWatch() {
                       />
                     </svg>
                   </div>
-                  <img className="h-full" src={courseDetails&& courseDetails.courseInfo.imageURL} alt="" />
+                  <img className="h-full" src={courseDetails&& courseDetails.imageURL} alt="" />
                 </div>
               )}
 

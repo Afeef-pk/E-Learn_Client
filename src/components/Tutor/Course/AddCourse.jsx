@@ -3,19 +3,21 @@ import NavBar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { uploadCourse } from "../../../Services/tutorApi";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { storage } from "../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addCategory } from "../../../Services/adminApi";
 import {
   courseValidationSchema,
   courseInitialValues,
+  imageUpload,
 } from "../../../constants/constant";
 
 function AddCourse() {
   const fileInputRef = useRef();
   const [image, setImage] = useState("");
   const [categoryData, setCategoryData] = useState([]);
+  const [video, setVideo] = useState(null);
 
   const handleClick = () => {
     fileInputRef.current.click();
@@ -75,15 +77,18 @@ function AddCourse() {
     initialValues: {
       chapterName: "",
       lessonName: "",
-      videoUrl: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
+    const videoUrl = await imageUpload("/Course-Videos/",video)
+    values={
+      ...values,
+      videoUrl
+    }
       setLesson([...lesson, values]);
       lessonFormik.setFieldValue("lessonName", "");
       lessonFormik.setFieldValue("videoUrl", "");
     },
   });
-
   useEffect(() => {
     addCategory().then((res) => {
       if (res.status === 200) {
@@ -91,10 +96,9 @@ function AddCourse() {
       }
     });
   }, []);
-
+console.log(lesson);
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
-      <Toaster />
       <NavBar />
       <div className="bg-[#1F2A40] m-10 rounded-lg">
         <div className=" flex justify-center py-5 ">
@@ -498,39 +502,13 @@ function AddCourse() {
                   </div>
                   <div className="relative mb-3 w-full md:w-1/2 sm:w-1/1 m-3">
                     <input
-                      type="text"
-                      name="videoUrl"
+                      type="file"
+                      name="video"
                       className="peer block min-h-[auto] w-full rounded border-gray-300 bg-gray-900 py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                      onChange={(e) => {
-                        handleLessonChange(e);
-                      }}
-                      onBlur={() => {
-                        if (lessonFormik.values.videoUrl.trim() !== "") {
-                          return;
-                        }
-                        lessonFormik.setFieldValue("videoUrl", "");
-                      }}
-                      value={lessonFormik.values.videoUrl}
+                      onChange={(e) => { setVideo(e.target.files[0])}}
                     />
-                    {lessonFormik.touched.videoUrl &&
-                  lessonFormik.errors.videoUrl ? (
-                    <p className="text-red-500 text-xs ">
-                      {lessonFormik.errors.videoUrl}
-                    </p>
-                  ) : null}
-                    <label
-                      htmlFor="videoUrl"
-                      className={`pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out ${
-                        lessonFormik.values.videoUrl.trim() !== ""
-                          ? "-translate-y-[1.7rem] scale-[0.8] text-primary"
-                          : ""
-                      } motion-reduce:transition-none dark:text-neutral-200 dark:${
-                        lessonFormik.values.videoUrl.trim() !== ""
-                          ? "text-primary"
-                          : ""
-                      }`}>
-                      Video Link
-                    </label>
+      
+                
                   </div>
                   <div className="relative mb-3 w-full md:w-1/3 m-3">
                     <button
@@ -553,14 +531,14 @@ function AddCourse() {
                         return (
                           <div className="w-full  md:w-1/2" key={index}>
                             <div className="m-2">
-                              <p className="flex flex-col items-center  rounded-lg shadow md:flex-row md:max-w-xl  border-gray-700 bg-gray-800 hover:bg-gray-700">
+                              <div className="flex flex-col items-center  rounded-lg shadow md:flex-row md:max-w-xl  border-gray-700 bg-gray-800 hover:bg-gray-700">
                                 <div className="flex flex-col justify-between px-3 py-2  leading-normal">
                                   <h5 className=" text-md font-semibold tracking-tighttext-white">
                                     <span className="mr-3">{index + 1}.</span>
-                                    {obj.lessonName}
+                                    {obj.lessonName}aaa
                                   </h5>
                                 </div>
-                              </p>
+                              </div>
                             </div>
                           </div>
                         );

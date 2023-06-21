@@ -2,10 +2,11 @@ import * as Yup from "yup";
 import { MdOutlineDashboard, MdPayment, MdOndemandVideo } from "react-icons/md";
 import { FaUserGraduate, FaUsers } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
+import { RiCoupon2Line, } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import { storage } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {  CgProfile } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
 import { AiOutlineMessage } from "react-icons/ai";
 
 export const initialValues = {
@@ -99,6 +100,7 @@ export const menus = [
   { name: "Users", link: "/admin/users", icon: FaUsers },
   { name: "Tutors", link: "/admin/tutors", icon: FaUserGraduate },
   { name: "Courses", link: "/admin/courses", icon: MdOndemandVideo },
+  { name: "Coupons", link: "/admin/coupons", icon: RiCoupon2Line },
   { name: "Transctions", link: "/admin/transctions", icon: MdPayment },
   { name: "Logout", link: "/admin/", icon: BiLogOut },
 ];
@@ -125,9 +127,13 @@ export const imageValidation = (file) => {
 };
 
 export const imageUpload = async (path, image) => {
-  const storageRef = ref(storage, path + image.name);
-  const snapshot = await uploadBytes(storageRef, image);
-  return getDownloadURL(snapshot.ref);
+  try {
+    const storageRef = ref(storage, path + image.name);
+    const snapshot = await uploadBytes(storageRef, image)
+    return getDownloadURL(snapshot.ref);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const tutorProfileInitialValues = {

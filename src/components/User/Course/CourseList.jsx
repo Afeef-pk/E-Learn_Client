@@ -10,7 +10,7 @@ function CourseList() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [totalCourse, setTotalCourse] = useState(0);
   const [activePage, setActivePage] = useState(1);
-  const courseLimitPerPage = 2;
+  const courseLimitPerPage = 3;
   useEffect(() => {
     getCourseList(
       activePage,

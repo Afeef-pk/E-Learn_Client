@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { getUserList, updateUserStatus } from "../../../Services/adminApi";
 import { toast } from "react-hot-toast";
+import TablePagination from "../TablePagination/TablePagination";
 
 function UsersList() {
   const [userData, setUserData] = useState([]);
   const [action, setAction] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredUsers = userData.filter((user) =>
-    user.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  const [totalUser, setTotalUser] = useState(0);
+  const [activePage, setActivePage] = useState(1);
+  const [limit, setLimit] = useState(0);
   const AccessManage = async (userId) => {
     const { status, data } = await updateUserStatus(userId);
     status === 200
@@ -20,11 +19,14 @@ function UsersList() {
 
     setAction(!action);
   };
+
   useEffect(() => {
-    getUserList().then((res) => {
-      setUserData(res.data.users);
+    getUserList(activePage, searchQuery).then(({data}) => {
+      setUserData(data.users);
+      setTotalUser(data.total);
+      setLimit(data.size)
     });
-  }, [action]);
+  }, [action, activePage, searchQuery]);
 
   return (
     <div className="w-full  bg-[#141B2D]">
@@ -81,7 +83,7 @@ function UsersList() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user, index) => {
+            {userData.map((user, index) => {
               return (
                 <tr
                   key={index}
@@ -93,7 +95,9 @@ function UsersList() {
                     <img
                       className="w-10 h-10 rounded-full"
                       src={
-                        user?.image ? user?.image : "/assets/admin/defaultdp.png"
+                        user?.image
+                          ? user?.image
+                          : "/assets/admin/defaultdp.png"
                       }
                       alt="user-image"
                     />
@@ -125,6 +129,13 @@ function UsersList() {
             })}
           </tbody>
         </table>
+
+        <TablePagination
+          activePage={activePage}
+          setActivePage={setActivePage}
+          totalData={totalUser}
+          limit={limit}
+        />
       </div>
     </div>
   );

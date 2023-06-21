@@ -3,33 +3,36 @@ import NavBar from "../NavBar/NavBar";
 import { getTutorsList, updateTutorStatus } from "../../../Services/adminApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import TablePagination from "../TablePagination/TablePagination";
+
 function TutorsList() {
   const [tutorData, setTutorData] = useState([]);
   const [action, setAction] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [totalTutor, setTotalTutor] = useState(0);
+  const [activePage, setActivePage] = useState(1);
+  const [limit, setLimit] = useState(0);
   const navigate = useNavigate();
-
-  const filteredUsers = tutorData.filter((tutor) =>
-    tutor.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const AccessManage = async (userId,approve=false) => {
-    const { status, data } = await updateTutorStatus(userId,approve);
+  const AccessManage = async (userId, approve = false) => {
+    const { status, data } = await updateTutorStatus(userId, approve);
     status === 200
       ? toast.success(data.message)
       : toast.error("Something went wrong!");
     setAction(!action);
   };
-
+  
   const viewTutor = (userId) => {
     navigate("/admin/tutor/view", { state: { userId } });
   };
 
   useEffect(() => {
-    getTutorsList().then((res) => {
-      setTutorData(res.data.tutors);
+    getTutorsList(activePage, searchQuery).then(({data}) => {
+      setTutorData(data.tutors);
+      setTotalTutor(data.total);
+      setLimit(data.size)
     });
-  }, [action]);
+  }, [action, activePage, searchQuery]);
+
   return (
     <div className="h-screen w-full bg-[#141B2D]">
       <NavBar />
@@ -91,7 +94,7 @@ function TutorsList() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user, index) => {
+            {tutorData?.map((user, index) => {
               return (
                 <tr
                   key={index}
@@ -137,9 +140,9 @@ function TutorsList() {
 
                   <td className="px-6 py-4">
                     {!user.isApproved ? (
-                      <button 
-                      className="bg-[#099cb9] w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white"
-                      onClick={() => AccessManage(user._id,true)} >
+                      <button
+                        className="bg-[#099cb9] w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white"
+                        onClick={() => AccessManage(user._id, true)}>
                         Approve
                       </button>
                     ) : (
@@ -148,9 +151,7 @@ function TutorsList() {
                         className={`${
                           user.status ? "bg-[#3DA58A]" : "bg-[#D93737]"
                         } w-28  text-center py-2 rounded-xl  font-semibold font-mono  text-white`}>
-                        {user.status
-                          ? "Active"
-                          : "Block"}
+                        {user.status ? "Active" : "Blocked"}
                       </button>
                     )}
                   </td>
@@ -166,6 +167,12 @@ function TutorsList() {
             })}
           </tbody>
         </table>
+        <TablePagination
+          activePage={activePage}
+          setActivePage={setActivePage}
+          totalData={totalTutor}
+          limit={limit}
+        />
       </div>
     </div>
   );

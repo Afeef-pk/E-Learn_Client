@@ -11,44 +11,49 @@ const adminAuth = () => {
 const dashboardData = () => {
     return adminAxiosInstance.get("/dashboard")
 }
-const getUserList = () => {
-    return adminAxiosInstance.get("/users")
+
+const getUserList = (page,searchQuery) => {
+    return adminAxiosInstance.get("/users",{ params: { page, searchQuery } })
 }
 
 const updateUserStatus = (userId) => {
     return adminAxiosInstance.patch(`/user/status?userId=${userId}`)
 }
 
-const updateTutorStatus = (tutorId,approve) => {
+const updateTutorStatus = (tutorId, approve) => {
     return adminAxiosInstance.patch(`/tutor/status?tutorId=${tutorId}&approve=${approve}`)
 }
 
-const getTutorsList = () => {
-    return adminAxiosInstance.get("/tutors")
+const getTutorsList = (page, searchQuery) => {
+    return adminAxiosInstance.get("/tutors",{ params: { page, searchQuery } })
 }
 
-const getTutorDetails = (tutorId, tutorView ,status) => {
-    return adminAxiosInstance.post('/tutor/view', { tutorId, status,tutorView })
+const getTutorDetails = (tutorId, tutorView, status) => {
+    return adminAxiosInstance.post('/tutor/view', { tutorId, status, tutorView })
 }
 
-const addCategory = (categoryName)=>{
-    return adminAxiosInstance.post("/category",{categoryName})
+const addCategory = (categoryName) => {
+    return adminAxiosInstance.post("/category", { categoryName })
 }
 
 const getCourseData = () => {
     return adminAxiosInstance.get("/courses")
 }
 
-const getCourseDetails = (courseId,status=false) => {
-    return adminAxiosInstance.post(`/course/view`,{courseId, status})
+const getCourseDetails = (courseId, status = false) => {
+    return adminAxiosInstance.post(`/course/view`, { courseId, status })
 }
 
-const manageCourse = (courseId)=>{
-    return adminAxiosInstance.post("/course/manage",{courseId})
+const manageCourse = (courseId) => {
+    return adminAxiosInstance.post("/course/manage", { courseId })
 }
 
-const getOrderList = ()=>{
-    return adminAxiosInstance.get("/transctions")
+const getcouponData = (page) => {
+    return adminAxiosInstance.get("/coupons",{ params: { page } })
+}
+
+const getOrderList = (page) => {
+    return adminAxiosInstance.get("/transctions",{ params: { page } })
 }
 
 export {
@@ -64,5 +69,6 @@ export {
     getCourseDetails,
     manageCourse,
     addCategory,
+    getcouponData,
     getOrderList
 }
