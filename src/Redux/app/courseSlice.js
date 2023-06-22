@@ -9,10 +9,13 @@ const courseSlice = createSlice({
         setCourseDetails: (state, action) => {
             state.value=action.payload
         },
+        clearCourseDetails: (state, action) => {
+            state.value=null
+        },
     }
 })
 
 
-export const { setCourseDetails } = courseSlice.actions;
+export const { setCourseDetails,clearCourseDetails } = courseSlice.actions;
 
 export default courseSlice.reducer;

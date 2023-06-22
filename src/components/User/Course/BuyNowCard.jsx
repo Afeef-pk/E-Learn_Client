@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 //import { isCourseEnrolled } from '../../services/userApi';
@@ -6,13 +6,15 @@ import tutorIcon from "/icons/tutorIcon.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { ImFilm } from "react-icons/im";
 import { GrLanguage } from "react-icons/Gr";
+import { MdClose } from "react-icons/md";
+
 import Button from "../Button/Button";
 import { isCourseEnrolled } from "../../../Services/userApi";
+import { Dialog, Transition } from '@headlessui/react'
 
 function BuyNowCard({ courseDetails }) {
-  
   const [isEnrolled, setIsEnrolled] = useState(false);
-const user = useSelector((state)=>state.user);
+  const user = useSelector((state) => state.user);
   const getLessonsCount = () => {
     let count = 0;
     courseDetails.course.map((chapter) => {
@@ -21,25 +23,85 @@ const user = useSelector((state)=>state.user);
     return count;
   };
 
-  useEffect(()=>{
-    if(user.authorized){
-        isCourseEnrolled(courseDetails._id).then((response) => {
-            if (response.data.enrolled) {
-                setIsEnrolled(true);
-            }
-        })
+  useEffect(() => {
+    if (user.authorized) {
+      isCourseEnrolled(courseDetails._id).then((response) => {
+        if (response.data.enrolled) {
+          setIsEnrolled(true);
+        }
+      });
     }
-  },[])
-
+  }, []);
+  const [modalOpen, setModalOpen] = useState(false)
+  console.log(modalOpen);
   return (
     <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
-      <div className="p-5">
+      <div className=" relative " >
         <img
           className="rounded w-full object-cover"
           src={courseDetails.imageURL}
           alt="course thumbnail"
         />
+        <div className="absolute inset-0 flex items-center justify-center z-10 "  onClick={() => setModalOpen(true) } >
+          <svg
+            className="w-24 h-12 cursor-pointer"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="50" fill="white"/>
+            <path d="M37.5 25L75 50L37.5 75V25Z" fill="black"/>
+          </svg>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
       </div>
+
+      <Transition show={modalOpen} as={Fragment}>
+        <Dialog onClose={() => setModalOpen(false)}>
+          {/* 2. The backdrop layer */}
+          <Transition.Child
+            className="fixed inset-0 z-[99999] bg-black bg-opacity-75 transition-opacity"
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition ease-out duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+            aria-hidden="true"
+          />
+          {/* 3. The modal video */}
+          <Transition.Child
+            className="fixed inset-0 z-[99999] flex p-6"
+            enter="transition ease-out duration-300"
+            enterFrom="opacity-0 scale-75"
+            enterTo="opacity-100 scale-100"
+            leave="transition ease-out duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-75"
+          >
+            <div className="max-w-xl mx-auto h-auto flex my-28 ">
+              <Dialog.Panel className="w-full max-h-full rounded-sm  shadow-2xl aspect-video bg-black  overflow-hidden">
+                <div className="h-full bg-[#1c1d1f]">
+                  <div className="flex justify-between p-8 text-white flex-wrap">
+                    <div className="grid gap-3">
+                      <div><h1>Course Preview</h1></div>
+                      <div><h1 className="text-xl">{courseDetails.name}</h1></div>
+                    </div>
+                    <div>
+                      <MdClose size={20} onClick={()=>setModalOpen(false)} cursor="pointer"/>
+                    </div>
+                  </div>
+                  <div className="px-8">
+                  <video className="rounded-lg" autoPlay controls="hover" width="1920" height="1080"  >
+                  <source src={courseDetails.pilotVideo} type="video/mp4" />
+                </video>
+                  </div>
+                </div>
+                
+              </Dialog.Panel>
+            </div>
+          </Transition.Child>
+        </Dialog>
+      </Transition>
+
       <div className="p-5 pt-2">
         <div className="flex justify-between ">
           <div>
@@ -75,11 +137,13 @@ const user = useSelector((state)=>state.user);
         <p className="mb-3 font-normal text-gray-700 ">Life Long Validity</p>
 
         <div className="button">
-          {isEnrolled ? 
-          <Link to={`/course/view/${courseDetails._id}`} className="w-full"><button className="bg-[#6255a4] p-3 flex justify-center text-white loading-btn form-btn mt-2 font-medium rounded w-full">
-          Continue Learning
-        </button></Link>
-           : (
+          {isEnrolled ? (
+            <Link to={`/course/view/${courseDetails._id}`} className="w-full">
+              <button className="bg-[#6255a4] p-3 flex justify-center text-white loading-btn form-btn mt-2 font-medium rounded w-full">
+                Continue Learning
+              </button>
+            </Link>
+          ) : (
             <Link
               className="w-full"
               to={`/course-payment/${courseDetails._id}`}>

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { getCourseWatch } from "../../../Services/userApi";
-import { setCourseDetails } from "../../../Redux/app/courseSlice";
+import { clearCourseDetails, setCourseDetails } from "../../../Redux/app/courseSlice";
 
 function CourseWatch() {
   const dispatch = useDispatch();
@@ -81,11 +81,14 @@ function CourseWatch() {
     }
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () =>{
+      dispatch(clearCourseDetails())
+      window.removeEventListener("resize", handleResize);
+    } 
   }, []);
 
   return (
-    <section>
+    <section className="mx-20">
       <div className="mx-auto  h-screen">
         <div className="flex flex-col sm:flex-row  ">
           <div className="w-full lg:w-8/12 overflow-auto">
@@ -113,6 +116,7 @@ function CourseWatch() {
               {video ? (
                 <div>
                   <video
+                  className="w-full h-auto max-w-full border border-gray-200 rounded-lg dark:border-gray-700"
                     ref={videoRef}
                     width="1012"
                     height={playerHeight}
