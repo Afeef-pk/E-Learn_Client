@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
-import YouTube from "react-youtube";
 import { useDispatch, useSelector } from "react-redux";
-import getYouTubeID from "get-youtube-id";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -13,10 +11,11 @@ function CourseWatch() {
   const dispatch = useDispatch();
   const [playerHeight, setPlayerHeight] = useState("");
   const courseDetails = useSelector((state) => state.course.value);
-  const [videoId, setVideoId] = useState();
-  const { courseId } = useParams()
+  const [video, setVideo] = useState(null);
+  const { courseId } = useParams();
   const navigate = useNavigate();
-console.log(courseDetails);
+  const videoRef = useRef(null);
+
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -34,41 +33,41 @@ console.log(courseDetails);
     dispatch(setCourseDetails({ ...courseDetails, course }));
   };
 
-  //youtube window opts
-  const opts = {
-    height: playerHeight,
-    width: "100%",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
-
-  //youtube video id generator
-  const getYoutubeVideoId = (videoUrl) => {
-    console.log(videoUrl);
-    setVideoId(videoUrl); 
-  };
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.pause();
+      videoElement.src = "";
+      videoElement.load();
+      videoElement.src = video;
+      videoElement.load();
+      videoElement.play();
+    }
+  }, [video]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);  
+    window.scrollTo(0, 0);
     if (!courseDetails) {
-        getCourseWatch(courseId)
+      getCourseWatch(courseId)
         .then((response) => {
-            const course = response.data.courseDetails.course.map(obj => {
-                return { ...obj, open: false };
-            });
-            dispatch(setCourseDetails({ ...response.data.courseDetails, course }))
+          const course = response.data.courseDetails.course.map((obj) => {
+            return { ...obj, open: false };
+          });
+          dispatch(
+            setCourseDetails({ ...response.data.courseDetails, course })
+          );
         })
-        .catch((error)=>{
-            toast.error(error.response.data.err)
-            navigate('/')
-        })
+        .catch((error) => {
+          toast.error(error.response.data.err);
+          navigate("/");
+        });
     }
 
     //seting first video  to video controller
     if (courseDetails) {
-      getYoutubeVideoId(courseDetails?.course[0].lessons[0].videoUrl);
+      setVideo(courseDetails?.course[0].lessons[0].videoUrl);
     }
+
     //screen resize
     function handleResize() {
       const windowWidth = window.innerWidth;
@@ -80,19 +79,18 @@ console.log(courseDetails);
         setPlayerHeight("240");
       }
     }
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-console.log(videoId);
+
   return (
     <section>
       <div className="mx-auto  h-screen">
         <div className="flex flex-col sm:flex-row  ">
           <div className="w-full lg:w-8/12 overflow-auto">
             <div className="flex text-slate-700 items-center py-4 pl-2 border-b border-slate-300">
-              <Link to={`/course-details/${courseId}`}>
+              <Link to={`/my-courses`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
@@ -107,27 +105,26 @@ console.log(videoId);
               </Link>
 
               <h1 className="ml-3 text-md ">
-              {courseDetails && courseDetails.name}
+                {courseDetails && courseDetails.name}
               </h1>
             </div>
 
             <div>
-              {videoId ? (
+              {video ? (
                 <div>
-                  {/* <YouTube videoId={videoId} opts={opts} /> */}
-                  <video width="100%" height="589" controls>
-                    <source
-                      src={videoId}
-                      type={videoId.type}
-                    />
+                  <video
+                    ref={videoRef}
+                    width="1012"
+                    height={playerHeight}
+                    controls
+                    autoPlay>
+                    <source src={video} type={video.type} />
                   </video>
                 </div>
               ) : (
                 <div
                   onClick={() => {
-                    getYoutubeVideoId(
-                      courseDetails.course[0].lessons[0].videoUrl
-                    );
+                    setVideo(courseDetails.course[0].lessons[0].videoUrl);
                   }}
                   className="cursor-pointer relative flex justify-center items-center h-96">
                   <div className="absolute text-white ">
@@ -150,7 +147,11 @@ console.log(videoId);
                       />
                     </svg>
                   </div>
-                  <img className="h-full" src={courseDetails&& courseDetails.imageURL} alt="" />
+                  <img
+                    className="h-full"
+                    src={courseDetails && courseDetails.imageURL}
+                    alt=""
+                  />
                 </div>
               )}
 
@@ -211,7 +212,7 @@ console.log(videoId);
                           index={index}
                           key={index}
                           toggleDropdown={toggleDropdown}
-                          getYoutubeVideoId={getYoutubeVideoId}
+                          setVideo={setVideo}
                         />
                       ))}
                   </div>

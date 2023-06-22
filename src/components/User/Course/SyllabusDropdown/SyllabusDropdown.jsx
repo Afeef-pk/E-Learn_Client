@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SyllabusDropdown.css'
 
-function SyllabusDropdown({ course, index, toggleDropdown, getYoutubeVideoId }) {
+function SyllabusDropdown({ course, index, toggleDropdown, setVideo }) {
    
     return (
         <div
@@ -28,7 +28,7 @@ function SyllabusDropdown({ course, index, toggleDropdown, getYoutubeVideoId }) 
             {
                 course.lessons.map((lesson, index) => {
                     return (
-                        <div onClick={() => { getYoutubeVideoId(lesson.videoUrl)}} key={index} className={"lessons-title cursor-pointer  hover:bg-violet-50 " + (course.open ? "p-4" : "")}>
+                        <div onClick={() => { setVideo(lesson.videoUrl)}} key={index} className={"lessons-title cursor-pointer  hover:bg-violet-50 " + (course.open ? "p-4" : "")}>
                             <p className='lesson-title'>{lesson.lessonName}</p>
                             <div className='flex items-center text-slate-500 mt-1'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3">

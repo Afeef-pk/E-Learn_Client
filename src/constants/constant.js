@@ -108,7 +108,7 @@ export const menus = [
 export const handleImage = (e) => {
   const file = e.target.files[0];
   if (imageValidation(file)) {
-    return e.target.files[0]
+    return file
   }
 };
 

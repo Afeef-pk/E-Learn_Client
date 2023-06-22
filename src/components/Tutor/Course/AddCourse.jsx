@@ -11,36 +11,30 @@ import {
   courseValidationSchema,
   courseInitialValues,
   imageUpload,
+  handleImage
 } from "../../../constants/constant";
 
 function AddCourse() {
   const fileInputRef = useRef();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
   const [video, setVideo] = useState(null);
 
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
 
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
 
-  const uploadThumbnail = async () => {
-    const storageRef = ref(storage, "/course-image/" + image.name);
-    const snapshot = await uploadBytes(storageRef, image);
-    return getDownloadURL(snapshot.ref);
-  };
+
   const formik = useFormik({
     initialValues: courseInitialValues,
-    validationSchema: courseValidationSchema,
+    //validationSchema: courseValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Please Wait Uploading Course");
       values = {
         ...values,
         course,
       };
-      const imageURL = await uploadThumbnail();
+      const imageURL = await imageUpload("/course-image/",image)
       await uploadCourse(values, imageURL).then((res) => {
         toast.dismiss();
         if (res.status === 200) {
@@ -79,6 +73,7 @@ function AddCourse() {
       lessonName: "",
     },
     onSubmit: async(values) => {
+    toast.loading("Uploading your video")
     const videoUrl = await imageUpload("/Course-Videos/",video)
     values={
       ...values,
@@ -87,8 +82,10 @@ function AddCourse() {
       setLesson([...lesson, values]);
       lessonFormik.setFieldValue("lessonName", "");
       lessonFormik.setFieldValue("videoUrl", "");
+      toast.dismiss()
     },
   });
+
   useEffect(() => {
     addCategory().then((res) => {
       if (res.status === 200) {
@@ -96,7 +93,7 @@ function AddCourse() {
       }
     });
   }, []);
-console.log(lesson);
+
   return (
     <div className="h-auto w-full bg-[#141B2D] text-white">
       <NavBar />
@@ -106,9 +103,9 @@ console.log(lesson);
             <div className="flex  justify-center ">
               <img
                 className="h-48 max-w-xs rounded-lg w-full "
-                src={image ? URL.createObjectURL(image) : ""}
+                src={URL.createObjectURL(image)}
                 alt="image description"
-                onClick={handleClick}></img>
+                onClick={()=> fileInputRef.current.click()}></img>
             </div>
           )}
           <div
@@ -149,9 +146,7 @@ console.log(lesson);
                   type="file"
                   className="hidden"
                   required
-                  onChange={(e) => {
-                    setImage(e.target.files[0]);
-                  }}
+                  onChange={(e) =>setImage(handleImage(e))}
                 />
               </label>
             </div>

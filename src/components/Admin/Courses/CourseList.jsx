@@ -58,7 +58,7 @@ function CourseList() {
 
   return (
     <>
-      <div className=" relative w-full bg-[#141B2D] text-white">
+      <div className="relative w-full bg-[#141B2D] text-white">
         <NavBar />
         <h1 className="text-3xl mx-5 uppercase  text-white font-bold tracking-widest">
           Courses
