@@ -113,7 +113,7 @@ export const handleImage = (e) => {
 };
 
 export const imageValidation = (file) => {
-  const supportedFormats = ["image/jpeg", "image/png", "image/gif"];
+  const supportedFormats = ["image/jpeg", "image/png", "image/gif","image/webp"];
   const maxSizeInBytes = 5 * 1024 * 1024;
   if (!supportedFormats.includes(file.type)) {
     toast.error("Please Choose a image file");
@@ -163,3 +163,5 @@ export const userNavBar = [
   { name: "Community", href: "/community", current: false },
   { name: "News", href: "/news", current: false },
 ];
+
+

@@ -13,6 +13,7 @@ function TutorsList() {
   const [activePage, setActivePage] = useState(1);
   const [limit, setLimit] = useState(0);
   const navigate = useNavigate();
+  const skip = (activePage - 1)*limit ===0?1:(activePage-1) *limit+1
   const AccessManage = async (userId, approve = false) => {
     const { status, data } = await updateTutorStatus(userId, approve);
     status === 200
@@ -99,7 +100,7 @@ function TutorsList() {
                 <tr
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <td className="pl-7 py-4"> {index + 1}</td>
+                  <td className="pl-7 py-4"> {index +skip}</td>
                   <td
                     scope="row"
                     className="flex items-center  py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -172,6 +173,7 @@ function TutorsList() {
           setActivePage={setActivePage}
           totalData={totalTutor}
           limit={limit}
+          skip={skip}
         />
       </div>
     </div>

@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from "react";
 import { getEnrolledCourse } from "../../../Services/userApi";
-import CourseCard from "../Home/CourseCard";
+import CourseCard from "../CourseCard/CourseCard";
 
-function MyCourses() {
+function UserEnrollements() {
   const [enrolledCourse, setEnrolledCourse] = useState(null);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ function MyCourses() {
     try {
       getEnrolledCourse()
         .then(({data}) => {
-          setEnrolledCourse(data.userCourses);
+          setEnrolledCourse(data.userCourses.enrolledCourses);
         })
         .catch((err) => {
           console.log(err);
@@ -29,13 +29,9 @@ function MyCourses() {
       </div>
       <div>
        {enrolledCourse?.length ? (
-              <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 bg-[#EFEFF6] grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+              <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
               {enrolledCourse?.map((course, index) => {
-                course.course={
-                    ...course.course,
-                    teacher:course.teacher
-                }
-                return <CourseCard key={index} course={course.course} myCourse={true}/>;
+                return <CourseCard key={index} course={course} myCourse={true}/>;
               })}
             </div>
         ) : (
@@ -49,4 +45,4 @@ function MyCourses() {
   );
 }
 
-export default MyCourses;
+export default UserEnrollements;

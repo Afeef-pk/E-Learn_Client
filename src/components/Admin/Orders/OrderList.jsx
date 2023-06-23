@@ -8,7 +8,7 @@ function OrderList() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [limit, setLimit] = useState(0);
-
+  const skip = (activePage - 1)*limit ===0?1:(activePage-1) *limit+1
   useEffect(() => {
     getOrderList(activePage).then(({ data }) => {
       setOrders(data.orders);
@@ -51,11 +51,12 @@ function OrderList() {
             </thead>
             <tbody>
               {orders.map((order, index) => {
+                {console.log(index)}
                 return (
                   <tr
                     key={index}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="pl-7 py-4"> {index + 1}</td>
+                    <td className="pl-7 py-4"> {skip+index}</td>
                     <td
                       scope="row"
                       className="flex items-center  py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -92,6 +93,7 @@ function OrderList() {
           setActivePage={setActivePage}
           totalData={totalOrders}
           limit={limit}
+          skip={skip}
         />
         </div>
       </div>

@@ -1,24 +1,28 @@
-import React, { useEffect,useState } from "react";
-import { toast, Toaster } from "react-hot-toast"
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo1 from "/icons/design.svg";
 import logo2 from "/icons/monitor.svg";
 import logo3 from "/icons/it-logo.svg";
 import logo4 from "/icons/business-logo.svg";
 import Card from "./Card";
-import CourseCard from "./CourseCard";
+import CourseCard from "../CourseCard/CourseCard";
 import homekid from "/assets/home-kid.png";
 import homeImg from "/assets/home-image.png";
 import { homeCourseLoad } from "../../../Services/userApi";
 import Button from "../Button/Button";
 
 function UserHomePage() {
-  const [courses,setCourse] = useState([])
-   useEffect(()=>{
-    homeCourseLoad().then((res)=>{
-      setCourse(res.data.courseData);
-    })
-  },[])
+  const [courses, setCourse] = useState([]);
+  const [courseCount, setCourseCount] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    homeCourseLoad(courseCount).then(({ data }) => {
+      setCourse(data.courseData);
+      setTotalCount(data.total)
+    });
+  }, [courseCount]);
+ 
   return (
     <>
       <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
@@ -57,9 +61,11 @@ function UserHomePage() {
             </h4>
           </div>
           <div className="p-3">
-            <Link to="/course"><Button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
-              See All category
-            </Button></Link>
+            <Link to="/course">
+              <Button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
+                See All category
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -110,15 +116,61 @@ function UserHomePage() {
             We Have Tones of Course for You !!
           </h5>
         </div>
-        <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">Top Courses</h1>
-        <div className="items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
-          {courses.map((course,index)=>{
-          return <CourseCard
-          key={index}
-          course={course}
-          /> })}
+        <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">
+          Top Courses
+        </h1>
+        <div className="relative items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+         {courseCount!==1 && <button
+         onClick={()=>setCourseCount(courseCount-1)}
+            type="button"
+            className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            data-carousel-prev>
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white  group-hover:bg-blue-500 group-focus:ring-2 ring-2">
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="4"
+                  d="M15 19l-7-7 7-7"></path>
+              </svg>
+              <span className="sr-only">Previous</span>
+            </span>
+          </button>}
+          {courses.map((course, index) => {
+            return <CourseCard key={index} course={course} />;
+          })}
+          {courseCount * 5 < totalCount && (
+            <button
+              onClick={()=>setCourseCount(courseCount+1)}
+              type="button"
+              className="absolute  top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+              data-carousel-next>
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white  group-hover:bg-blue-500 group-focus:ring-2 ring-2 ">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5  sm:w-6 sm:h-6 text-gray-800"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="4"
+                    d="M9 5l7 7-7 7"></path>
+                </svg>
+                <span className="sr-only">Next</span>
+              </span>
+            </button>
+          )}
         </div>
-        <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 bg-[#F2FFF7] my-20" >
+        <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 bg-[#F2FFF7] my-20">
           <div className="w-full">
             <div className="max-sm:px-12 max-sm:pt-10 px-20 pt-10 ">
               <h3 className="text-5xl font-medium leading-tight">
@@ -134,7 +186,9 @@ function UserHomePage() {
               </h1>
             </div>
             <div className="max-sm:px-12 px-20 mt-5">
-              <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">Connect</Button>
+              <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">
+                Connect
+              </Button>
             </div>
           </div>
           <div className="grid justify-items-center max-sm:hidden">

@@ -95,7 +95,6 @@ function BuyNowCard({ courseDetails }) {
                 </video>
                   </div>
                 </div>
-                
               </Dialog.Panel>
             </div>
           </Transition.Child>

@@ -25,10 +25,10 @@ const SideBar = () => {
 
   return (
     <div
-      className={`bg-[#1F2A40] min-h-screen  ${
+      className={`bg-[#1F2A40] min-h-screen   ${
         open ? "w-72" : "w-16"
       } duration-500 text-gray-100 px-4`}>
-      <div className="py-3 flex justify-end">
+      <div className="py-3 flex justify-end ">
         <HiMenuAlt3
           size={26}
           className="cursor-pointer"

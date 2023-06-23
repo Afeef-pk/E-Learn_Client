@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CourseCard from "../Home/CourseCard";
+import CourseCard from "../CourseCard/CourseCard";
 import { getCourseList } from "../../../Services/userApi";
 import Pagination from "../Pagination/Pagination";
 

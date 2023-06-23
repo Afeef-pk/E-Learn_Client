@@ -12,8 +12,8 @@ const tutorAuth = () => {
     return tutorAxiosInstance.get("/tutorauth")
 }
 
-const uploadCourse = (courseData, imageURL, courseURL) => {
-    return tutorAxiosInstance.post("/upload/course", { courseData, imageURL, courseURL })
+const uploadCourse = (courseData, imageURL, pilotVideoURL) => {
+    return tutorAxiosInstance.post("/upload/course", { courseData, imageURL, pilotVideoURL })
 }
 
 const dashboardCourses = () => {

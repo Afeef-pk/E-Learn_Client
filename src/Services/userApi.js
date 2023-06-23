@@ -16,8 +16,8 @@ const userAuth = ()=>{
     return userAxiosInstance.get("/userAuth")
 }
 
-const homeCourseLoad = ()=>{
-    return userAxiosInstance.get("/home-course")
+const homeCourseLoad = (size)=>{
+    return userAxiosInstance.get("/home-course",{params:{size}})
 }
 
 const getCourseList =(page,size,searchQuery,category)=>{
@@ -63,6 +63,10 @@ export const isCourseEnrolled = (courseId) => {
     return userAxiosInstance.get(`/is-course-enrolled/${courseId}`)
 }
 
+const getPurchaseHistory=()=>{
+    return userAxiosInstance.get("/purchase-history")
+}
+
 export {
     userSignup,
     userLogin,
@@ -76,5 +80,6 @@ export {
     getCourseWatch,
     applyCouponCode,
     paymentGateway,
-    getEnrolledCourse
+    getEnrolledCourse,
+    getPurchaseHistory
 }

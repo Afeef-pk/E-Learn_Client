@@ -11,6 +11,8 @@ function UsersList() {
   const [totalUser, setTotalUser] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [limit, setLimit] = useState(0);
+  const skip = (activePage - 1)*limit ===0?1:(activePage-1) *limit+1
+
   const AccessManage = async (userId) => {
     const { status, data } = await updateUserStatus(userId);
     status === 200
@@ -88,7 +90,7 @@ function UsersList() {
                 <tr
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <td className="pl-7 py-4"> {index + 1}</td>
+                  <td className="pl-7 py-4"> {index + skip}</td>
                   <td
                     scope="row"
                     className="flex items-center  py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -135,6 +137,7 @@ function UsersList() {
           setActivePage={setActivePage}
           totalData={totalUser}
           limit={limit}
+          skip={skip}
         />
       </div>
     </div>

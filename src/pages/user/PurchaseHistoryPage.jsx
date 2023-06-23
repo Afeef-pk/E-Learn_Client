@@ -1,16 +1,16 @@
 import React from 'react'
 import NavBar from '../../components/User/NavBar/NavBar'
-import UserEnrollements from '../../components/User/UserEnrollements/UserEnrollements'
+import PurchaseHistory from '../../components/User/PurchaseHistory/PurchaseHistory'
 import Footer from '../../components/User/Footer/Footer'
 
-function MyCoursePage() {
+function PurchaseHistoryPage() {
   return (
     <>
       <NavBar/>
-      <UserEnrollements/>
+      <PurchaseHistory/>
       <Footer/>
     </>
   )
 }
 
-export default MyCoursePage
+export default PurchaseHistoryPage

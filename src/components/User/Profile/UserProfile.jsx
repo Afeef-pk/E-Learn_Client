@@ -61,14 +61,14 @@ function UserProfile() {
                 alt="Preview"
               />
             )}
-            <div className="ab bg-gray-800 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
+            <div className=" bg-gray-800 text-xs absolute bottom-1 right-4 font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left hover:bg-gray-300 hover:text-gray-600  overflow-hidden cursor-pointer">
               <input
                 type="file"
                 name="photo"
                 className="absolute inset-0  opacity-0 cursor-pointer"
                 onChange={(e) => setImage(handleImage(e))}
               />
-              <FiEdit2 size={14} />
+              <FiEdit2 size={14} /> 
             </div>
           </div>
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
@@ -194,7 +194,7 @@ function UserProfile() {
                   <div className=" py-2 font-semibold">
                     Total Purchased course
                   </div>
-                  <div className="md:px-4 py-2">{user?.totalPurchased}</div>
+                  <div className="md:px-4 py-2">{user?.totalEnrolled}</div>
                 </div>
                 {/* <div className="grid grid-cols-2">
                 <div className="md:px-4 md:py-2 font-semibold">
