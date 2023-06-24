@@ -33,17 +33,7 @@ function CourseWatch() {
     dispatch(setCourseDetails({ ...courseDetails, course }));
   };
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      videoElement.pause();
-      videoElement.src = "";
-      videoElement.load();
-      videoElement.src = video;
-      videoElement.load();
-      videoElement.play();
-    }
-  }, [video]);
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -87,6 +77,30 @@ function CourseWatch() {
     } 
   }, []);
 
+  const handleTimeUpdate = () => {
+    console.log('hhi');
+    const videoElement = videoRef.current;
+    const currentTime = videoElement.currentTime;
+    const duration = videoElement.duration;
+    const remainingTime = duration - currentTime;
+
+    if (remainingTime <= 1) {
+      videoElement.pause()
+      console.log('Last 20 seconds');
+
+    }
+  };
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.pause();
+      videoElement.src = "";
+      videoElement.load();
+      videoElement.src = video;
+      videoElement.load();
+      videoElement.play();
+    }
+  }, [video]);
   return (
     <section className="mx-20">
       <div className="mx-auto  h-screen">
@@ -117,6 +131,7 @@ function CourseWatch() {
                 <div>
                   <video
                   className="w-full h-auto max-w-full border border-gray-200 rounded-lg dark:border-gray-700"
+                  onTimeUpdate={handleTimeUpdate}
                     ref={videoRef}
                     width="1012"
                     height={playerHeight}

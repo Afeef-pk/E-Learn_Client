@@ -33,7 +33,7 @@ function BuyNowCard({ courseDetails }) {
     }
   }, []);
   const [modalOpen, setModalOpen] = useState(false)
-  console.log(modalOpen);
+
   return (
     <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
       <div className=" relative " >

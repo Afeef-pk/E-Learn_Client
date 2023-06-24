@@ -10,7 +10,7 @@ function UserEnrollements() {
     try {
       getEnrolledCourse()
         .then(({data}) => {
-          setEnrolledCourse(data.userCourses.enrolledCourses);
+          setEnrolledCourse(data.enrolledCourses);
         })
         .catch((err) => {
           console.log(err);
@@ -31,7 +31,7 @@ function UserEnrollements() {
        {enrolledCourse?.length ? (
               <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8 grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
               {enrolledCourse?.map((course, index) => {
-                return <CourseCard key={index} course={course} myCourse={true}/>;
+                return <CourseCard key={index} course={course.course} myCourse={true}/>;
               })}
             </div>
         ) : (

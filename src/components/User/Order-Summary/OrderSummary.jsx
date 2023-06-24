@@ -83,7 +83,7 @@ function OrderSummary() {
       setCouponCode('')
     }
   };
-console.log(discount);
+
   return (
     <section>
       <div className="lg:px-20 mt-5 mx-auto mb-14">
