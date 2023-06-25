@@ -8,7 +8,8 @@ import { storage } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineMessage } from "react-icons/ai";
-
+import { MdOutlineExplore, MdOutlineMessage, MdEvent } from "react-icons/md";
+import { BiHomeAlt } from "react-icons/bi";
 export const initialValues = {
   name: "",
   lastName: "",
@@ -164,4 +165,21 @@ export const userNavBar = [
   { name: "News", href: "/news", current: false },
 ];
 
-
+export const CommunitySidebarLink = [
+  {
+      label: "Home",
+      icon: BiHomeAlt,
+      to: "/community",
+  },
+  {
+      label: "Explore groups",
+      icon: MdOutlineExplore,
+      to: "/groups",
+  },
+  {
+      label: "Messages",
+      icon: MdOutlineMessage,
+      to: "/messages",
+  },
+  
+];

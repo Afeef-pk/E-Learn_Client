@@ -67,6 +67,10 @@ const getPurchaseHistory=()=>{
     return userAxiosInstance.get("/purchase-history")
 }
 
+const updateProgressOfTheVideo=(courseId,videoId)=>{
+    return userAxiosInstance.patch('/update-progress',{courseId,videoId})
+}
+
 export {
     userSignup,
     userLogin,
@@ -81,5 +85,6 @@ export {
     applyCouponCode,
     paymentGateway,
     getEnrolledCourse,
-    getPurchaseHistory
+    getPurchaseHistory,
+    updateProgressOfTheVideo
 }

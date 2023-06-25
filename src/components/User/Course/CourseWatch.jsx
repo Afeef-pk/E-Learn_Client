@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { getCourseWatch } from "../../../Services/userApi";
+import { getCourseWatch, updateProgressOfTheVideo } from "../../../Services/userApi";
 import { clearCourseDetails, setCourseDetails } from "../../../Redux/app/courseSlice";
 
 function CourseWatch() {
   const dispatch = useDispatch();
   const [playerHeight, setPlayerHeight] = useState("");
-  const courseDetails = useSelector((state) => state.course.value);
   const [video, setVideo] = useState(null);
+  const courseDetails = useSelector((state) => state.course.value);
   const { courseId } = useParams();
   const navigate = useNavigate();
   const videoRef = useRef(null);
@@ -33,8 +33,6 @@ function CourseWatch() {
     dispatch(setCourseDetails({ ...courseDetails, course }));
   };
 
-  
-
   useEffect(() => {
     window.scrollTo(0, 0);
     if (!courseDetails) {
@@ -52,12 +50,11 @@ function CourseWatch() {
           navigate("/");
         });
     }
-
-    //seting first video  to video controller
-    if (courseDetails) {
-      setVideo(courseDetails?.course[0].lessons[0].videoUrl);
-    }
-
+    // const lastVideo = localStorage.getItem("lastVideo");
+    // console.log(lastVideo);
+    // if (lastVideo) {
+    //   setVideo(lastVideo);
+    // }
     //screen resize
     function handleResize() {
       const windowWidth = window.innerWidth;
@@ -78,27 +75,33 @@ function CourseWatch() {
   }, []);
 
   const handleTimeUpdate = () => {
-    console.log('hhi');
     const videoElement = videoRef.current;
     const currentTime = videoElement.currentTime;
     const duration = videoElement.duration;
     const remainingTime = duration - currentTime;
-
+    localStorage.setItem(video._id, currentTime.toString())
     if (remainingTime <= 1) {
-      videoElement.pause()
-      console.log('Last 20 seconds');
-
+      updateProgressOfTheVideo(courseId,video._id)
     }
   };
+
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) {
       videoElement.pause();
       videoElement.src = "";
       videoElement.load();
-      videoElement.src = video;
+      videoElement.src = video.videoUrl;
       videoElement.load();
       videoElement.play();
+      localStorage.setItem("lastVideo",video.videoUrl);
+      const storedTime = localStorage.getItem(video._id);
+    if (storedTime) {
+      const parsedTime = parseFloat(storedTime);
+      if (!isNaN(parsedTime)) {
+        videoElement.currentTime = parsedTime;
+      }
+    }
     }
   }, [video]);
   return (
@@ -137,13 +140,13 @@ function CourseWatch() {
                     height={playerHeight}
                     controls
                     autoPlay>
-                    <source src={video} type={video.type} />
+                    <source src={video.videoUrl} type={video.type} />
                   </video>
                 </div>
               ) : (
                 <div
                   onClick={() => {
-                    setVideo(courseDetails.course[0].lessons[0].videoUrl);
+                    setVideo(courseDetails.course[0].lessons[0]);
                   }}
                   className="cursor-pointer relative flex justify-center items-center h-96">
                   <div className="absolute text-white ">

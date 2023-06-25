@@ -35,7 +35,7 @@ function BuyNowCard({ courseDetails }) {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
-    <div className="max-w-sm mt-8 bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
+    <div className="max-w-sm  bg-white border border-gray-200 rounded-lg w-full md:w-80 shadow  ">
       <div className=" relative " >
         <img
           className="rounded w-full object-cover"

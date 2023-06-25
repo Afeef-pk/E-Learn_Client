@@ -14,6 +14,7 @@ import OrderSucessPage from "../pages/user/OrderSucessPage";
 import OrderSummaryPage from "../pages/user/OrderSummaryPage";
 import MyCoursePage from "../pages/user/MyCoursePage";
 import PurchaseHistoryPage from "../pages/user/PurchaseHistoryPage";
+import CommunityPage from "../pages/user/CommunityPage";
 
 const UserRouter = () => {
   return (
@@ -25,6 +26,7 @@ const UserRouter = () => {
         <Route path="/order-success" element={<OrderSucessPage />} />
         <Route path="/my-courses" element={<MyCoursePage/>} />
         <Route path="/purchase-history" element={<PurchaseHistoryPage/>} />
+        <Route path="/community" element={<CommunityPage/>} />
       </Route>
 
       <Route element={<UnAuthenticatedOnlyRoutes role={"user"} route={"/"} />}>

@@ -82,7 +82,7 @@ export default function Header({ order,setModal }) {
             </div>
           </header>
 
-          <div id="downloadSection" ref={downloadDiv} className="px-10">
+          <div  ref={downloadDiv} className="px-10">
             <section className="flex flex-col items-end justify-end">
               <h2 className="font-bold text-3xl uppercase mb-1 text-gray-500">
                 Tax Invoice
@@ -173,7 +173,7 @@ export default function Header({ order,setModal }) {
               </tbody>
             </table>
             <section>
-              <p className="text-xs">
+              <p className="text-xs my-3">
                 This is a system generated invoice and does not require a
                 signature or digital signature
               </p>

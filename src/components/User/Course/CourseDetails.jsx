@@ -94,8 +94,7 @@ function CourseDetails() {
             <div>
               <h3 className="text-2xl  mt-8 font-semibold mb-4 ">About</h3>
               <div className="border rounded-md p-3 ">
-                {courseDetails?.description}
-                <p className="text-slate-600 mt-4"></p>
+                <p className="text-slate-600 "> {courseDetails?.description}</p>
               </div>
             </div>
           </div>
@@ -112,7 +111,7 @@ function CourseDetails() {
         </div>
       </div>
 
-      <article className="px-40 my-10">
+      <article className="px-5 lg:px-40 my-">
         <h1 className="text-xl font-bold my-3" >Reviews & Ratings</h1>
         <div className="flex items-center mb-4 space-x-4">
           <img
