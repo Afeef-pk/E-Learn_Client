@@ -1,28 +1,28 @@
-import  {userAxiosInstance} from "../axios/axios"
+import { userAxiosInstance } from "../axios/axios"
 
-const userLogin = (userData)=>{
-    return userAxiosInstance.post("/signin",userData)
+const userLogin = (userData) => {
+    return userAxiosInstance.post("/signin", userData)
 }
 
-const userSignup = (phone) =>{
-    return userAxiosInstance.post("/user/exist",{phone})
+const userSignup = (phone) => {
+    return userAxiosInstance.post("/user/exist", { phone })
 }
 
-const verifySignup = (userData,code,googleAuth=false)=>{
-    return userAxiosInstance.post("/verify/signup",{userData,code,googleAuth})
-} 
+const verifySignup = (userData, code, googleAuth = false) => {
+    return userAxiosInstance.post("/verify/signup", { userData, code, googleAuth })
+}
 
-const userAuth = ()=>{
+const userAuth = () => {
     return userAxiosInstance.get("/userAuth")
 }
 
-const homeCourseLoad = (size)=>{
-    return userAxiosInstance.get("/home-course",{params:{size}})
+const homeCourseLoad = (size) => {
+    return userAxiosInstance.get("/home-course", { params: { size } })
 }
 
-const getCourseList =(page,size,searchQuery,category)=>{
+const getCourseList = (page, size, searchQuery, category) => {
     return userAxiosInstance.get("/course", {
-        params:{
+        params: {
             page,
             size,
             searchQuery,
@@ -31,28 +31,28 @@ const getCourseList =(page,size,searchQuery,category)=>{
     })
 }
 
-const getCourseView = (courseId)=>{
+const getCourseView = (courseId) => {
     return userAxiosInstance.get(`/course-details/${courseId}`)
 }
 
-const getUserDetails = ()=>{
+const getUserDetails = () => {
     return userAxiosInstance.get('/profile',)
 }
 
-const updateUserDetails = (userData)=>{
-    return userAxiosInstance.put('/update/profile',{...userData})
+const updateUserDetails = (userData) => {
+    return userAxiosInstance.put('/update/profile', { ...userData })
 }
 
-const getCourseWatch = (courseId)=>{
+const getCourseWatch = (courseId) => {
     return userAxiosInstance.get(`/course/view/${courseId}`)
 }
 
-const applyCouponCode = (couponCode)=>{
-    return userAxiosInstance.post('/apply-coupon',{couponCode})
+const applyCouponCode = (couponCode) => {
+    return userAxiosInstance.post('/apply-coupon', { couponCode })
 }
 
-const paymentGateway = (courseId,address)=>{
-    return userAxiosInstance.post('/create-checkout-session',{courseId,...address})
+const paymentGateway = (courseId, address) => {
+    return userAxiosInstance.post('/create-checkout-session', { courseId, ...address })
 }
 
 const getEnrolledCourse = () => {
@@ -63,12 +63,32 @@ export const isCourseEnrolled = (courseId) => {
     return userAxiosInstance.get(`/is-course-enrolled/${courseId}`)
 }
 
-const getPurchaseHistory=()=>{
+const getPurchaseHistory = () => {
     return userAxiosInstance.get("/purchase-history")
 }
 
-const updateProgressOfTheVideo=(courseId,videoId)=>{
-    return userAxiosInstance.patch('/update-progress',{courseId,videoId})
+const updateProgressOfTheVideo = (courseId, videoId) => {
+    return userAxiosInstance.patch('/update-progress', { courseId, videoId })
+}
+
+const createGroup = (values) => {
+    return userAxiosInstance.post('/create-group', values)
+}
+
+const getAllGroups = () => {
+    return userAxiosInstance.get('/all-groups')
+}
+
+const joinGroup = (groupId) => {
+    return userAxiosInstance.put('/join-group', { groupId })
+}
+
+const getjoinedGroups = () => {
+    return userAxiosInstance.get('/joined-groups')
+}
+
+const sendMessage = (message) => {
+    return userAxiosInstance.get('/messages',message)
 }
 
 export {
@@ -86,5 +106,10 @@ export {
     paymentGateway,
     getEnrolledCourse,
     getPurchaseHistory,
-    updateProgressOfTheVideo
+    updateProgressOfTheVideo,
+    createGroup,
+    getAllGroups,
+    joinGroup,
+    getjoinedGroups,
+    sendMessage
 }

@@ -2,14 +2,33 @@ import React from 'react';
 import {  MdOutlineGroups,} from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { CommunitySidebarLink } from '../../../../constants/constant';
-
+import { BiHomeAlt } from "react-icons/bi";
+import { MdOutlineExplore, MdOutlineMessage, MdEvent } from "react-icons/md";
 function CommunityNavigation() {
-    const groupData = null
+    const groupData = useSelector(state => state.group);
+
+    const CommunitySidebarLink = [
+        {
+            label: "Home",
+            icon: <BiHomeAlt size={22} />,
+            to: "/community",
+        },
+        {
+            label: "Explore groups",
+            icon: <MdOutlineExplore size={22} />,
+            to: "/groups",
+        },
+        {
+            label: "Messages",
+            icon: <MdOutlineMessage size={22} />,
+            to: "/messages",
+        },
+        
+    ];
 
     return (
-        <div className="fixed flex sm:hidden bottom-0 w-full z-50 border-t border-base-300 bg-base-100">
-            <ul className="menu rounded-box menu-horizontal w-full justify-around bg-base-100">
+        <div className="fixed flex   sm:hidden bottom-0 w-full z-50 border-t border-base-300 bg-base-100 ">
+            <ul className="menu flex rounded-box menu-horizontal w-full justify-around items-end bg-base-100 my-5">
                 {CommunitySidebarLink.map((item) => (
                     <li key={item.label}>
                         <Link
@@ -20,7 +39,7 @@ function CommunityNavigation() {
                         </Link>
                     </li>
                 ))}
-                <li tabIndex="0">
+                {/* <li tabIndex="0">
                     <div className="dropdown dropdown-end dropdown-top p-0">
                         <label tabIndex="0" className="px-4 py-3">
                             <MdOutlineGroups size={24} />
@@ -42,7 +61,7 @@ function CommunityNavigation() {
                             ))}
                         </ul>
                     </div>
-                </li>
+                </li> */}
             </ul>
         </div>
     )

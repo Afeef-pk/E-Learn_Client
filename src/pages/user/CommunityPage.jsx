@@ -7,15 +7,15 @@ import CommunityNavigation from "../../components/User/Community/CommunityNaviga
 function CommunityPage() {
   return (
     <>
-      <NavBar />
-      <div className="flex h-screen">
-        <div className="sticky top-0 self-start ">
-          <CommunitySidebar />
-        </div>
-        <Community />
+    <NavBar />
+    <div className="flex h-screen ">
+      <div className="sticky top-0 self-start">
+        <CommunitySidebar />
       </div>
-      <CommunityNavigation />
-    </>
+      <Community />
+    </div>
+    <CommunityNavigation />
+  </>
   );
 }
 

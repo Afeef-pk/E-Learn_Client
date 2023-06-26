@@ -26,7 +26,7 @@ function CourseCard({ image, title, date, id, isApproved, status ,tutorSide}) {
   };
   return (
     <div className="cursor-pointer rounded-xl bg-[#1F2A40] translate-y-2" onClick={()=>handleView(id)}>
-      <img src={image} className="w-full h-40 rounded-t-xl" alt="course img" />
+      <img src={image} className="w-full h-36 rounded-t-xl" alt="course img" />
       <div className="mx-5 my-3 h-12">
       <h1 className="text-xl font-bold ">{title.length <= 43 ? title : `${title.slice(0, 43)}...`}</h1>
       </div>
