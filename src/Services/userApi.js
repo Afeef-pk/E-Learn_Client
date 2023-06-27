@@ -1,26 +1,26 @@
 import { userAxiosInstance } from "../axios/axios"
 
-const userLogin = (userData) => {
+export const userLogin = (userData) => {
     return userAxiosInstance.post("/signin", userData)
 }
 
-const userSignup = (phone) => {
+export const userSignup = (phone) => {
     return userAxiosInstance.post("/user/exist", { phone })
 }
 
-const verifySignup = (userData, code, googleAuth = false) => {
+export const verifySignup = (userData, code, googleAuth = false) => {
     return userAxiosInstance.post("/verify/signup", { userData, code, googleAuth })
 }
 
-const userAuth = () => {
+export const userAuth = () => {
     return userAxiosInstance.get("/userAuth")
 }
 
-const homeCourseLoad = (size) => {
+export const homeCourseLoad = (size) => {
     return userAxiosInstance.get("/home-course", { params: { size } })
 }
 
-const getCourseList = (page, size, searchQuery, category) => {
+export const getCourseList = (page, size, searchQuery, category) => {
     return userAxiosInstance.get("/course", {
         params: {
             page,
@@ -31,31 +31,31 @@ const getCourseList = (page, size, searchQuery, category) => {
     })
 }
 
-const getCourseView = (courseId) => {
+export const getCourseView = (courseId) => {
     return userAxiosInstance.get(`/course-details/${courseId}`)
 }
 
-const getUserDetails = () => {
+export const getUserDetails = () => {
     return userAxiosInstance.get('/profile',)
 }
 
-const updateUserDetails = (userData) => {
+export const updateUserDetails = (userData) => {
     return userAxiosInstance.put('/update/profile', { ...userData })
 }
 
-const getCourseWatch = (courseId) => {
+export const getCourseWatch = (courseId) => {
     return userAxiosInstance.get(`/course/view/${courseId}`)
 }
 
-const applyCouponCode = (couponCode) => {
+export const applyCouponCode = (couponCode) => {
     return userAxiosInstance.post('/apply-coupon', { couponCode })
 }
 
-const paymentGateway = (courseId, address) => {
+export const paymentGateway = (courseId, address) => {
     return userAxiosInstance.post('/create-checkout-session', { courseId, ...address })
 }
 
-const getEnrolledCourse = () => {
+export const getEnrolledCourse = () => {
     return userAxiosInstance.get('/enrolled-course')
 }
 
@@ -63,53 +63,35 @@ export const isCourseEnrolled = (courseId) => {
     return userAxiosInstance.get(`/is-course-enrolled/${courseId}`)
 }
 
-const getPurchaseHistory = () => {
+export const getPurchaseHistory = () => {
     return userAxiosInstance.get("/purchase-history")
 }
 
-const updateProgressOfTheVideo = (courseId, videoId) => {
+export const updateProgressOfTheVideo = (courseId, videoId) => {
     return userAxiosInstance.patch('/update-progress', { courseId, videoId })
 }
 
-const createGroup = (values) => {
+export const createGroup = (values) => {
     return userAxiosInstance.post('/create-group', values)
 }
 
-const getAllGroups = () => {
+export const getAllGroups = () => {
     return userAxiosInstance.get('/all-groups')
 }
 
-const joinGroup = (groupId) => {
+export const joinGroup = (groupId) => {
     return userAxiosInstance.put('/join-group', { groupId })
 }
 
-const getjoinedGroups = () => {
+export const getjoinedGroups = () => {
     return userAxiosInstance.get('/joined-groups')
 }
 
-const sendMessage = (message) => {
-    return userAxiosInstance.get('/messages',message)
+export const sendMessage = (message) => {
+    return userAxiosInstance.post('/messages',message)
 }
 
-export {
-    userSignup,
-    userLogin,
-    verifySignup,
-    userAuth,
-    homeCourseLoad,
-    getCourseList,
-    getCourseView,
-    getUserDetails,
-    updateUserDetails,
-    getCourseWatch,
-    applyCouponCode,
-    paymentGateway,
-    getEnrolledCourse,
-    getPurchaseHistory,
-    updateProgressOfTheVideo,
-    createGroup,
-    getAllGroups,
-    joinGroup,
-    getjoinedGroups,
-    sendMessage
+export const getMessages=(groupId)=>{
+    return userAxiosInstance.get(`/messages/${groupId}`)
 }
+

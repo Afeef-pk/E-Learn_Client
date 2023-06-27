@@ -8,7 +8,7 @@ function TablePagination({ activePage, setActivePage, totalData,limit,skip }) {
 
   return (
     <nav
-      className="flex items-center justify-between pt-4"  
+      className="flex items-center justify-between p-6 "  
       aria-label="Table navigation">
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing{" "}
