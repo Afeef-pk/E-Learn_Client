@@ -11,15 +11,11 @@ function CommunitySidebar() {
   useEffect(() => {}, []);
 
   const CommunitySidebarLink = [
-    {
-      label: "Home",
-      icon: <BiHomeAlt size={22} />,
-      to: "/community",
-    },
+   
     {
       label: "Explore groups",
       icon: <MdOutlineExplore size={22} />,
-      to: "/groups",
+      to: "/community",
     },
     {
       label: "Messages",

@@ -3,7 +3,6 @@ import TimeAgo from 'timeago-react';
 
 function Message({ own, message, user }) {
 
-    console.log(message.sender);
     return (
         <>{
             own ?
@@ -15,7 +14,7 @@ function Message({ own, message, user }) {
                                 <div className="flex items-center flex-row-reverse group">
                                     <div className="p-2  rounded-l-xl rounded-br-xl bg-blue-500 max-w-xs lg:max-w-md">
                                         <div className="flex items-center flex-row-reverse group">
-                                            <img className="  w-full max-w-[224px] h-full rounded-lg object-cover" src={message.sender.image} alt="image" />
+                                            <img className="  w-full max-w-[224px] h-full rounded-lg object-cover" src={message.image} alt="image" />
                                         </div>
                                         {message.text ?
                                             <p className='mt-2 text-white ml-2'>{message.text}</p>
@@ -64,7 +63,7 @@ function Message({ own, message, user }) {
                             <div className="messages text-sm text-white grid grid-flow-row">
                                 <div className="flex items-center flex-row-reverse group">
                                     <p className="p-2  rounded-r-xl rounded-bl-xl bg-gray-200 max-w-xs lg:max-w-md">
-                                        <p className='text-xs text-blue-600 font-semibold text-left mb-2'>{message.sender?.firstName}</p>
+                                        <p className='text-xs text-blue-600 font-semibold text-left mb-2'>{message.sender?.name}</p>
                                         <div className="flex items-center flex-row-reverse group">
                                             <img className="  w-full max-w-[224px]  h-full rounded-lg object-cover" src={message.image} alt="hiking" />
 
@@ -89,7 +88,7 @@ function Message({ own, message, user }) {
                             <div className="messages text-sm text-gray-700 grid grid-flow-row gap-2">
                                 <div className="flex items-center group">
                                     <div className="px-6  py-1 rounded-t-full rounded-r-full bg-gray-100 max-w-xs lg:max-w-md text-gray-800">
-                                        <p className='text-xs text-blue-600 font-semibold text-left'>{message.sender?.firstName}</p>
+                                        <p className='text-xs text-blue-600 font-semibold text-left'>{message.sender?.name}</p>
                                         <span className='mt-3'>{message.text}</span>
                                     </div>
                                 </div>

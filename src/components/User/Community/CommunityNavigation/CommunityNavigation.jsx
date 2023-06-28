@@ -8,11 +8,11 @@ function CommunityNavigation() {
     const groupData = useSelector(state => state.group);
 
     const CommunitySidebarLink = [
-        {
-            label: "Home",
-            icon: <BiHomeAlt size={22} />,
-            to: "/community",
-        },
+        // {
+        //     label: "Home",
+        //     icon: <BiHomeAlt size={22} />,
+        //     to: "/community",
+        // },
         {
             label: "Explore groups",
             icon: <MdOutlineExplore size={22} />,

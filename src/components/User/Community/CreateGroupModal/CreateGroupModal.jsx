@@ -30,7 +30,7 @@ function CreateGroupModal({modalStatus}) {
     validationSchema: validate,
     onSubmit: async (values) => {
         toast.loading("Please wait creating group")
-      const image = await imageUpload("/group-profiles", values.image);
+      const image = await imageUpload("/group-profiles/", values.image);
       values ={
         ...values,
         image

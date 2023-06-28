@@ -23,7 +23,7 @@ function AddCourse() {
 
   const formik = useFormik({
     initialValues: courseInitialValues,
-    //validationSchema: courseValidationSchema,
+    validationSchema: courseValidationSchema,
     onSubmit: async (values) => {
       toast.loading("Please Wait Uploading Course");
       values = {
@@ -558,7 +558,7 @@ function AddCourse() {
                                 <div className="flex flex-col justify-between px-3 py-2  leading-normal">
                                   <h5 className=" text-md font-semibold tracking-tighttext-white">
                                     <span className="mr-3">{index + 1}.</span>
-                                    {obj.lessonName}aaa
+                                    {obj.lessonName}
                                   </h5>
                                 </div>
                               </div>

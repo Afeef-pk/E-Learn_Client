@@ -16,25 +16,43 @@ import {
   getjoinedGroups,
   sendMessage,
 } from "../../../../Services/userApi";
-
+import jwtDecode from "jwt-decode";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 function Messenger() {
   const dispatch = useDispatch();
-  const [userGroups, setUserGroups] = useState();
+  const [userGroups, setUserGroups] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const user = {
-    id: "648810d936919080d836ff3c",
-  };
+
+  //const user = useSelector(state => state.user);
   const scrollRef = useRef();
   const socket = useRef();
+
   const [showMessagesDiv, setshowMessagesDiv] = useState(true);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const [searchTerm, setSearchTerm] = useState("");
   const [showAbout, setShowAbout] = useState(false);
   const [image, setImage] = useState();
+  const [user, setUser] = useState({});
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  
+  const handleEmojiClick = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    console.log(emoji.emoji);
+    setNewMessage((prevMessage) => prevMessage + emoji.emoji);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      var decodedToken = jwtDecode(token);
+    }
+    setUser({ id: decodedToken.userId });
+  }, []);
   //connecting to socket
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_UserBaseURL);
@@ -46,26 +64,20 @@ function Messenger() {
     socket.current.emit("joinGroup", group._id);
   };
 
-  console.log(user.id);
-
   // //receive message and disconnect
   useEffect(() => {
-      console.log('hi');
-      //receive message
-      socket.current.on('receiveMessage', ({ sender, text, type, image }) => {
-          console.log(text);
-          if (sender._id != user.id) {
-              setMessages(messages => [...messages, { sender: sender, text, type, image }]);
-          }
-      });
-      // Clean up when the component unmounts
-      return () => {
-          socket.current.disconnect();
-      };
-  }, [user])
+    //receive message
+    socket.current.on("receiveMessage", ({ sender, text, type, image }) => {
+      if (sender._id != user.id) {
+        setMessages((messages) => [...messages, { sender, text, type, image }]);
+      }
+    });
+    // Clean up when the component unmounts
+    return () => {
+      socket.current.disconnect();
+    };
+  }, [user]);
 
-
-  
   //loading groups
   useEffect(() => {
     getjoinedGroups().then(({ data }) => {
@@ -92,6 +104,7 @@ function Messenger() {
       const message = {
         text: newMessage,
         group: currentChat._id,
+        sender: { _id: user.id },
       };
       sendMessage(message)
         .then((response) => {
@@ -114,7 +127,7 @@ function Messenger() {
   // //scrolling when new message load
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [messages, currentChat,showEmojiPicker]);
 
   // //submit data when user click enter
   const keyDownHandler = (event) => {
@@ -193,20 +206,40 @@ function Messenger() {
                     setshowMessagesDiv={setshowMessagesDiv}
                     currentChat={currentChat}
                   />
-                  <div className="chat-body p-4 flex-1 overflow-y-scroll">
-                    {currentChat &&
-                      messages.map((message, index) => {
-                        return (
-                          <div key={index} ref={scrollRef}>
-                            <Message
-                              message={message}
-                              currentChat={currentChat}
-                              own={user.id === message.sender?._id}
-                              user={user}
-                            />
+                  <div className="relative chat-body p-4 flex-1 overflow-y-scroll">
+                    {currentChat && (
+                      <div>
+                        {messages.length >= 1 ? (
+                          messages.map((message, index) => (
+                            <div key={index}>
+                              <Message
+                                message={message}
+                                currentChat={currentChat}
+                                own={user.id === message.sender?._id}
+                                user={user}
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <div className="w-full flex justify-center items-center">
+                            No messages found
                           </div>
-                        );
-                      })}
+                        )}
+                      </div>
+                    )}
+                    <div ref={scrollRef}></div>
+                    <div className="absolute ">
+                      {showEmojiPicker && (
+                        <EmojiPicker
+                          onEmojiClick={handleEmojiSelect}
+                          searchDisabled={true}
+                          emojiStyle={EmojiStyle.APPLE}
+                          previewConfig={{ showPreview: false }}
+                          height={300}
+                          width={300}
+                        />
+                      )}
+                    </div>
                   </div>
 
                   <div className="chat-footer border-t flex-none">
@@ -251,6 +284,7 @@ function Messenger() {
                             onKeyDown={keyDownHandler}
                           />
                           <button
+                            onClick={handleEmojiClick}
                             type="button"
                             className="absolute top-0 right-0 mt-2 mr-4 flex flex-shrink-0 focus:outline-none  text-blue-600 hover:text-blue-700 w-6 h-6">
                             <BsEmojiSmile size={23} />

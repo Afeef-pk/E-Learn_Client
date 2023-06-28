@@ -2,14 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function CourseCard({ course, myCourse, totalProgress }) {
+  console.log(myCourse);
   return (
     <Link
       to={
-        !myCourse
-          ? `/course-details/${course._id}`
-          : `/course/view/${course._id}`
+        myCourse
+          ? `/course/view/${course._id}`
+          : `/course-details/${course._id}`
       }>
-      <div className="bg-[#ede9e9a9] rounded-b-xl w-60 pb-2 transition duration-300  transform hover:scale-110 ">
+      <div className="bg-[#e0dddda9] rounded-b-xl w-60 pb-2 transition duration-300  transform hover:scale-110 ">
         <img
           className="w-full h-36 rounded-t-xl"
           src={course?.imageURL}
@@ -17,9 +18,9 @@ function CourseCard({ course, myCourse, totalProgress }) {
         />
         <div className="h-10">
           <h1 className="mx-3 mt-2 font-bold text-black text-base">
-            {course?.name.length <= 43
+            {course?.name.length <= 50
               ? course?.name
-              : `${course?.name.slice(0, 43)}...`}
+              : `${course?.name.slice(0, 50)}...`}
           </h1>
         </div>
         <h1 className="mx-3 my-2 font-medium text-blue-400 text-sm">

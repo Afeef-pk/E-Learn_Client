@@ -22,7 +22,7 @@ export default function NavBar() {
     userAuth()
       .then(({ data }) => {
         if (data.status) {
-          dispatch(userAuthorized());
+          dispatch(userAuthorized({ id: data.userId }));
           setImage(data.user.image);
         } else {
           toast.error(data.message);
@@ -41,11 +41,11 @@ export default function NavBar() {
   const userSubMenu = [
     {
       to: "/profile",
-      label: "Your Profile",
+      label: "My Profile",
     },
     {
       to: "/my-courses",
-      label: "Your Enrollments",
+      label: "My Enrollments",
     },
     {
       to: "/purchase-history",
@@ -120,7 +120,7 @@ export default function NavBar() {
                 {authorized ? (
                   <Menu as="div" className="relative ml-3">
                     <div>
-                      <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white ring-white ring-offset-2 focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"

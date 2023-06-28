@@ -92,7 +92,7 @@ export const courseValidationSchema = Yup.object({
   about: Yup.string().min(5).max(500).required("enter short description"),
   duration: Yup.string().required("Please enter course duration"),
   language: Yup.string().required("Please enter course language"),
-  price: Yup.number().required("Please enter course price"),
+  price: Yup.number().required("Please enter course price").positive("Price must be a greater than zero"),
   description: Yup.string().required("Write description about the course"),
 });
 

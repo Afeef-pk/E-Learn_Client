@@ -84,7 +84,7 @@ function CourseList() {
       </div>
       <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8  grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
         {courses?.map((course, index) => {
-          return <CourseCard key={index} course={course} />;
+          return <CourseCard key={index} course={course} myCourse={false}/>;
         })}
       </div>
       <Pagination

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Button from "../../Button/Button";
 
 const GroupCard = ({ group,joinedStatus, handleJoin }) => {
   const user = null
@@ -42,13 +43,13 @@ const GroupCard = ({ group,joinedStatus, handleJoin }) => {
                 ""
               ) : (
                 <div className="mr-3 cursor-pointer">
-                  <h2
-                    className="font-bold"
+                  <button
+                    className="font-bold bg-gray-800 px-5 py-1 rounded-md text-white"
                     onClick={() => {
                       handleJoin(group._id);
                     }}>
                     Join
-                  </h2>
+                  </button>
                 </div>
               )}
             </div>

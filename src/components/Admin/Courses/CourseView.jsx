@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCourseDetails } from "../../../Services/adminApi";
 import SyllabusDropdown from "../../User/Course/SyllabusDropdown/SyllabusDropdown";
-import YouTube from "react-youtube";
-import getYouTubeID from "get-youtube-id";
 import { deleteCourse } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
 
@@ -13,25 +11,17 @@ function CourseView({ tutor }) {
   const navigate = useNavigate();
   const courseId = location.state;
   const [course, setCourse] = useState(null);
-  const [videoId, setVideoId] = useState();
+  const [video, setVideo] = useState(null);
   const [playerHeight, setPlayerHeight] = useState("");
-  const opts = {
-    height: playerHeight,
-    width: "100%",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
-
+  
+  const videoRef = useRef(null);
   const handleApprove = (status) => {
     getCourseDetails(courseId, status).then((response) => {
       navigate("/admin/courses");
     });
   };
 
-  const getYoutubeVideoId = (videoUrl) => {
-    setVideoId(getYouTubeID(videoUrl));
-  };
+
 
   useEffect(() => {
     getCourseDetails(courseId).then((response) => {
@@ -82,6 +72,18 @@ function CourseView({ tutor }) {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.pause();
+      videoElement.src = "";
+      videoElement.load();
+      videoElement.src = video.videoUrl;
+      videoElement.load();
+      videoElement.play();
+    }
+  }, [video]);
+ 
   return (
     <>
       <div className="h-auto w-full bg-[#141B2D] text-white">
@@ -93,14 +95,22 @@ function CourseView({ tutor }) {
         <div className="h-auto  rounded-lg m-10 bg-[#1F2A40] pb-5 p-8">
           <div className="mx-10 grid grid-cols-2 gap-10 mb-10">
             <div>
-              {videoId ? (
-                <div>
-                  <YouTube videoId={videoId} opts={opts} />
-                </div>
+              {video ? (
+               <div>
+               <video
+               className="w-full h-auto max-w-full border border-gray-200 rounded-lg dark:border-gray-700"
+                 ref={videoRef}
+                 width="1012"
+                 height={playerHeight}
+                 controls
+                 autoPlay>
+                 <source src={video.videoUrl} type={video.type} />
+               </video>
+             </div>
               ) : (
                 <div
                   onClick={() => {
-                    getYoutubeVideoId(course.course[0].lessons[0].videoUrl);
+                    setVideo(course?.course[0]?.lessons[0]);
                   }}
                   className="cursor-pointer relative flex justify-center items-center ">
                   <div className="absolute text-white ">
@@ -139,7 +149,7 @@ function CourseView({ tutor }) {
                     index={index}
                     key={index}
                     toggleDropdown={toggleDropdown}
-                    getYoutubeVideoId={getYoutubeVideoId}
+                    setVideo={setVideo}
                   />
                 ))}
               </div>

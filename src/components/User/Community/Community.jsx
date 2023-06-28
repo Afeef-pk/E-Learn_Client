@@ -61,7 +61,7 @@ function Community({ isTab }) {
       getAllGroups().then(({ data }) => {
         setGroups(data.groups);
       });
-  }, [isJoined]);
+  }, [isJoined,showModal]);
 
   return (
     <div

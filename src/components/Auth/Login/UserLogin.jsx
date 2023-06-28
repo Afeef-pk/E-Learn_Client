@@ -20,6 +20,7 @@ function UserLogin() {
       const { data } = await userLogin(values);
       if (data.token) {
         toast.success(data.message);
+        console.log(data.token)
         dispatch(userAuthorized());
         localStorage.setItem("token", data.token);
         navigate("/");

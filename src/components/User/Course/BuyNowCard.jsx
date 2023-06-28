@@ -83,10 +83,10 @@ function BuyNowCard({ courseDetails }) {
                   <div className="flex justify-between p-8 text-white flex-wrap">
                     <div className="grid gap-3">
                       <div><h1>Course Preview</h1></div>
-                      <div><h1 className="text-xl">{courseDetails.name}</h1></div>
                     </div>
-                    <div>
                       <MdClose size={20} onClick={()=>setModalOpen(false)} cursor="pointer"/>
+                      <div><h1 className="text-xl mt-3">{courseDetails.name}</h1></div>
+                    <div>
                     </div>
                   </div>
                   <div className="px-8">

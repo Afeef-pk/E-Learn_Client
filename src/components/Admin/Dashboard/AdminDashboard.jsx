@@ -82,7 +82,7 @@ function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order, index) => {
+              {orders?.map((order, index) => {
                 return (
                   <tr
                     key={index}
@@ -109,7 +109,7 @@ function AdminDashboard() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">{order.course.name}</td>
+                    <td className="px-6 py-4">{order.course?.name}</td>
 
                     <td className="px-6 py-4">{order.teacher.name} </td>
                     <td className="px-16 py-4">{order.total}</td>
