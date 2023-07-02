@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Chat from "../Chat/Chat";
 import Message from "../Message/Message";
 import Conversation from "../Conversation/Conversation";
-import { useDispatch, useSelector } from "react-redux";
 import { IoSend } from "react-icons/io5";
 import { BsEmojiSmile } from "react-icons/bs";
 import { io } from "socket.io-client";
@@ -10,41 +9,26 @@ import "./Messenger.css";
 import { useMediaQuery } from "react-responsive";
 //import GroupInfo from '../GroupInfo/GroupInfo';
 import SendImageModal from "../SendImageModal/SendImageModal";
-import { IoImage } from "react-icons/io5";
-import {
-  getMessages,
-  getjoinedGroups,
-  sendMessage,
-} from "../../../../Services/userApi";
+import { IoImage,IoVideocam } from "react-icons/io5";
+import {getMessages,getjoinedGroups,sendMessage,} from "../../../../Services/userApi";
 import jwtDecode from "jwt-decode";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
+
+import { FiX } from "react-icons/fi";
 function Messenger() {
-  const dispatch = useDispatch();
   const [userGroups, setUserGroups] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  //const user = useSelector(state => state.user);
   const scrollRef = useRef();
   const socket = useRef();
-
   const [showMessagesDiv, setshowMessagesDiv] = useState(true);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const [searchTerm, setSearchTerm] = useState("");
   const [showAbout, setShowAbout] = useState(false);
-  const [image, setImage] = useState();
+  const [mediaFile, setMediaFile] = useState(null);
   const [user, setUser] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-  const handleEmojiClick = () => {
-    setShowEmojiPicker(!showEmojiPicker);
-  };
-
-  const handleEmojiSelect = (emoji) => {
-    console.log(emoji.emoji);
-    setNewMessage((prevMessage) => prevMessage + emoji.emoji);
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -53,6 +37,7 @@ function Messenger() {
     }
     setUser({ id: decodedToken.userId });
   }, []);
+
   //connecting to socket
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_UserBaseURL);
@@ -67,9 +52,9 @@ function Messenger() {
   // //receive message and disconnect
   useEffect(() => {
     //receive message
-    socket.current.on("receiveMessage", ({ sender, text, type, image }) => {
+    socket.current.on("receiveMessage", ({ sender, text, type, file }) => {
       if (sender._id != user.id) {
-        setMessages((messages) => [...messages, { sender, text, type, image }]);
+        setMessages((messages) => [...messages, { sender, text, type, file }]);
       }
     });
     // Clean up when the component unmounts
@@ -104,10 +89,10 @@ function Messenger() {
       const message = {
         text: newMessage,
         group: currentChat._id,
-        sender: { _id: user.id },
+        sender: { _id: user.id},
       };
       sendMessage(message)
-        .then((response) => {
+        .then(({data}) => {
           //sending message to socketio
           socket.current.emit("sendMessage", {
             userId: user.id,
@@ -115,8 +100,9 @@ function Messenger() {
             text: newMessage,
           });
           //update messages
-          setMessages([...messages, message]);
+          setMessages([...messages, data]);
           setNewMessage("");
+          setShowEmojiPicker(false)
         })
         .catch((err) => {
           console.log(err);
@@ -127,7 +113,7 @@ function Messenger() {
   // //scrolling when new message load
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, currentChat,showEmojiPicker]);
+  }, [messages, currentChat, showEmojiPicker]);
 
   // //submit data when user click enter
   const keyDownHandler = (event) => {
@@ -206,9 +192,9 @@ function Messenger() {
                     setshowMessagesDiv={setshowMessagesDiv}
                     currentChat={currentChat}
                   />
-                  <div className="relative chat-body p-4 flex-1 overflow-y-scroll">
+                  <div className=" chat-body p-4 flex-1 overflow-y-scroll">
                     {currentChat && (
-                      <div>
+                      <div className="relative">
                         {messages.length >= 1 ? (
                           messages.map((message, index) => (
                             <div key={index}>
@@ -225,29 +211,36 @@ function Messenger() {
                             No messages found
                           </div>
                         )}
+                        {showEmojiPicker && (
+                          <div className="absolute bottom-0 left-0 ">
+                            <div className="emoji-picker-container">
+                              <div className="emoji-picker-header flex justify-end">
+                                <button className="emoji-picker-close" onClick={()=>setShowEmojiPicker(false)}>
+                                  <FiX />
+                                </button>
+                              </div>
+                              <EmojiPicker
+                                onEmojiClick={(emoji)=>setNewMessage((prevMessage) => prevMessage + emoji.emoji)}
+                                searchDisabled={true}
+                                emojiStyle={EmojiStyle.APPLE}
+                                previewConfig={{ showPreview: false }}
+                                height={300}
+                                width={300}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                     <div ref={scrollRef}></div>
-                    <div className="absolute ">
-                      {showEmojiPicker && (
-                        <EmojiPicker
-                          onEmojiClick={handleEmojiSelect}
-                          searchDisabled={true}
-                          emojiStyle={EmojiStyle.APPLE}
-                          previewConfig={{ showPreview: false }}
-                          height={300}
-                          width={300}
-                        />
-                      )}
-                    </div>
                   </div>
 
                   <div className="chat-footer border-t flex-none">
                     <div className="flex flex-row items-center p-4">
-                      {image ? (
+                      {mediaFile ? (
                         <SendImageModal
-                          image={image}
-                          setImage={setImage}
+                        mediaFile={mediaFile}
+                        setmediaFile={setMediaFile}
                           socket={socket.current}
                           group={currentChat}
                           user={user}
@@ -265,11 +258,24 @@ function Messenger() {
                             name="photo"
                             className="absolute inset-0  opacity-0 cursor-pointer"
                             onChange={(e) => {
-                              setImage(e.target.files[0]);
+                              setMediaFile(e.target.files[0]);
                             }}
                           />
                         </div>
                         <IoImage size={22} />
+                      </button>
+                      <button
+                        type="button"
+                        className="flex flex-shrink-0 focus:outline-none mx-2  text-blue-600 hover:text-blue-700 w-6 h-6">
+                        <div className=" text-xs absolute   font-bold  rounded-full w-10 h-10  text-white flex justify-center items-center   float-left   overflow-hidden cursor-pointer">
+                          <input
+                            type="file"
+                            name="video"
+                            className="absolute inset-0  opacity-0 cursor-pointer"
+                            onChange={(e) =>setMediaFile(e.target.files[0])}
+                          />
+                        </div>
+                        <IoVideocam size={22} />
                       </button>
                       <div className="relative flex-grow">
                         <label>
@@ -284,7 +290,7 @@ function Messenger() {
                             onKeyDown={keyDownHandler}
                           />
                           <button
-                            onClick={handleEmojiClick}
+                            onClick={()=>setShowEmojiPicker(!showEmojiPicker)}
                             type="button"
                             className="absolute top-0 right-0 mt-2 mr-4 flex flex-shrink-0 focus:outline-none  text-blue-600 hover:text-blue-700 w-6 h-6">
                             <BsEmojiSmile size={23} />

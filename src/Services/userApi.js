@@ -96,6 +96,5 @@ export const getMessages=(groupId)=>{
 }
 
 export const sendImage = (message)=>{
-    console.log(message);
     return userAxiosInstance.post(`/messages/send/file/image`, { ...message })
 }

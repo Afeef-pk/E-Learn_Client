@@ -1,27 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 //import { sendImage } from '../../services/userApi';
 import { toast } from "react-hot-toast";
 import { sendImage } from "../../../../Services/userApi";
 import { imageUpload } from "../../../../constants/constant";
 
-function SendImageModal({ image, setImage, group, user, socket, setMessages }) {
+function SendImageModal({mediaFile,setmediaFile,group,socket,setMessages,}) {
   const [caption, setCaption] = useState();
-  const handleSubmit = async() => {
-    toast.loading("sending image")
-    const imageUrl = await imageUpload("/msg-images/", image);
-    const message = {
+  const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  useEffect(() => {
+    if (mediaFile) {
+      const fileType = mediaFile.type;
+      if (fileType.includes("image")) {
+        setImage(mediaFile);
+      } else if (fileType.includes("video")) {
+        setVideo(mediaFile);
+      }
+    }
+  }, []);
+  const handleSubmit = async () => {
+    toast.loading("sending image");
+    let message = {
       text: caption,
       group: group._id,
-      image: imageUrl,
+      type:null,
+      file: null,
     };
-    
+    if (image) {
+      message.file = await imageUpload("/msg-images/", image);
+      message.type = "image"
+    }
+    if (video) {
+      message.file = await imageUpload("/msg-videos/", video);
+      message.type = "video"
+    }
+
     sendImage(message)
       .then((response) => {
-        socket.emit("sendImage", response.data);
-        console.log(response.data);
+        socket.emit("sendFile", response.data);
         setMessages((prev) => [...prev, response.data]);
-        setImage(false);
-        toast.dismiss()
+        setmediaFile(false);
+        toast.dismiss();
       })
       .catch((error) => {
         console.log(error);
@@ -39,10 +58,17 @@ function SendImageModal({ image, setImage, group, user, socket, setMessages }) {
                 Send an Image
               </h3>
               <div className="flex items-center justify-center w-full cursor-pointer ">
-                <img
-                  className=" max-w-lg rounded-lg w-full course-image h-52 object-contain "
-                  src={URL.createObjectURL(image)}
-                  alt="image description"></img>
+                {image && (
+                  <img
+                    className=" max-w-lg rounded-lg w-full course-image h-52 object-contain "
+                    src={URL.createObjectURL(image)}
+                    alt="image description"></img>
+                )}
+                {video && (
+                  <video className="max-w-lg rounded-lg w-full" controls>
+                    <source src={URL.createObjectURL(video)} type="video/mp4" />
+                  </video>
+                )}
               </div>
               <div>
                 <label
@@ -65,7 +91,7 @@ function SendImageModal({ image, setImage, group, user, socket, setMessages }) {
                 <button
                   className=" text-blue-600 font-semibold bg-white hover:bg-gray-100  focus:outline-none  rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={() => {
-                    setImage(false);
+                    setmediaFile(false);
                   }}>
                   Cancel
                 </button>
