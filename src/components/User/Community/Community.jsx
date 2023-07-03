@@ -17,11 +17,10 @@ function Community({ isTab }) {
   const [groups, setGroups] = useState([]);
   const [yourGroups, setYourGroups] = useState([]);
   const [isJoined, setIsJoined] = useState(false);
-
   const [joinedCommunity, setJoinedCommunity] = useState([]);
 
   const handleJoin = (groupId) => {
-    setIsJoined(!isJoined)
+    setIsJoined(!isJoined);
     joinGroup(groupId)
       .then(({ data }) => {
         toast.success(data.message);
@@ -30,38 +29,16 @@ function Community({ isTab }) {
         toast.error(error.message);
       });
   };
-
-  //load joined community details of user api
-  const loadJoinedCommunity = () => {
-    // getJoinedCommunity().then((response) => {
-    //     if (response.data.status) {
-    //         setJoinedCommunity(response.data.joinedCommunity)
-    //     }
-    // })
-  };
-
-  //loading all community details
-  const loadAllCommunityDetails = () => {
-    // getCommunity().then((response) => {
-    //     setGroups(response.data.community);
-    //     setLoading(false)
-    // }).catch((error) => {
-    //     toast.error(error, {
-    //         position: "top-center",
-    //     });
-    // })
-  };
-
   const loadCommunityGroups = () => {};
 
   useEffect(() => {
     getUserDetails().then(({ data }) => {
-        setYourGroups(data.user.groups);
-      });
-      getAllGroups().then(({ data }) => {
-        setGroups(data.groups);
-      });
-  }, [isJoined,showModal]);
+      setYourGroups(data.user.groups);
+    });
+    getAllGroups().then(({ data }) => {
+      setGroups(data.groups);
+    });
+  }, [isJoined, showModal]);
 
   return (
     <div
@@ -90,16 +67,15 @@ function Community({ isTab }) {
               </Button>
             ) : null}
           </div>
-            <div className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {joinedCommunity.map((community) => (
-                <GroupCard
-                  key={community._id}
-                  community={community}
-                  joined={true}
-                />
-              ))}
-            </div>
-          
+          <div className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {joinedCommunity.map((community) => (
+              <GroupCard
+                key={community._id}
+                community={community}
+                joined={true}
+              />
+            ))}
+          </div>
         </>
       ) : (
         ""
@@ -132,12 +108,12 @@ function Community({ isTab }) {
           <div className="my-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <>
               {groups.map((group) => (
-               <GroupCard
-               key={group._id}
-               joinedStatus={yourGroups.includes(group._id)}
-               group={group}
-               handleJoin={handleJoin}
-             />
+                <GroupCard
+                  key={group._id}
+                  joinedStatus={yourGroups.includes(group._id)}
+                  group={group}
+                  handleJoin={handleJoin}
+                />
               ))}
             </>
           </div>

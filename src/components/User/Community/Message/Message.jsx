@@ -19,14 +19,20 @@ function Message({ own, message, user }) {
             controls
           />
         );
+      }else if(message.type === 'voice'){
+        mediaElement = (
+            //<audio src={message.file} controls className="mt-3" style={{ backgroundColor: '#f5f5f5', borderRadius: '4px' }} />
+            <audio id="song" class="block  max-w-md mx-auto" controls>
+            <source src={message.file} type="audio/mpeg"/>
+            </audio>
+        )
       }
-console.log(message);
+// console.log(message);
     return (
         <>{
             own ?
                 <>
-                    {/* <p className="p-4 text-center text-sm text-gray-500">12:40 PM</p> */}
-                    {message.type === 'image' || message.type === 'video' ?
+                    {message.type === 'image' || message.type === 'video'|| message.type === 'voice' ?
                         <div className="flex flex-row justify-end mt-3">
                             <div className="messages text-sm text-white grid grid-flow-row">
                                 <div className="flex items-center flex-row-reverse group">
@@ -71,7 +77,7 @@ console.log(message);
                 <>
                     {/* <p className="p-4 text-center text-sm text-gray-500">SAT 2:10 PM</p> */}
 
-                    {message.type === 'image' || message.type === 'video' ?
+                    {message.type === 'image' || message.type === 'video'|| message.type === 'voice' ?
                         <div className="flex flex-row justify-start mt-3">
                             {message.sender?.image ?
                                 <div className="w-8 h-8 relative flex flex-shrink-0 mr-2">

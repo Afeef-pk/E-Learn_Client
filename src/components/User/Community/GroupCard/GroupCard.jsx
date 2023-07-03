@@ -4,7 +4,6 @@ import Button from "../../Button/Button";
 
 const GroupCard = ({ group,joinedStatus, handleJoin }) => {
   const user = null
-  console.log(joinedStatus);
   return (
     <div className="card cursor-pointer card-compact bg-base-100 shadow-lg">
       <Link to={joinedStatus ? "/group-home" : ""} state={group}>

@@ -9,12 +9,20 @@ import "./Messenger.css";
 import { useMediaQuery } from "react-responsive";
 //import GroupInfo from '../GroupInfo/GroupInfo';
 import SendImageModal from "../SendImageModal/SendImageModal";
-import { IoImage,IoVideocam } from "react-icons/io5";
-import {getMessages,getjoinedGroups,sendMessage,} from "../../../../Services/userApi";
+import { IoImage, IoVideocam } from "react-icons/io5";
+import {
+  getMessages,
+  getjoinedGroups,
+  sendImage,
+  sendMessage,
+} from "../../../../Services/userApi";
 import jwtDecode from "jwt-decode";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-
+import { FaMicrophone, FaPaperPlane } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
+import { ReactMediaRecorder } from "react-media-recorder";
+import { imageUpload } from "../../../../constants/constant";
+
 function Messenger() {
   const [userGroups, setUserGroups] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -89,10 +97,10 @@ function Messenger() {
       const message = {
         text: newMessage,
         group: currentChat._id,
-        sender: { _id: user.id},
+        sender: { _id: user.id },
       };
       sendMessage(message)
-        .then(({data}) => {
+        .then(({ data }) => {
           //sending message to socketio
           socket.current.emit("sendMessage", {
             userId: user.id,
@@ -102,12 +110,31 @@ function Messenger() {
           //update messages
           setMessages([...messages, data]);
           setNewMessage("");
-          setShowEmojiPicker(false)
+          setShowEmojiPicker(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
+  };
+
+  const voiceSend = async (blobUrl) => {
+    const audioBlob = await fetch(blobUrl).then((response) => response.blob());
+    const message = {
+      type: "voice",
+      group: currentChat._id,
+      sender: { _id: user.id },
+    };
+    const voiceUrl = await imageUpload("/msg-audios/", audioBlob);
+    message.file = voiceUrl;
+    setMessages([...messages, message]);
+    sendImage(message)
+      .then((response) => {
+        socket.current.emit("sendFile", response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // //scrolling when new message load
@@ -215,12 +242,18 @@ function Messenger() {
                           <div className="absolute bottom-0 left-0 ">
                             <div className="emoji-picker-container">
                               <div className="emoji-picker-header flex justify-end">
-                                <button className="emoji-picker-close" onClick={()=>setShowEmojiPicker(false)}>
+                                <button
+                                  className="emoji-picker-close"
+                                  onClick={() => setShowEmojiPicker(false)}>
                                   <FiX />
                                 </button>
                               </div>
                               <EmojiPicker
-                                onEmojiClick={(emoji)=>setNewMessage((prevMessage) => prevMessage + emoji.emoji)}
+                                onEmojiClick={(emoji) =>
+                                  setNewMessage(
+                                    (prevMessage) => prevMessage + emoji.emoji
+                                  )
+                                }
                                 searchDisabled={true}
                                 emojiStyle={EmojiStyle.APPLE}
                                 previewConfig={{ showPreview: false }}
@@ -239,8 +272,8 @@ function Messenger() {
                     <div className="flex flex-row items-center p-4">
                       {mediaFile ? (
                         <SendImageModal
-                        mediaFile={mediaFile}
-                        setmediaFile={setMediaFile}
+                          mediaFile={mediaFile}
+                          setmediaFile={setMediaFile}
                           socket={socket.current}
                           group={currentChat}
                           user={user}
@@ -272,7 +305,7 @@ function Messenger() {
                             type="file"
                             name="video"
                             className="absolute inset-0  opacity-0 cursor-pointer"
-                            onChange={(e) =>setMediaFile(e.target.files[0])}
+                            onChange={(e) => setMediaFile(e.target.files[0])}
                           />
                         </div>
                         <IoVideocam size={22} />
@@ -290,19 +323,52 @@ function Messenger() {
                             onKeyDown={keyDownHandler}
                           />
                           <button
-                            onClick={()=>setShowEmojiPicker(!showEmojiPicker)}
+                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                             type="button"
                             className="absolute top-0 right-0 mt-2 mr-4 flex flex-shrink-0 focus:outline-none  text-blue-600 hover:text-blue-700 w-6 h-6">
                             <BsEmojiSmile size={23} />
                           </button>
                         </label>
                       </div>
-                      <button
-                        onClick={handleSubmit}
-                        type="button"
-                        className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white  justify-center items-center rounded-full">
-                        <IoSend size={20} />
-                      </button>
+                      {newMessage ? (
+                        <button
+                          onClick={handleSubmit}
+                          type="button"
+                          className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white justify-center items-center rounded-full">
+                          <IoSend size={20} />
+                        </button>
+                      ) : (
+                        <ReactMediaRecorder
+                          audio
+                          render={({
+                            status,
+                            startRecording,
+                            stopRecording,
+                            mediaBlobUrl,
+                          }) => (
+                            <div>
+                              {status === "recording" ? (
+                                <button
+                                  onClick={() => {
+                                    stopRecording();
+                                  }}
+                                  type="button"
+                                  className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white justify-center items-center rounded-full">
+                                  <IoSend size={20} />
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={startRecording}
+                                  type="button"
+                                  className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white justify-center items-center rounded-full">
+                                  <FaMicrophone size={20} />
+                                </button>
+                              )}
+                            </div>
+                          )}
+                          onStop={(mediaBlobUrl) => voiceSend(mediaBlobUrl)}
+                        />
+                      )}
                     </div>
                   </div>
                 </section>

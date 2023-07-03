@@ -8,8 +8,9 @@ import { storage } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineMessage } from "react-icons/ai";
-import { MdOutlineExplore, MdOutlineMessage, MdEvent } from "react-icons/md";
+import { MdOutlineExplore, MdOutlineMessage } from "react-icons/md";
 import { BiHomeAlt } from "react-icons/bi";
+import { v4 as uuidv4 } from 'uuid'
 export const initialValues = {
   name: "",
   lastName: "",
@@ -127,8 +128,16 @@ export const imageValidation = (file) => {
   return true;
 };
 
+const generateUniqueFileName = () => {
+  const timestamp = Date.now();
+  const randomString = uuidv4().substring(0, 8); // Generate a random string using uuidv4 library
+  return `voice-file-${timestamp}-${randomString}`;
+};
 export const imageUpload = async (path, image) => {
   try {
+    if(!image.name){
+      image.name = generateUniqueFileName()
+    }
     const storageRef = ref(storage, path + image.name);
     const snapshot = await uploadBytes(storageRef, image)
     return getDownloadURL(snapshot.ref);
