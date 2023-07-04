@@ -37,6 +37,7 @@ function Messenger() {
   const [mediaFile, setMediaFile] = useState(null);
   const [user, setUser] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -127,10 +128,10 @@ function Messenger() {
     };
     const voiceUrl = await imageUpload("/msg-audios/", audioBlob);
     message.file = voiceUrl;
-    setMessages([...messages, message]);
     sendImage(message)
       .then((response) => {
         socket.current.emit("sendFile", response.data);
+        setMessages([...messages, response.data]);
       })
       .catch((error) => {
         console.log(error);
@@ -322,12 +323,21 @@ function Messenger() {
                             }}
                             onKeyDown={keyDownHandler}
                           />
-                          <button
-                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                            type="button"
-                            className="absolute top-0 right-0 mt-2 mr-4 flex flex-shrink-0 focus:outline-none  text-blue-600 hover:text-blue-700 w-6 h-6">
-                            <BsEmojiSmile size={23} />
-                          </button>
+                          {isRecording ? (
+                            <div class="absolute top-0 right-0 mt-2 mr-4 recording-div">
+                              <div class="recording-circle"></div>
+                              <div class="recording-text">Recording</div>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                setShowEmojiPicker(!showEmojiPicker)
+                              }
+                              type="button"
+                              className="absolute top-0 right-0 mt-2 mr-4 flex flex-shrink-0 focus:outline-none  text-blue-600 hover:text-blue-700 w-6 h-6">
+                              <BsEmojiSmile size={23} />
+                            </button>
+                          )}
                         </label>
                       </div>
                       {newMessage ? (
@@ -349,16 +359,17 @@ function Messenger() {
                             <div>
                               {status === "recording" ? (
                                 <button
-                                  onClick={() => {
-                                    stopRecording();
-                                  }}
+                                  onClick={stopRecording}
                                   type="button"
                                   className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white justify-center items-center rounded-full">
                                   <IoSend size={20} />
                                 </button>
                               ) : (
                                 <button
-                                  onClick={startRecording}
+                                  onClick={() => {
+                                    startRecording();
+                                    setIsRecording(true);
+                                  }}
                                   type="button"
                                   className="flex flex-shrink-0 focus:outline-none mx-2 h-9 w-9 bg-blue-600 text-white justify-center items-center rounded-full">
                                   <FaMicrophone size={20} />
@@ -366,7 +377,10 @@ function Messenger() {
                               )}
                             </div>
                           )}
-                          onStop={(mediaBlobUrl) => voiceSend(mediaBlobUrl)}
+                          onStop={(mediaBlobUrl) => {
+                            voiceSend(mediaBlobUrl);
+                            setIsRecording(false);
+                          }}
                         />
                       )}
                     </div>
