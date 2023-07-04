@@ -16,6 +16,7 @@ import MyCoursePage from "../pages/user/MyCoursePage";
 import PurchaseHistoryPage from "../pages/user/PurchaseHistoryPage";
 import CommunityPage from "../pages/user/CommunityPage";
 import MessengerPage from "../pages/user/MessengerPage";
+import ErrorPage from "../pages/user/ErrorPage";
 
 const UserRouter = () => {
   return (
@@ -40,7 +41,7 @@ const UserRouter = () => {
       <Route path="/" element={<UserHomePage />} />
       <Route path="/course" element={<UserCoursePage />} />
       <Route path="/course-details/:courseId" element={<CourseDetailsPage />} />
-      <Route path="/*" element={<div>page not found</div>} />
+      <Route path="/*" element={<ErrorPage/>} />
     </Routes>
   );
 };
