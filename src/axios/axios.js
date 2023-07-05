@@ -1,7 +1,9 @@
 import axios from "axios"
-const userBaseURL = import.meta.env.VITE_UserBaseURL
-const tutorBaseURL = import.meta.env.VITE_TutorBaseURL
-const adminBaseURL = import.meta.env.VITE_AdminBaseURL
+
+const baseURL = import.meta.env.VITE_BaseURL;
+const userBaseURL = baseURL;
+const tutorBaseURL = `${baseURL}/tutor`
+const adminBaseURL = `${baseURL}/admin`
 
 const createAxiosInstance = (baseURL) => {
   const instance = axios.create({
