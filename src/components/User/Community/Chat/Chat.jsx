@@ -24,15 +24,6 @@ function Chat({ setShowAbout, currentChat, isMobile, setshowMessagesDiv }) {
                </div>
             </div>
             <div className="flex">
-                {/* <a href="#" className="block rounded-full hover:bg-gray-700 text-blue-500 bg-gray-800 w-10 h-10 p-2">
-                  <BsFillTelephoneFill size={23} />
-              </a>
-              <a href="#" className="block rounded-full hover:bg-gray-700 text-blue-500 bg-gray-800 w-10 h-10 p-2 ml-4">
-                  <BsCameraVideoFill size={23} />
-              </a> */}
-                {/* <a href="#" className="block rounded-full hover:bg-gray-700 text-gray-500 bg-gray-100 w-10 h-10 p-2 ml-4">
-                    <BsFillInfoCircleFill size={23} />
-                </a> */}
             </div>
         </div>
     )

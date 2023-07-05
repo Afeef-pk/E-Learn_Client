@@ -49,7 +49,7 @@ function Messenger() {
 
   //connecting to socket
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_UserBaseURL);
+    socket.current = io(import.meta.env.VITE_BaseURL);
   }, [user]);
 
   //Join the appropriate room for the current group
