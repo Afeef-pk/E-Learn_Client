@@ -1,8 +1,12 @@
 import React from "react";
-import TutorSignup from "../../components/Auth/SignUp/TutorSignUp";
+
 
 function TutorSignupPage() {
-  return <TutorSignup />;
+  return (
+    <div>
+      
+    </div>
+  )
 }
 
 export default TutorSignupPage;
