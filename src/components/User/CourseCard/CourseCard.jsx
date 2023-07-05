@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function CourseCard({ course, myCourse, totalProgress }) {
-  console.log(myCourse);
   return (
     <Link
       to={
