@@ -162,7 +162,7 @@ export const tutorProfileValidation = Yup.object({
 export const tutorMenus = [
   { name: "Dashboard", link: "/tutor/dashboard", icon: MdOutlineDashboard },
   { name: "Courses", link: "/tutor/course", icon: MdOndemandVideo },
-  { name: "Messages", link: "/tutor/message", icon: AiOutlineMessage },
+  // { name: "Messages", link: "/tutor/message", icon: AiOutlineMessage },
   { name: "Account", link: "/tutor/profile", icon: CgProfile },
   { name: "Logout", link: "/", icon: BiLogOut },
 ];
