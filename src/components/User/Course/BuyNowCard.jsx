@@ -1,14 +1,10 @@
 import React, { useEffect, useState,Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-//import { isCourseEnrolled } from '../../services/userApi';
-import tutorIcon from "/icons/tutorIcon.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { ImFilm } from "react-icons/im";
-import { GrLanguage } from "react-icons/Gr";
+import { GrLanguage } from "react-icons/gr";
 import { MdClose } from "react-icons/md";
-
-import Button from "../Button/Button";
 import { isCourseEnrolled } from "../../../Services/userApi";
 import { Dialog, Transition } from '@headlessui/react'
 
@@ -105,7 +101,7 @@ function BuyNowCard({ courseDetails }) {
         <div className="flex justify-between ">
           <div>
             <div className="flex">
-              <img src={tutorIcon} alt="" className="h-7 m-1" />
+              <img src={'/icons/tutorIcon.png'} alt="tutorlogo" className="h-7 m-1" />
               <p className="mx-1 my-1.5">Instructor</p>
             </div>
             <div className="flex mx-2 my-2 ">
