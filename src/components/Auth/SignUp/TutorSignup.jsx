@@ -12,7 +12,7 @@ import {
   tutorValidationSchema,
 } from "../../../constants/constant";
 
-function TutorSignUp() {
+function TutorSignup() {
   const [user, setUser] = useState(null);
   const [showButton, setShowButton] = useState(true);
   const [certificate, setCertificate] = useState(null);
@@ -253,4 +253,4 @@ function TutorSignUp() {
   );
 }
 
-export default TutorSignUp;
+export default TutorSignup;

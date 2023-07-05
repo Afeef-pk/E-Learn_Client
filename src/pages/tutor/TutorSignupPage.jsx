@@ -1,9 +1,9 @@
 import React from 'react'
-import TutorSignUp from '../../components/Auth/SignUp/TutorSignUp';
+import TutorSignup from "../../components/Auth/SignUp/TutorSignup";
 
 function TutorSignupPage() {
   return (
-  <TutorSignUp/>
+  <TutorSignup/>
   )
 }
 
