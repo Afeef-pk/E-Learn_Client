@@ -8,7 +8,7 @@ const adminBaseURL = `${baseURL}/admin`
 const createAxiosInstance = (baseURL) => {
   const instance = axios.create({
     baseURL,
-    timeout: 10000,
+    timeout: 20000,
     timeoutErrorMessage: "Request timeout... Please Try Again!!!"
   })
   return instance

@@ -171,7 +171,7 @@ export const userNavBar = [
   { name: "Home", href: "/", current: false },
   { name: "Course", href: "/course", current: false },
   { name: "Community", href: "/community", current: false },
-  { name: "News", href: "/news", current: false },
+  // { name: "News", href: "/news", current: false },
 ];
 
 export const CommunitySidebarLink = [

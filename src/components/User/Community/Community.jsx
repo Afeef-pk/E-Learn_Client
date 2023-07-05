@@ -10,24 +10,31 @@ import {
   getUserDetails,
   joinGroup,
 } from "../../../Services/userApi";
+import { useNavigate } from "react-router-dom";
 
 function Community({ isTab }) {
+  const navigate = useNavigate()
   const user = useSelector((state) => state.user);
   const [showModal, setShowModal] = useState(false);
   const [groups, setGroups] = useState([]);
   const [yourGroups, setYourGroups] = useState([]);
   const [isJoined, setIsJoined] = useState(false);
   const [joinedCommunity, setJoinedCommunity] = useState([]);
+  const { authorized } = useSelector((state) => state.user);
 
   const handleJoin = (groupId) => {
-    setIsJoined(!isJoined);
-    joinGroup(groupId)
+    if(authorized){
+      setIsJoined(!isJoined);
+      joinGroup(groupId)
       .then(({ data }) => {
         toast.success(data.message);
       })
       .catch((error) => {
         toast.error(error.message);
       });
+    }else{
+      navigate('/signin')
+    }
   };
   const loadCommunityGroups = () => {};
 

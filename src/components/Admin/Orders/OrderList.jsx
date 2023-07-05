@@ -51,7 +51,6 @@ function OrderList() {
             </thead>
             <tbody>
               {orders.map((order, index) => {
-                {console.log(index)}
                 return (
                   <tr
                     key={index}

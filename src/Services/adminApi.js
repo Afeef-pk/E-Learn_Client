@@ -61,6 +61,5 @@ export const createCoupon = (couponData) => {
 }
 
 export const deleteCoupon = (couponId)=>{
-    console.log(couponId);
     return adminAxiosInstance.delete(`/coupon/delete/${couponId}`)
 }

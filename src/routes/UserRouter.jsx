@@ -28,7 +28,6 @@ const UserRouter = () => {
         <Route path="/order-success" element={<OrderSucessPage />} />
         <Route path="/my-courses" element={<MyCoursePage/>} />
         <Route path="/purchase-history" element={<PurchaseHistoryPage/>} />
-        <Route path="/community" element={<CommunityPage/>} />
         <Route path='/messages' element={<MessengerPage />} />
       </Route>
 
@@ -41,6 +40,7 @@ const UserRouter = () => {
       <Route path="/" element={<UserHomePage />} />
       <Route path="/course" element={<UserCoursePage />} />
       <Route path="/course-details/:courseId" element={<CourseDetailsPage />} />
+        <Route path="/community" element={<CommunityPage/>} />
       <Route path="/*" element={<ErrorPage/>} />
     </Routes>
   );

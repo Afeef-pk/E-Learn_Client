@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import Button from "../../Button/Button";
 
 const GroupCard = ({ group,joinedStatus, handleJoin }) => {
-  const user = null
   return (
     <div className="card cursor-pointer card-compact bg-base-100 shadow-lg">
-      <Link to={joinedStatus ? "/group-home" : ""} state={group}>
+      <Link to={joinedStatus ? "/messages" : ""} state={group}>
         <figure>
           <img
             src={group?.image}
@@ -36,7 +35,6 @@ const GroupCard = ({ group,joinedStatus, handleJoin }) => {
               </div>
             </div>
           </div>
-          {!user?.email ? (
             <div>
               {joinedStatus ? (
                 ""
@@ -44,15 +42,12 @@ const GroupCard = ({ group,joinedStatus, handleJoin }) => {
                 <div className="mr-3 cursor-pointer">
                   <button
                     className="font-bold bg-gray-800 px-5 py-1 rounded-md text-white"
-                    onClick={() => {
-                      handleJoin(group._id);
-                    }}>
+                    onClick={() =>handleJoin(group._id)}>
                     Join
                   </button>
                 </div>
               )}
             </div>
-          ) : null}
         </div>
       </div>
     </div>

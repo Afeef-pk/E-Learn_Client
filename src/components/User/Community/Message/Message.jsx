@@ -21,13 +21,11 @@ function Message({ own, message, user }) {
         );
       }else if(message.type === 'voice'){
         mediaElement = (
-            //<audio src={message.file} controls className="mt-3" style={{ backgroundColor: '#f5f5f5', borderRadius: '4px' }} />
             <audio id="song" class="block  max-w-md mx-auto" controls>
             <source src={message.file} type="audio/mpeg"/>
             </audio>
         )
       }
-// console.log(message);
     return (
         <>{
             own ?
