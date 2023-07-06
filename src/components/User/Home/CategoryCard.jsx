@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card(props) {
+function CategoryCard(props) {
   return (
     <div className="p-9 rounded-md shadow-2xl cursor-pointer transition duration-300  transform hover:scale-110" style={{ backgroundColor: props.color }}>
       <img className="w-12" src={props.icon} alt="" />
@@ -10,4 +10,4 @@ function Card(props) {
   );
 }
 
-export default Card;
+export default CategoryCard;

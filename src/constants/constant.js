@@ -128,6 +128,25 @@ export const imageValidation = (file) => {
   return true;
 };
 
+export const videoValidation = (e) => {
+  const file = e.target.files[0];
+  const supportedFormats = ["video/mp4", "video/mpeg", "video/ogg", "video/webm","video/mkv"];
+  const maxSizeInBytes = 10 * 1024 * 1024; // Maximum size of 10MB
+
+  if (!supportedFormats.includes(file.type)) {
+    toast.error("Please choose a video file.");
+    return false;
+  }
+
+  if (file.size > maxSizeInBytes) {
+    toast.error("The video size exceeds the maximum allowed limit of 10MB.");
+    return false;
+  }
+
+  return file;
+};
+
+
 const generateUniqueFileName = () => {
   const timestamp = Date.now();
   const randomString = uuidv4().substring(0, 8); // Generate a random string using uuidv4 library

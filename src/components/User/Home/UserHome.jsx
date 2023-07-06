@@ -4,12 +4,13 @@ import logo1 from "/icons/design.svg";
 import logo2 from "/icons/monitor.svg";
 import logo3 from "/icons/it-logo.svg";
 import logo4 from "/icons/business-logo.svg";
-import Card from "./Card";
+import CategoryCard from "./CategoryCard";
 import CourseCard from "../CourseCard/CourseCard";
 import homekid from "/assets/home-kid.png";
-import homeImg from "/assets/home-image.png";
 import { homeCourseLoad } from "../../../Services/userApi";
 import Button from "../Button/Button";
+import { FaSearch } from "react-icons/fa";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 function UserHomePage() {
   const [courses, setCourse] = useState([]);
@@ -19,37 +20,89 @@ function UserHomePage() {
   useEffect(() => {
     homeCourseLoad(courseCount).then(({ data }) => {
       setCourse(data.courseData);
-      setTotalCount(data.total)
+      setTotalCount(data.total);
     });
   }, [courseCount]);
- 
+
+  const categoryData = [
+    {
+      icon: logo1,
+      title: "Design",
+      color: "#EFEFF6",
+      hoverColor: "#0d6efd",
+      content:
+        "Learn how to design your website. We have a wide range of designing courses from which you can select the best that suits you.",
+    },
+    {
+      icon: logo2,
+      title: "Development",
+      color: "#F68C201A",
+      content:
+        "Learn how to develop your software and websites. We provide you with a wide range of different development courses that will help you to learn more.",
+    },
+    {
+      icon: logo3,
+      title: "IT & Software",
+      color: "#BBF0FF80",
+      content:
+        "If you want to learn something new in IT and Software, then this is the right place to help you with different IT and Software courses from which you can get the one for you.",
+    },
+    {
+      icon: logo4,
+      title: "Business",
+      color: "#CEF6D680",
+      content:
+        "If you want to be a successful business owner, our courses will help you do so. Book your course now.",
+    },
+  ];
   return (
     <>
-      <div className="grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 h-auto bg-[#EAEDFB] ">
+      <div className="grid h-screen sm:grid-cols-2 bg-[#EAEDFB] bg-[url('/assets/home-bg.png')]">
         <div className="w-full">
-          <div className="flex justify-center items-center">
-            <h3 className="text-3xl text-center md:text-1xl lg:text-3xl xl:text-3xl xl:py-20 py-8 px-10 font-semibold leading-10">
-              Welcome to the World of Lifelong Learning !
-            </h3>
+          <div className="px-28 pt-28">
+            <div>
+              <p className="text-2xl text-[#685f78] font-semibold">
+                Start your favourite course
+              </p>
+            </div>
+            <div className="py-8 text-5xl  text-[#002058] font-bold leading-[1.2]">
+              <p>Now learning from </p>
+              <p> anywhere, and build</p>
+              <p>your bright career.</p>
+            </div>
           </div>
-          <div>
-            <h6 className="leading-8 pl-16  pr-8 text-xl  text-gray-800 font-semibold xl:pl-24 xl:pr-10">
-              Learn the skills you need to take the next step and every step
-              after. Pick from over 100 online video courses with new additions
-              published every month.
-            </h6>
-          </div>
-
-          <div className="xl:pl-24 pl-16 pt-5  ">
+          <div className="px-28 ">
             <Link to="/course">
-              <Button className="bg-[#232946] hover:bg-[#334364] text-white font-medium py-2 px-4 rounded">
-                Explore courses
-              </Button>
+              <Button>Explore courses</Button>
             </Link>
           </div>
+          <div className="pl-32  py-14 pr-32">
+            <div className="relative">
+              <input
+                className="h-14 pl-10 pr-16 rounded-full w-full outline-none text-lg border-white"
+                type="text"
+                placeholder="Search Course..."
+              />
+              <div className="absolute inset-y-0 left-4 flex items-center text-gray-500">
+                <FaSearch />
+              </div>
+              <Link to={"/search"}>
+                <button className="absolute inset-y-0 right-4 flex items-center p-5 rounded-full bg-red-400">
+                  <AiOutlineArrowRight />
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="px-32">
+            <p className="text-xl text-[#685f78] font-semibold">
+              Trusted by over 15K Users
+              <br />
+              worldwide since 2022
+            </p>
+          </div>
         </div>
-        <div className="">
-          <img className="" src={homeImg} alt="home-pic" />
+        <div>
+          <img src={"/assets/home-image.png"} alt="home-pic" />
         </div>
       </div>
 
@@ -68,41 +121,17 @@ function UserHomePage() {
             </Link>
           </div>
         </div>
-
         <div className="px-10 mt-6 mb-10 gap-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 ">
-          <Card
-            icon={logo1}
-            title={"Design"}
-            color={"#EFEFF6"}
-            hoverColor={"#0d6efd"}
-            content={
-              "Learn how to design your website. We have a wide range of designing courses from which you can select the best that suits you."
-            }
-          />
-          <Card
-            icon={logo2}
-            title={"Development"}
-            color={"#F68C201A"}
-            content={
-              "Learn how to develop your software and websites. We provide you with a wide range of different development courses that will help you to learn more."
-            }
-          />
-          <Card
-            icon={logo3}
-            title={"IT & Software"}
-            color={"#BBF0FF80"}
-            content={
-              "If you want to learn something new in IT and Software, then this is the right place to help you with different IT and Software courses from which you can get the one for you."
-            }
-          />
-          <Card
-            icon={logo4}
-            title={"Bussiness"}
-            color={"#CEF6D680"}
-            content={
-              "If you want to be a successful business owner, our courses will help you do so. Book your course now."
-            }
-          />
+          {categoryData.map((card, index) => (
+            <CategoryCard
+              key={index}
+              icon={card.icon}
+              title={card.title}
+              color={card.color}
+              hoverColor={card.hoverColor}
+              content={card.content}
+            />
+          ))}
         </div>
       </div>
       <div>
@@ -120,34 +149,36 @@ function UserHomePage() {
           Top Courses
         </h1>
         <div className="relative items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
-         {courseCount!==1 && <button
-         onClick={()=>setCourseCount(courseCount-1)}
-            type="button"
-            className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            data-carousel-prev>
-            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white  group-hover:bg-blue-500 group-focus:ring-2 ring-2">
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="4"
-                  d="M15 19l-7-7 7-7"></path>
-              </svg>
-              <span className="sr-only">Previous</span>
-            </span>
-          </button>}
+          {courseCount !== 1 && (
+            <button
+              onClick={() => setCourseCount(courseCount - 1)}
+              type="button"
+              className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+              data-carousel-prev>
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white  group-hover:bg-blue-500 group-focus:ring-2 ring-2">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="4"
+                    d="M15 19l-7-7 7-7"></path>
+                </svg>
+                <span className="sr-only">Previous</span>
+              </span>
+            </button>
+          )}
           {courses.map((course, index) => {
             return <CourseCard key={index} course={course} />;
           })}
           {courseCount * 5 < totalCount && (
             <button
-              onClick={()=>setCourseCount(courseCount+1)}
+              onClick={() => setCourseCount(courseCount + 1)}
               type="button"
               className="absolute  top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
               data-carousel-next>

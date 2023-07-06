@@ -12,7 +12,7 @@ export default {
     },
     colors:{
       darkBlue: '#326789',
-      lightBlue:'#78a6c8'
+      lightBlue:'#78a6c8',
     }
   },
 

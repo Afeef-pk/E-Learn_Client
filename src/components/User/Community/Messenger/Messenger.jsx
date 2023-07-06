@@ -21,7 +21,7 @@ import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { FaMicrophone, FaPaperPlane } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
 import { ReactMediaRecorder } from "react-media-recorder";
-import { imageUpload } from "../../../../constants/constant";
+import { handleImage, imageUpload, videoValidation } from "../../../../constants/constant";
 
 function Messenger() {
   const [userGroups, setUserGroups] = useState([]);
@@ -291,9 +291,7 @@ function Messenger() {
                             type="file"
                             name="photo"
                             className="absolute inset-0  opacity-0 cursor-pointer"
-                            onChange={(e) => {
-                              setMediaFile(e.target.files[0]);
-                            }}
+                            onChange={(e) => setMediaFile(handleImage(e))}
                           />
                         </div>
                         <IoImage size={22} />
@@ -306,7 +304,7 @@ function Messenger() {
                             type="file"
                             name="video"
                             className="absolute inset-0  opacity-0 cursor-pointer"
-                            onChange={(e) => setMediaFile(e.target.files[0])}
+                            onChange={(e) => setMediaFile(videoValidation(e))}
                           />
                         </div>
                         <IoVideocam size={22} />

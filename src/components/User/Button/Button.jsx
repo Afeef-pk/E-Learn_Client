@@ -5,9 +5,9 @@ function Button(props) {
   return (
     <button
       type={buttonType}
-      className="loading-btn hover:bg-[#232946]  mt-2 font-medium rounded"
+      className="loading-btn bg-[#232946] hover:bg-[#232946]  mt-2 font-medium rounded"
       onClick={props.onClick}>
-      <span className="txt">{props.children}</span>
+      <span className="txt text-white font-bold">{props.children}</span>
     </button>
   );
 }
