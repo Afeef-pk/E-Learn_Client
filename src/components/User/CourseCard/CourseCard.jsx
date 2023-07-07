@@ -9,7 +9,7 @@ function CourseCard({ course, myCourse, totalProgress }) {
           ? `/course/view/${course._id}`
           : `/course-details/${course._id}`
       }>
-      <div className="bg-[#e0dddda9] rounded-b-xl w-60 pb-2 transition duration-300  transform hover:scale-110 ">
+      <div className="bg-[#e0dddda9] rounded-b-xl xl:w-60 mx-3 my-3 sm:my-0 pb-2 transition duration-300  transform hover:scale-110 ">
         <img
           className="w-full h-36 rounded-t-xl"
           src={course?.imageURL}

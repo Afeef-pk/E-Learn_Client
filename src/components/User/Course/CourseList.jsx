@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CourseCard from "../CourseCard/CourseCard";
 import { getCourseList } from "../../../Services/userApi";
 import Pagination from "../Pagination/Pagination";
+import CardSkeleton from "../CourseCard/CardSkeleton";
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
@@ -10,6 +11,7 @@ function CourseList() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [totalCourse, setTotalCourse] = useState(0);
   const [activePage, setActivePage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const courseLimitPerPage = 3;
   useEffect(() => {
     getCourseList(
@@ -21,6 +23,7 @@ function CourseList() {
       setCourses(res.data.courseData);
       setCategoryData(res.data.categoryData);
       setTotalCourse(res.data.total);
+      setIsLoading(false);
     });
   }, [activePage, searchQuery, selectedCategory]);
 
@@ -82,10 +85,20 @@ function CourseList() {
           </form>
         </div>
       </div>
-      <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8  grid h-96 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
-        {courses?.map((course, index) => {
-          return <CourseCard key={index} course={course} myCourse={false}/>;
-        })}
+      <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+        {isLoading ? (
+          <>
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          </>
+        ) : (
+          courses?.map((course, index) => {
+            return <CourseCard key={index} course={course} myCourse={false} />;
+          })
+        )}
       </div>
       <Pagination
         activePage={activePage}

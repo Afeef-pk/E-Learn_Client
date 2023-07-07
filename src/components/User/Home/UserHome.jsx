@@ -11,16 +11,19 @@ import { homeCourseLoad } from "../../../Services/userApi";
 import Button from "../Button/Button";
 import { FaSearch } from "react-icons/fa";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import CardSkeleton from "../CourseCard/CardSkeleton";
 
 function UserHomePage() {
   const [courses, setCourse] = useState([]);
   const [courseCount, setCourseCount] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     homeCourseLoad(courseCount).then(({ data }) => {
       setCourse(data.courseData);
       setTotalCount(data.total);
+      setIsLoading(false);
     });
   }, [courseCount]);
 
@@ -57,26 +60,24 @@ function UserHomePage() {
   ];
   return (
     <>
-      <div className="grid h-screen sm:grid-cols-2 bg-[#EAEDFB] bg-[url('/assets/home-bg.png')]">
-        <div className="w-full">
-          <div className="px-28 pt-28">
+      <div className="grid grid-cols-1 sm:grid-cols-2 bg-[#EAEDFB] bg-[url('/assets/home-bg.png')]">
+        <div className="px-5 lg:px-24 w-full">
+          <div className="">
             <div>
-              <p className="text-2xl text-[#685f78] font-semibold">
+              <p className="py-5 md:pt-28 text-lg sm:text-2xl text-[#685f78] font-semibold">
                 Start your favourite course
               </p>
             </div>
-            <div className="py-8 text-5xl  text-[#002058] font-bold leading-[1.2]">
-              <p>Now learning from </p>
-              <p> anywhere, and build</p>
-              <p>your bright career.</p>
+            <div className=" text-4xl sm:text-5xl  text-[#002058] font-bold leading-[1.2]">
+              <p>Now learning from anywhere, and build your bright career.</p>
             </div>
           </div>
-          <div className="px-28 ">
+          <div className="py-5 sm:py-10">
             <Link to="/course">
               <Button>Explore courses</Button>
             </Link>
           </div>
-          <div className="pl-32  py-14 pr-32">
+          <div className="pt-5 sm:p-0 sm:pr-28">
             <div className="relative">
               <input
                 className="h-14 pl-10 pr-16 rounded-full w-full outline-none text-lg border-white"
@@ -87,13 +88,13 @@ function UserHomePage() {
                 <FaSearch />
               </div>
               <Link to={"/search"}>
-                <button className="absolute inset-y-0 right-4 flex items-center p-5 rounded-full bg-red-400">
+                <button className="absolute my-2 inset-y-0 right-4 flex items-center p-3 rounded-full bg-red-400">
                   <AiOutlineArrowRight />
                 </button>
               </Link>
             </div>
           </div>
-          <div className="px-32">
+          <div className=" py-10">
             <p className="text-xl text-[#685f78] font-semibold">
               Trusted by over 15K Users
               <br />
@@ -101,8 +102,10 @@ function UserHomePage() {
             </p>
           </div>
         </div>
-        <div>
-          <img src={"/assets/home-image.png"} alt="home-pic" />
+        <div className="">
+          <div className="xl:mx-16 xl:p-16 ">
+            <img className="" src={"/assets/home-image.png"} alt="home-pic" />
+          </div>
         </div>
       </div>
 
@@ -115,9 +118,7 @@ function UserHomePage() {
           </div>
           <div className="p-3">
             <Link to="/course">
-              <Button className="bg-[#232946] hover:bg-[#232946] text-white  py-2 px-4 rounded ">
-                See All category
-              </Button>
+              <Button>See All category</Button>
             </Link>
           </div>
         </div>
@@ -148,7 +149,7 @@ function UserHomePage() {
         <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">
           Top Courses
         </h1>
-        <div className="relative items-center justify-center  mt-7 m-16 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+        <div className="relative mx-5 sm:mx-12 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {courseCount !== 1 && (
             <button
               onClick={() => setCourseCount(courseCount - 1)}
@@ -173,9 +174,20 @@ function UserHomePage() {
               </span>
             </button>
           )}
-          {courses.map((course, index) => {
-            return <CourseCard key={index} course={course} />;
-          })}
+          {isLoading ? (
+            <>
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+            </>
+          ) : (
+            courses.map((course, index) => {
+              return <CourseCard key={index} course={course} />;
+            })
+          )}
+
           {courseCount * 5 < totalCount && (
             <button
               onClick={() => setCourseCount(courseCount + 1)}
@@ -217,9 +229,11 @@ function UserHomePage() {
               </h1>
             </div>
             <div className="max-sm:px-12 px-20 mt-5">
+              <Link to={'community'}>
               <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">
                 Connect
               </Button>
+              </Link>
             </div>
           </div>
           <div className="grid justify-items-center max-sm:hidden">
