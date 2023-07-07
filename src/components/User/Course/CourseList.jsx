@@ -93,7 +93,7 @@ function CourseList() {
         </div>
       </div>
 
-      <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+      <div className="gap-6 mx-4 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
         {isLoading ? (
           <>
             <CardSkeleton />
