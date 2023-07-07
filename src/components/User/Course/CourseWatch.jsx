@@ -105,7 +105,7 @@ function CourseWatch() {
     }
   }, [video]);
   return (
-    <section className="mx-20">
+    <section className="mx-20 sm:mx-20">
       <div className="mx-auto  h-screen">
         <div className="flex flex-col sm:flex-row  ">
           <div className="w-full lg:w-8/12 overflow-auto">
