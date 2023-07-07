@@ -13,6 +13,7 @@ function CourseList() {
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const courseLimitPerPage = 3;
+
   useEffect(() => {
     getCourseList(
       activePage,
@@ -37,14 +38,20 @@ function CourseList() {
                 ? "bg-[#232946] text-white"
                 : " bg-[#ffffff]"
             } ml-20 my-5 mr-5 shadow-md shadow-gray-700 border-t-2`}
-            onClick={() => setSelectedCategory(null)}>
+            onClick={() => {
+              setIsLoading(true);
+              setSelectedCategory(null);
+            }}>
             All Course
           </button>
           {categoryData.map((category, index) => {
             return (
               <button
                 key={index}
-                onClick={() => setSelectedCategory(category._id)}
+                onClick={() => {
+                  setIsLoading(true);
+                  setSelectedCategory(category._id);
+                }}
                 className={`px-5 py-2 rounded-xl ${
                   selectedCategory === category._id
                     ? "bg-[#232946] text-white"
@@ -85,19 +92,25 @@ function CourseList() {
           </form>
         </div>
       </div>
+
       <div className="my-10 gap-6 mx-20 max-sm:m-0 mb-8  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
         {isLoading ? (
           <>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
           </>
-        ) : (
+        ) : courses.length > 0 ? (
           courses?.map((course, index) => {
             return <CourseCard key={index} course={course} myCourse={false} />;
           })
+        ) : (
+          <div className="flex justify-center flex-col items-center mb-10">
+            <img src="/assets/course/nocourse.svg" alt="" />
+            <p>No course found</p>
+          </div>
         )}
       </div>
       <Pagination

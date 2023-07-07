@@ -120,10 +120,10 @@ export default function NavBar() {
                   {authorized ? (
                     <Menu as="div" className="relative ml-3">
                       <div>
-                        <Menu.Button className="flex rounded-2xl  ring-black ring-1  text-sm focus:outline-none focus:ring-1 focus:ring-white  ring-offset-1 focus:ring-offset-1 focus:ring-offset-gray-800">
+                        <Menu.Button className="flex rounded-full  ring-black ring-1  text-sm focus:outline-none focus:ring-1 focus:ring-white  ring-offset-1 focus:ring-offset-1 focus:ring-offset-gray-800">
                           <span className="sr-only">Open user menu</span>
                           <img
-                            className="h-10 w-10 rounded-2xl "
+                            className="h-10 w-10 rounded-full "
                             src={image || defaultDp}
                             alt="ua"
                           />

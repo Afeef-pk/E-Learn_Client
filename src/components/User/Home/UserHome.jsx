@@ -149,7 +149,7 @@ function UserHomePage() {
         <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">
           Top Courses
         </h1>
-        <div className="relative mx-5 sm:mx-12 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="relative mx-2 sm:mx-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {courseCount !== 1 && (
             <button
               onClick={() => setCourseCount(courseCount - 1)}
