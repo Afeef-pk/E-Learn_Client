@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TimeAgo from 'timeago-react';
+import { MdClose } from 'react-icons/md';
 
 function Message({ own, message, user }) {
+    const [showPreview, setShowPreview] = useState(false);
     let mediaElement = null;
     if (message.type === 'image') {
         mediaElement = (
-          <img
+          <img onClick={()=>setShowPreview(!showPreview)}
             className="w-full max-w-[224px] h-full rounded-lg object-cover"
             src={message.file}
             alt="image"
           />
+          
         );
       } else if (message.type === 'video') {
         mediaElement = (
@@ -21,7 +24,7 @@ function Message({ own, message, user }) {
         );
       }else if(message.type === 'voice'){
         mediaElement = (
-            <audio id="song" class="block  max-w-md mx-auto" controls>
+            <audio id="song" className="block  max-w-md mx-auto" controls>
             <source src={message.file} type="audio/mpeg"/>
             </audio>
         )
@@ -47,6 +50,7 @@ function Message({ own, message, user }) {
                                 </div>
                                 <time className="text-right text-black text-[10px] opacity-50 "><TimeAgo datetime={message.createdAt} /></time>
                             </div>
+                            
                             {message.sender?.image  ?
                             <div className="w-8 h-8 relative flex flex-shrink-0 ml-2">
                                     <img className=" rounded-full w-full h-full object-cover" src={message?.sender?.image}/>
@@ -120,6 +124,29 @@ function Message({ own, message, user }) {
                     }
                 </>
         }
+         {showPreview && (
+            <div className="fixed top-0 left-0 z-50 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="relative">
+                <button
+                className="absolute top-4 right-4 text-white text-2xl"
+                onClick={() => setShowPreview(false)}
+                aria-label="Close"
+              >
+                <MdClose className="h-6 w-6" color="white" />
+              </button>
+              <div className=" max-w-3xl max-h-3xl">
+                <img
+                  src={message.file}
+                  className="object-contain"
+                  alt="certificate preview"
+                />
+              </div>
+              
+            </div>
+          </div>
+          
+          
+          )}
         </>
     )
 }
