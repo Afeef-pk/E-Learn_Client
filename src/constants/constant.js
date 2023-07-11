@@ -59,10 +59,20 @@ export const tutorValidationSchema = Yup.object({
 
 export const userProfileValidation = Yup.object({
   name: Yup.string()
-    .matches(/^[a-zA-Z ]*$/, "Name must be a letter").min(2).max(15).required("Please enter your name"),
-  lastName: Yup.string().min(1).max(15).required("Please enter your last name"),
-  email: Yup.string().email().required("Please enter your email"),
+    .matches(/^[a-zA-Z][a-zA-Z ]*$/, "Name must be a letter")
+    .min(2, "Name must have at least 2 characters")
+    .max(15, "Name can have a maximum of 15 characters")
+    .required("Please enter your name"),
+  lastName: Yup.string()
+    .matches(/^[a-zA-Z][a-zA-Z ]*$/, "Lastname must be a letter")
+    .min(1, "Last name must have at least 1 character")
+    .max(15, "Last name can have a maximum of 15 characters")
+    .required("Please enter your last name"),
+  email: Yup.string()
+    .email("Please enter a valid email")
+    .required("Please enter your email"),
 });
+
 
 export const changePassInitialValues = {
   oldPassword: "",
@@ -115,7 +125,7 @@ export const handleImage = (e) => {
 };
 
 export const imageValidation = (file) => {
-  const supportedFormats = ["image/jpeg", "image/png", "image/gif","image/webp"];
+  const supportedFormats = ["image/jpeg", "image/png", "image/gif", "image/webp"];
   const maxSizeInBytes = 5 * 1024 * 1024;
   if (!supportedFormats.includes(file.type)) {
     toast.error("Please Choose a image file");
@@ -130,7 +140,7 @@ export const imageValidation = (file) => {
 
 export const videoValidation = (e) => {
   const file = e.target.files[0];
-  const supportedFormats = ["video/mp4", "video/mpeg", "video/ogg", "video/webm","video/mkv"];
+  const supportedFormats = ["video/mp4", "video/mpeg", "video/ogg", "video/webm", "video/mkv"];
   const maxSizeInBytes = 10 * 1024 * 1024; // Maximum size of 10MB
 
   if (!supportedFormats.includes(file.type)) {
@@ -154,7 +164,7 @@ const generateUniqueFileName = () => {
 };
 export const imageUpload = async (path, image) => {
   try {
-    if(!image.name){
+    if (!image.name) {
       image.name = generateUniqueFileName()
     }
     const storageRef = ref(storage, path + image.name);
@@ -195,19 +205,19 @@ export const userNavBar = [
 
 export const CommunitySidebarLink = [
   {
-      label: "Home",
-      icon: BiHomeAlt,
-      to: "/community",
+    label: "Home",
+    icon: BiHomeAlt,
+    to: "/community",
   },
   {
-      label: "Explore groups",
-      icon: MdOutlineExplore,
-      to: "/groups",
+    label: "Explore groups",
+    icon: MdOutlineExplore,
+    to: "/groups",
   },
   {
-      label: "Messages",
-      icon: MdOutlineMessage,
-      to: "/messages",
+    label: "Messages",
+    icon: MdOutlineMessage,
+    to: "/messages",
   },
-  
+
 ];

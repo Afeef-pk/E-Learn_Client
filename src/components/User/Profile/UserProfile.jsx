@@ -120,7 +120,8 @@ function UserProfile() {
                 />
               </svg>
             </span>
-            <span className="tracking-wide">About</span>
+            <span className="tracking-wide">Profile</span>
+
           </div>
           <div className="text-gray-700 p-5">
             <form onSubmit={formik.handleSubmit}>

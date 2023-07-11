@@ -1,19 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getCourseList } from '../../../Services/userApi';
+import SearchSkeleton from './SearchSkeleton';
 
 function Search() {
     const [searchQuery, setSearchQuery] = useState("");
     const [course, setCourse] = useState();
     const inputRef = useRef();
     const location = useLocation()
-
+    const [isLoading,setIsLoading] = useState(true)
     useEffect(() => {
         inputRef.current.focus();
         if (location.state) {
           setSearchQuery(location.state);
+        }else{
+            getCourseList(null,null,searchQuery).then((response) => {  
+                setCourse(response.data.courseData)
+                setIsLoading(false)
+            }).catch((err) => {
+                console.log(err);
+            }) 
         }
-      }, [location.state]);
+      }, []);
       
       useEffect(() => {
         if (searchQuery !== null) {
@@ -23,9 +31,11 @@ function Search() {
 
     const handleSearch = () => {
         try {
+            setIsLoading(true)
             if (searchQuery != "") {
                 getCourseList(null,null,searchQuery).then((response) => {  
                     setCourse(response.data.courseData)
+                    setIsLoading(false)
                 }).catch((err) => {
                     console.log(err);
                 })
@@ -57,13 +67,20 @@ function Search() {
                     <h3 className='ml-5 text-2xl md:text-3xl'>Search what do you want to learn</h3>
                 </div>}
 
-            {course && course.length ? course.map((obj, index) => {
+             {isLoading ? 
+             <>
+             <SearchSkeleton/>
+             <SearchSkeleton/>
+             <SearchSkeleton/>
+             </>
+             :
+              course && course.length ? course.map((obj, index) => {
                 return (
                     <Link to={`/course-details/${obj._id}`} key={index}>
                         <div  className='mx-3 lg:mx-20 mb-10'>
                             <div className="flex justify-center mt-4 sm:mx-10 m-3">
                                 <div className="flex p-4 w-full max-w-screen-lg hover:bg-violet-50 flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row ">
-                                    <img className="rounded-md mt-4 sm:mt-0 w-56 h-32 object-cover" src={obj.imageURL} />
+                                    <img className="rounded-md mt-4 sm:mt-0 w-full sm:w-56 sm:h-32 object-cover" src={obj.imageURL} />
                                     <div className="flex flex-col ml-0 sm:ml-3 justify-between mt-2 sm:0 p-4 leading-normal">
                                         <h5 className="mb-2 text-xl  font-bold tracking-tight text-gray-900 ">{obj.name}</h5>
                                         <p className="mb-3 font-normal text-gray-700">{obj.about}</p>
