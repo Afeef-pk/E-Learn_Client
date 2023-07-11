@@ -17,6 +17,7 @@ import PurchaseHistoryPage from "../pages/user/PurchaseHistoryPage";
 import CommunityPage from "../pages/user/CommunityPage";
 import MessengerPage from "../pages/user/MessengerPage";
 import ErrorPage from "../pages/user/ErrorPage";
+import SearchPage from "../pages/user/SearchPage";
 
 const UserRouter = () => {
   return (
@@ -38,6 +39,7 @@ const UserRouter = () => {
       </Route>
 
       <Route path="/" element={<UserHomePage />} />
+      <Route path='/search'element={<SearchPage/>} />
       <Route path="/course" element={<UserCoursePage />} />
       <Route path="/course-details/:courseId" element={<CourseDetailsPage />} />
         <Route path="/community" element={<CommunityPage/>} />

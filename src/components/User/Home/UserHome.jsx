@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo1 from "/icons/design.svg";
 import logo2 from "/icons/monitor.svg";
 import logo3 from "/icons/it-logo.svg";
@@ -18,6 +18,8 @@ function UserHomePage() {
   const [courseCount, setCourseCount] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setsearchQuery] = useState("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     homeCourseLoad(courseCount).then(({ data }) => {
@@ -58,6 +60,13 @@ function UserHomePage() {
         "If you want to be a successful business owner, our courses will help you do so. Book your course now.",
     },
   ];
+
+  const keyDownHandler = (event) => {
+    if (event.key == "Enter") {
+      event.preventDefault();
+      navigate('/search',{state:searchQuery})
+    }
+  };
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 bg-[#EAEDFB] bg-[url('/assets/home-bg.png')]">
@@ -77,17 +86,20 @@ function UserHomePage() {
               <Button>Explore courses</Button>
             </Link>
           </div>
-          <div className="pt-5 sm:p-0 sm:pr-28">
+          <div className="pt-5 sm:p-0 sm:pr-10">
             <div className="relative">
               <input
                 className="h-14 pl-10 pr-16 rounded-full w-full outline-none text-lg border-white"
                 type="text"
                 placeholder="Search Course..."
+                onChange={(e) => setsearchQuery(e.target.value)}
+                value={searchQuery}
+                onKeyDown={keyDownHandler}
               />
               <div className="absolute inset-y-0 left-4 flex items-center text-gray-500">
                 <FaSearch />
               </div>
-              <Link to={"/search"}>
+              <Link to={"/search"} state={searchQuery}>
                 <button className="absolute my-2 inset-y-0 right-4 flex items-center p-3 rounded-full bg-red-400">
                   <AiOutlineArrowRight />
                 </button>
@@ -229,10 +241,10 @@ function UserHomePage() {
               </h1>
             </div>
             <div className="max-sm:px-12 px-20 mt-5">
-              <Link to={'community'}>
-              <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">
-                Connect
-              </Button>
+              <Link to={"community"}>
+                <Button className="bg-[#232946] hover:bg-[#232946] text-white mb-5 py-2 px-4 rounded">
+                  Connect
+                </Button>
               </Link>
             </div>
           </div>

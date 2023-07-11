@@ -3,6 +3,7 @@ import CourseCard from "../CourseCard/CourseCard";
 import { getCourseList } from "../../../Services/userApi";
 import Pagination from "../Pagination/Pagination";
 import CardSkeleton from "../CourseCard/CardSkeleton";
+import { useLocation } from "react-router-dom";
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
@@ -13,7 +14,7 @@ function CourseList() {
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const courseLimitPerPage = 3;
-
+  
   useEffect(() => {
     getCourseList(
       activePage,
