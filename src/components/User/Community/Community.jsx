@@ -28,6 +28,7 @@ function Community({ isTab }) {
       joinGroup(groupId)
       .then(({ data }) => {
         toast.success(data.message);
+        navigate('/messages', { state: { group:data.group } });
       })
       .catch((error) => {
         toast.error(error.message);
@@ -93,7 +94,7 @@ function Community({ isTab }) {
         <div className="flex justify-between items-center mt-10 mb-5">
           <h1 className="text-xl font-bold sm:text-2xl">Explore Community</h1>
 
-          {!user.email ? (
+          {authorized && (
             <Button
               onClick={() => {
                 setShowModal(true);
@@ -108,7 +109,7 @@ function Community({ isTab }) {
                 <span className="ml-4 hidden md:flex">Create New</span>
               </div>
             </Button>
-          ) : null}
+          ) }
         </div>
 
         {groups.length > 0 ? (

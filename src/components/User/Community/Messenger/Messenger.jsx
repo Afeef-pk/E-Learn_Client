@@ -21,7 +21,12 @@ import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { FaMicrophone, FaPaperPlane } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
 import { ReactMediaRecorder } from "react-media-recorder";
-import { handleImage, imageUpload, videoValidation } from "../../../../constants/constant";
+import {
+  handleImage,
+  imageUpload,
+  videoValidation,
+} from "../../../../constants/constant";
+import { useLocation } from "react-router-dom";
 
 function Messenger() {
   const [userGroups, setUserGroups] = useState([]);
@@ -38,15 +43,8 @@ function Messenger() {
   const [user, setUser] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      var decodedToken = jwtDecode(token);
-    }
-    setUser({ id: decodedToken.userId });
-  }, []);
-
+  const location = useLocation();
+  
   //connecting to socket
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_BaseURL);
@@ -57,6 +55,18 @@ function Messenger() {
     setCurrentChat(group);
     socket.current.emit("joinGroup", group._id);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      var decodedToken = jwtDecode(token);
+    }
+    setUser({ id: decodedToken.userId });
+    if(location.state){
+    const { group } = location.state;
+    handleConversation(group)
+    }
+  }, []);
 
   // //receive message and disconnect
   useEffect(() => {
