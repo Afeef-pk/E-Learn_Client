@@ -14,7 +14,7 @@ function CourseList() {
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const courseLimitPerPage = 3;
-  
+
   useEffect(() => {
     getCourseList(
       activePage,
@@ -28,7 +28,7 @@ function CourseList() {
       setIsLoading(false);
     });
   }, [activePage, searchQuery, selectedCategory]);
-
+  console.log(courses);
   return (
     <div>
       <div className="my-5 mx-10 bg-[#f5f5f5 rounded-md flex text-black font-bold justify-between shadow-sm shadow-gray-500 border-t-2 border-gray-300">
@@ -94,32 +94,34 @@ function CourseList() {
         </div>
       </div>
 
-      <div className="gap-6 mx-4 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
-        {isLoading ? (
-          <>
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-          </>
-        ) : courses.length > 0 ? (
-          courses?.map((course, index) => {
-            return <CourseCard key={index} course={course} myCourse={false} />;
-          })
-        ) : (
-          <div className="flex justify-center flex-col items-center mb-10">
-            <img src="/assets/course/nocourse.svg" alt="" />
-            <p>No course found</p>
+      {isLoading ? (
+        <div className="gap-6 mx-4 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </div>
+      ) : courses.length > 0 ? (
+        <>
+          <div className="gap-6 mx-4 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+            {courses.map((course, index) => (
+              <CourseCard key={index} course={course} myCourse={false} />
+            ))}
           </div>
-        )}
-      </div>
-      <Pagination
-        activePage={activePage}
-        limit={courseLimitPerPage}
-        setActivePage={setActivePage}
-        totalCourse={totalCourse}
-      />
+          <Pagination
+            activePage={activePage}
+            limit={courseLimitPerPage}
+            setActivePage={setActivePage}
+            totalCourse={totalCourse}
+          />
+        </>
+      ) : (
+        <div className="flex justify-center flex-col items-center mb-5">
+          <img className="mx-auto" src="/assets/course/nocourse.svg" alt="" />
+          <p>No course found on this category</p>
+        </div>
+      )}
     </div>
   );
 }
