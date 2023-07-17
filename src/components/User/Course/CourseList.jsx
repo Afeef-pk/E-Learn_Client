@@ -28,7 +28,7 @@ function CourseList() {
       setIsLoading(false);
     });
   }, [activePage, searchQuery, selectedCategory]);
-  console.log(courses);
+  
   return (
     <div>
       <div className="my-5 mx-10 bg-[#f5f5f5 rounded-md flex text-black font-bold justify-between shadow-sm shadow-gray-500 border-t-2 border-gray-300">

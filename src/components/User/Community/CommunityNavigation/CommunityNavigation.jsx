@@ -7,7 +7,7 @@ function CommunityNavigation() {
         {
             label: "Explore groups",
             icon: <MdOutlineExplore size={22} />,
-            to: "/groups",
+            to: "/community",
         },
         {
             label: "Messages",
@@ -18,7 +18,7 @@ function CommunityNavigation() {
     ];
 
     return (
-        <div className="fixed flex   sm:hidden bottom-0 w-full z-50 border-t border-base-300 bg-base-100 ">
+        <div className="fixed flex   sm:hidden bottom-0 w-full z-50 border-t border-base-300 bg-white ">
             <ul className="menu flex rounded-box menu-horizontal w-full justify-around items-end bg-base-100 my-5">
                 {CommunitySidebarLink.map((item) => (
                     <li key={item.label}>

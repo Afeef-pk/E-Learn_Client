@@ -9,7 +9,7 @@ function CourseCard({ course, myCourse, totalProgress }) {
           ? `/course/view/${course._id}`
           : `/course-details/${course._id}`
       }>
-      <div className="bg-gray-200 hover:bg-gray-300 rounded-xl xl:w-60 mx-0 sm:mx-3 my-3 sm:my-0 pb-2 transition duration-300  transform hover:scale-110 ">
+      <div className="bg-gray-200 hover:bg-gray-300 rounded-xl xl:w-60 mx-0 sm:mx-3 my-3 sm:my-0 pb-2 transition duration-300  transform sm:hover:scale-110 ">
         <div className="relative w-full h-36 rounded-t-xl overflow-hidden">
           <img
             className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-110"
