@@ -23,13 +23,16 @@ const UserRouter = () => {
   return (
     <Routes>
       <Route element={<PrivateRoutes role={"user"} route={"/signin"} />}>
-        <Route path="/profile" element={<UserProfilePage/>} />
+        <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/course/view/:courseId" element={<CourseWatchPage />} />
-        <Route path='/course-payment/:courseId' element={< OrderSummaryPage />}/>
+        <Route
+          path="/course-payment/:courseId"
+          element={<OrderSummaryPage />}
+        />
         <Route path="/order-success" element={<OrderSucessPage />} />
-        <Route path="/my-courses" element={<MyCoursePage/>} />
-        <Route path="/purchase-history" element={<PurchaseHistoryPage/>} />
-        <Route path='/messages' element={<MessengerPage />} />
+        <Route path="/my-courses" element={<MyCoursePage />} />
+        <Route path="/purchase-history" element={<PurchaseHistoryPage />} />
+        <Route path="/messages" element={<MessengerPage />} />
       </Route>
 
       <Route element={<UnAuthenticatedOnlyRoutes role={"user"} route={"/"} />}>
@@ -39,11 +42,11 @@ const UserRouter = () => {
       </Route>
 
       <Route path="/" element={<UserHomePage />} />
-      <Route path='/search'element={<SearchPage/>} />
+      <Route path="/search" element={<SearchPage />} />
       <Route path="/course" element={<UserCoursePage />} />
       <Route path="/course-details/:courseId" element={<CourseDetailsPage />} />
-        <Route path="/community" element={<CommunityPage/>} />
-      <Route path="/*" element={<ErrorPage/>} />
+      <Route path="/community" element={<CommunityPage />} />
+      <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
 };

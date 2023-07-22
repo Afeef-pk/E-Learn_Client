@@ -31,7 +31,7 @@ function UsersList() {
   }, [action, activePage, searchQuery]);
 
   return (
-    <div className="w-full  bg-[#141B2D]">
+    <div className="w-full bg-[#141B2D]">
       <NavBar />
       <h1 className="text-3xl mx-5 uppercase  text-white font-bold tracking-widest">
         Users List

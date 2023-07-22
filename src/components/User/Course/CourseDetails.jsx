@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getCourseView } from "../../../Services/userApi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BuyNowCard from "./BuyNowCard";
 import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
 
 function CourseDetails() {
   const [courseDetails, setCourseDetails] = useState([]);
   const { courseId } = useParams();
-
+  const navigate = useNavigate();
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -27,7 +27,7 @@ function CourseDetails() {
         setCourseDetails(res.data.courseDetails);
       })
       .catch((error) => {
-        console.log(error);
+        navigate("/");
       });
   }, []);
 
@@ -112,7 +112,7 @@ function CourseDetails() {
       </div>
 
       <article className="px-5 lg:px-40 my-">
-        <h1 className="text-xl font-bold my-3" >Reviews & Ratings</h1>
+        <h1 className="text-xl font-bold my-3">Reviews & Ratings</h1>
         <div className="flex items-center mb-4 space-x-4">
           <img
             className="w-10 h-10 rounded-full"
