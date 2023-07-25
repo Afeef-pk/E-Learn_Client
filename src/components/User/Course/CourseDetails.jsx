@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { getCourseView } from "../../../Services/userApi";
+import { getCourseView, postCourseReview } from "../../../Services/userApi";
 import { useNavigate, useParams } from "react-router-dom";
 import BuyNowCard from "./BuyNowCard";
 import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
+import { Textarea, Typography, Rating } from "@material-tailwind/react";
+import { ImCross } from "react-icons/im";
+import { toast } from "react-hot-toast";
+import dateFormat from "dateformat";
+import StarSvg from "./StarSvg";
 
 function CourseDetails() {
   const [courseDetails, setCourseDetails] = useState([]);
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const [openReview, setOpenReview] = useState(false);
+  const [rated, setRated] = React.useState(1);
+  const [review, setReview] = useState("");
+  const [reviewButton, setReviewButton] = useState(false)
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -20,16 +29,31 @@ function CourseDetails() {
     setCourseDetails({ ...courseDetails, course });
   };
 
+  const rateCourse = () => {
+    toast.loading();
+    postCourseReview(courseId, rated, review)
+      .then(({ data }) => {
+        setOpenReview(false);
+        toast.dismiss();
+        toast.success(data.message);
+      })
+      .catch(() => {});
+  };
+
+  const rateCourseHandler = ()=>{
+    setOpenReview(true)
+  }
   useEffect(() => {
     window.scrollTo(0, 0);
     getCourseView(courseId)
       .then((res) => {
         setCourseDetails(res.data.courseDetails);
+        setReviewButton(res.data.reviewPossible)
       })
       .catch((error) => {
         navigate("/");
       });
-  }, []);
+  }, [openReview]);
 
   return (
     <section>
@@ -111,98 +135,58 @@ function CourseDetails() {
         </div>
       </div>
 
-      <article className="px-5 lg:px-40 my-">
-        <h1 className="text-xl font-bold my-3">Reviews & Ratings</h1>
-        <div className="flex items-center mb-4 space-x-4">
-          <img
-            className="w-10 h-10 rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-            alt=""
-          />
-          <div className="space-y-1 font-medium dark:text-white">
-            <p>
-              Jese Leos{" "}
-              <time
-                dateTime="2014-08-16 19:00"
-                className="block text-sm text-gray-500 dark:text-gray-400">
-                Joined on August 2014
-              </time>
-            </p>
-          </div>
+      <article className="px-5 lg:px-40 mb-10">
+        <div className="flex justify-between sm:text-lg">
+          <h1 className="text-xl font-bold my-3">Reviews & Ratings</h1>
+         {<button
+            className="shadow-md p-3 bg-gray-100 shadow-gray-400 cursor-pointer rounded-lg sm:w-auto sm:px-8"
+            onClick={rateCourseHandler}>
+            <span className="font-bold">Rate Course</span>
+          </button>}
         </div>
-        <div className="flex items-center mb-1">
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>First star</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-          </svg>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>Second star</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-          </svg>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>Third star</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-          </svg>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>Fourth star</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-          </svg>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <title>Fifth star</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-          </svg>
-          <h3 className="ml-2 text-sm font-semibold text-gray-900 dark:text-white">
-            Thinking to buy another one!
-          </h3>
-        </div>
-        <footer className="mb-5 text-sm text-gray-500 dark:text-gray-400">
-          <p>
-            Reviewed in the United Kingdom on{" "}
-            <time dateTime="2017-03-03 19:00">March 3, 2017</time>
-          </p>
-        </footer>
-        <p className="mb-2 text-gray-500 dark:text-gray-400">
-          This is my third Invicta Pro Diver. They are just fantastic value for
-          money. This one arrived yesterday and the first thing I did was set
-          the time, popped on an identical strap from another Invicta and went
-          in the shower with it to test the waterproofing.... No problems.
-        </p>
-        <p className="mb-3 text-gray-500 dark:text-gray-400">
-          It is obviously not the same build quality as those very expensive
-          watches. But that is like comparing a Citroën to a Ferrari. This watch
-          was well under £100! An absolute bargain.
-        </p>
-        <a
-          href="#"
-          className="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-          Read more
-        </a>
-        <aside>
+        {courseDetails.reviews?.length >= 0 ? (
+          courseDetails.reviews?.slice(0, 5).map((review, index) => (
+            <div key={index}>
+              <div className="flex items-center mb-4 space-x-4">
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={
+                    review.reviewedBy.image
+                      ? review.reviewedBy.image
+                      : "/assets/tutor/default-dp.png"
+                  }
+                  alt=""
+                />
+                <div className="space-y-1 font-semibold ">
+                  <p>
+                    {review.reviewedBy.name}
+                    <time
+                      dateTime="2014-08-16 19:00"
+                      className="block text-sm text-gray-500 ">
+                      Joined on{" "}
+                      {dateFormat(review.reviewedBy.createdAt, "mmmm yyyy")}
+                    </time>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center mb-1">
+                <StarSvg count={review.rating} />
+              </div>
+              <footer className="mb-5 text-sm text-gray-500 dark:text-gray-400">
+                <p>
+                  Reviewed on{" "}
+                  <time dateTime="2017-03-03 19:00">
+                    {dateFormat(review.createdAt, "mmmm dd, yyyy")}
+                  </time>
+                </p>
+              </footer>
+              <p className="mb-2 text-gray-400 ">{review.review}</p>
+              <a
+                href="#"
+                className="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                Read more
+              </a>
+              {/* <aside>
           <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
             19 people found this helpful
           </p>
@@ -218,8 +202,62 @@ function CourseDetails() {
               Report abuse
             </a>
           </div>
-        </aside>
+        </aside> */}
+            </div>
+          ))
+        ) : (
+          <p className="my-8 mx-6 font-bold">No Ratings yet</p>
+        )}
       </article>
+      {openReview && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center  ">
+          <div className="relative flex flex-col items-center bg-gray-50 w-1/3 rounded-lg ">
+            <button
+              className="place-self-end mx-2 my-2 text-red-600"
+              onClick={() => setOpenReview(false)}>
+              <ImCross />
+            </button>
+            <div className="bg-black opacity-10 inset-0 z-0" />
+            <div className="sm:max-w-lg w-full p-2  bg-white rounded-xl z-10">
+              <label className="text-xl flex justify-center font-extrabold  tracking-wide">
+                Rate & Review
+              </label>
+              <br />
+              <div className="flex justify-center gap-2">
+                <Rating
+                  value={1}
+                  className="text-yellow-400"
+                  onChange={(value) => setRated(value)}
+                />
+                <Typography color="blue-gray" className="font-medium">
+                  {rated}.0 Rated
+                </Typography>
+              </div>
+              <br />
+              <div className="grid grid-cols-1 space-y-2">
+                <div className="flex items-center justify-center w-full">
+                  <div className="w-full">
+                    <Textarea
+                      className="w-full h-96 "
+                      style={{ borderColor: "black" }}
+                      placeholder="write your review"
+                      onChange={(e) => setReview(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={rateCourse}
+                  type="submit"
+                  className="my-5  bg-blue-500 text-gray-100 p-4 rounded-md tracking-wide font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

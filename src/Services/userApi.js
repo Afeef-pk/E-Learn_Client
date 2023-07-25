@@ -35,6 +35,10 @@ export const getCourseView = (courseId) => {
     return userAxiosInstance.get(`/course-details/${courseId}`)
 }
 
+export const postCourseReview = (courseId, rating, review)=>{
+    return userAxiosInstance.post('/review-course',{courseId, rating, review})
+}
+
 export const getUserDetails = () => {
     return userAxiosInstance.get('/profile',)
 }
