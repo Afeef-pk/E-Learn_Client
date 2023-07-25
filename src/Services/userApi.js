@@ -39,6 +39,10 @@ export const postCourseReview = (courseId, rating, review)=>{
     return userAxiosInstance.post('/review-course',{courseId, rating, review})
 }
 
+export const checkReviewPossible = (courseId) => {
+    return userAxiosInstance.get(`/review-status/${courseId}`)
+}
+
 export const getUserDetails = () => {
     return userAxiosInstance.get('/profile',)
 }

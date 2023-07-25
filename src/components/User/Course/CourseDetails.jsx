@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getCourseView, postCourseReview } from "../../../Services/userApi";
+import {
+  checkReviewPossible,
+  getCourseView,
+  postCourseReview,
+} from "../../../Services/userApi";
 import { useNavigate, useParams } from "react-router-dom";
 import BuyNowCard from "./BuyNowCard";
 import SyllabusDropdown from "./SyllabusDropdown/SyllabusDropdown";
@@ -16,7 +20,7 @@ function CourseDetails() {
   const [openReview, setOpenReview] = useState(false);
   const [rated, setRated] = React.useState(1);
   const [review, setReview] = useState("");
-  const [reviewButton, setReviewButton] = useState(false)
+  const [reviewButton, setReviewButton] = useState(false);
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -40,15 +44,22 @@ function CourseDetails() {
       .catch(() => {});
   };
 
-  const rateCourseHandler = ()=>{
-    setOpenReview(true)
-  }
+  const rateCourseHandler = () => {
+    checkReviewPossible(courseId)
+      .then(() => {
+        setOpenReview(true);
+      })
+      .catch(({response}) => {
+        toast.error(response.data.message);
+      });
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getCourseView(courseId)
       .then((res) => {
         setCourseDetails(res.data.courseDetails);
-        setReviewButton(res.data.reviewPossible)
+        setReviewButton(res.data.reviewPossible);
       })
       .catch((error) => {
         navigate("/");
@@ -138,11 +149,13 @@ function CourseDetails() {
       <article className="px-5 lg:px-40 mb-10">
         <div className="flex justify-between sm:text-lg">
           <h1 className="text-xl font-bold my-3">Reviews & Ratings</h1>
-         {<button
-            className="shadow-md p-3 bg-gray-100 shadow-gray-400 cursor-pointer rounded-lg sm:w-auto sm:px-8"
-            onClick={rateCourseHandler}>
-            <span className="font-bold">Rate Course</span>
-          </button>}
+          {
+            <button
+              className="shadow-md p-3 bg-gray-100 shadow-gray-400 cursor-pointer rounded-lg sm:w-auto sm:px-8"
+              onClick={rateCourseHandler}>
+              <span className="font-bold">Rate Course</span>
+            </button>
+          }
         </div>
         {courseDetails.reviews?.length >= 0 ? (
           courseDetails.reviews?.slice(0, 5).map((review, index) => (
