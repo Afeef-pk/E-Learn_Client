@@ -24,7 +24,7 @@ function Message({ own, message, user }) {
     );
   } else if (message.type === "voice") {
     mediaElement = (
-      <audio id="song" className="block  max-w-md mx-auto" controls>
+      <audio id="song" className="block w-60 sm:w-72  mx-auto" controls>
         <source src={message.file} type="audio/mpeg" />
       </audio>
     );

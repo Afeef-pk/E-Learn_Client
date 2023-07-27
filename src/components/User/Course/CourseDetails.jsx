@@ -21,6 +21,7 @@ function CourseDetails() {
   const [rated, setRated] = React.useState(1);
   const [review, setReview] = useState("");
   const [reviewButton, setReviewButton] = useState(false);
+  const { authorized } = useSelector((state) => state.user);
   const toggleDropdown = (index) => {
     let course = courseDetails.course.map((course, i) => {
       if (i === index) {
@@ -149,7 +150,7 @@ function CourseDetails() {
       <article className="px-5 lg:px-40 mb-10">
         <div className="flex justify-between sm:text-lg">
           <h1 className="text-xl font-bold my-3">Reviews & Ratings</h1>
-          {
+          {authorized&&
             <button
               className="shadow-md p-3 bg-gray-100 shadow-gray-400 cursor-pointer rounded-lg sm:w-auto sm:px-8"
               onClick={rateCourseHandler}>
