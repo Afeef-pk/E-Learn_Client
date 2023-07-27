@@ -104,7 +104,7 @@ function CourseList() {
         </div>
       ) : courses.length > 0 ? (
         <>
-          <div className="gap-6 mx-4 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+          <div className="gap-6 mx-8 sm:mx-20 mb-0 sm:mb-10  grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
             {courses.map((course, index) => (
               <CourseCard key={index} course={course} myCourse={false} />
             ))}

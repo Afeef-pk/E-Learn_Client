@@ -12,6 +12,7 @@ import { ImCross } from "react-icons/im";
 import { toast } from "react-hot-toast";
 import dateFormat from "dateformat";
 import StarSvg from "./StarSvg";
+import { useSelector } from "react-redux";
 
 function CourseDetails() {
   const [courseDetails, setCourseDetails] = useState([]);
