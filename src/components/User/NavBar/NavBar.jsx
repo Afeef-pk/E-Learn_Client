@@ -157,9 +157,9 @@ export default function NavBar() {
                       </Transition>
                     </Menu>
                   ) : (
-                    <Link to="/signup">
+                    <Link to="/signin">
                       <button className="bg-[#7196d7] text-sm text-white px-4 py-2 rounded-full hover:bg-[#87acec]">
-                        Sign Up
+                        Sign In
                       </button>
                     </Link>
                   )}

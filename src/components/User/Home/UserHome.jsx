@@ -161,7 +161,7 @@ function UserHomePage() {
         <h1 className="m-5 ml-16 font-semibold text-3xl  max-sm:ml-24">
           Top Courses
         </h1>
-        <div className="relative mx-2 gap-5 sm:mx-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="relative mx-8 gap-5 sm:mx-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {courseCount !== 1 && (
             <button
               onClick={() => setCourseCount(courseCount - 1)}
@@ -227,12 +227,12 @@ function UserHomePage() {
         </div>
         <div className=" grid xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 bg-[#F2FFF7] my-20">
           <div className="w-full">
-            <div className="max-sm:px-12 max-sm:pt-10 px-20 pt-10 ">
+            <div className="max-sm:px-8 max-sm:pt-10 px-20 pt-10 ">
               <h3 className="text-5xl font-medium leading-tight">
                 Platform for Connect and build your career
               </h3>
             </div>
-            <div className="max-sm:px-12 px-20 mt-7 font-normal font-outfit">
+            <div className="max-sm:px-8 px-20 mt-7 font-normal font-outfit">
               <h1 className="text-lg">
                 We want our users to be able to communicate with Tutors through
                 our platform. Embrace collaboration, connect with others, and
