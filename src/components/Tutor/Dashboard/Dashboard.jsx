@@ -13,7 +13,7 @@ function Dashboard() {
     })
   },[])
 
- 
+
   return (
     <div className="relative w-full bg-[#141B2D] text-white">
       <NavBar/>

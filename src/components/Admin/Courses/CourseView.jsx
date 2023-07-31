@@ -6,7 +6,7 @@ import SyllabusDropdown from "../../User/Course/SyllabusDropdown/SyllabusDropdow
 import { deleteCourse } from "../../../Services/tutorApi";
 import { toast } from "react-hot-toast";
 
-function CourseView({ tutor }) {
+function CourseView({ tutor=false }) {
   const location = useLocation();
   const navigate = useNavigate();
   const courseId = location.state;
@@ -16,15 +16,13 @@ function CourseView({ tutor }) {
   
   const videoRef = useRef(null);
   const handleApprove = (status) => {
-    getCourseDetails(courseId, status).then((response) => {
+    getCourseDetails(courseId, status).then(() => {
       navigate("/admin/courses");
     });
   };
 
-
-
   useEffect(() => {
-    getCourseDetails(courseId).then((response) => {
+    getCourseDetails(courseId,false,tutor).then((response) => {
       response.data.course.course = response.data.course.course.map((obj) => {
         return { ...obj, open: false };
       });
@@ -198,9 +196,6 @@ function CourseView({ tutor }) {
                   className="bg-red-500 px-7 py-2 rounded-xl  text-center  text-white focus:outline-none my-1"
                   onClick={handleDelete}>
                   Delete
-                </button>
-                <button className="bg-green-500 px-7 py-2 rounded-xl mx-5 text-center  text-white  focus:outline-none my-1">
-                  Edit
                 </button>
               </>
             )}

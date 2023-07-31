@@ -1,4 +1,5 @@
 import { adminAxiosInstance } from "../axios/axios";
+import { tutorAxiosInstance } from "../axios/axios";
 
 export const postAdminLogin = (values) => {
     return adminAxiosInstance.post("/", values)
@@ -40,8 +41,12 @@ export const getCourseData = () => {
     return adminAxiosInstance.get("/courses")
 }
 
-export const getCourseDetails = (courseId, status = false) => {
-    return adminAxiosInstance.post(`/course/view`, { courseId, status })
+export const getCourseDetails = (courseId, status = false,tutor) => {
+    if(tutor){
+        return tutorAxiosInstance.post(`/course/view`, { courseId, status })
+    }else{
+        return adminAxiosInstance.post(`/course/view`, { courseId, status })
+    }
 }
 
 export const manageCourse = (courseId) => {
